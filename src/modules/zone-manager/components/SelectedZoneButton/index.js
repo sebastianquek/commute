@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ZoneButton from '../ZoneButton'
+import ZoneButton from '../../../core/components/ZoneButton'
 import styled, { withTheme } from 'styled-components'
 
 const Wrapper = styled.div`

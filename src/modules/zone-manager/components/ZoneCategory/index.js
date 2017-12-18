@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import AddZoneButton from '../AddZoneButton'
-import {fadeSlideUp} from '../../animations'
+import {fadeSlideUp} from '../../../../utils/animations'
 
 const Container = styled.div`
   display: flex;
@@ -32,10 +32,10 @@ const Children = styled.div`
   flex-direction: column;
 `
 
-const ZonesPanel = (props) => {
+const ZoneCategory = (props) => {
   return (
     <Container>
-      <Label>{props.label}</Label>
+      <Label>{props.category}</Label>
       <Children>
         {props.children}
         <AddZoneButton onClick={() => console.log('add')} />
@@ -44,9 +44,9 @@ const ZonesPanel = (props) => {
   )
 }
 
-ZonesPanel.propTypes = {
-  label: PropTypes.string,
+ZoneCategory.propTypes = {
+  category: PropTypes.string,
   children: PropTypes.node
 }
 
-export default ZonesPanel
+export default ZoneCategory

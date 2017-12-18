@@ -1,7 +1,7 @@
 import { configure } from '@storybook/react'
 import '@storybook/addon-console'
 
-const req = require.context('../src/components', true, /story\.js$/)
+const req = require.context('../src/storybook', true, /stories\.js$/)
 
 function loadStories() {
   req.keys().forEach(req)

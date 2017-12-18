@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import ZoneButton from '../ZoneButton'
-import {fadeSlideUp} from '../../animations'
+import ZoneButton from '../../../core/components/ZoneButton'
+import {fadeSlideUp} from '../../../../utils/animations'
 
 const Container = styled.div`
   margin: 1.3em 1em 0.8em 1.3em;
@@ -11,6 +11,7 @@ const Container = styled.div`
   border: 1px ${({dottedBorder}) => dottedBorder ? 'dashed' : 'solid'} ${({color}) => color};
   position: relative;
   animation: ${fadeSlideUp} 0.7s ease;
+  min-height: 100px;
 `
 
 const ContainerLabel = styled.div`

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {fadeSlideUpRotated} from '../../animations'
+import {fadeSlideUpRotated} from '../../../../utils/animations'
 
 const Button = styled.button`
   cursor: pointer;

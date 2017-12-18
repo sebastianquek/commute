@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import ZonesPanel from '../ZonesPanel'
+import ZoneCategory from '../ZoneCategory'
 
 const Container = styled.div`
   position: absolute;
@@ -16,22 +16,22 @@ const Container = styled.div`
   transition: 0.2s all;
 `
 
-const LeftSidebar = (props) => {
+const ZoneManager = (props) => {
   return (
     <Container>
-      <ZonesPanel label="Origins">
+      <ZoneCategory category="Origins">
         {props.originZones}
-      </ZonesPanel>
-      <ZonesPanel label="Destinations">
+      </ZoneCategory>
+      <ZoneCategory category="Destinations">
         {props.destinationZones}
-      </ZonesPanel>
+      </ZoneCategory>
     </Container>
   )
 }
 
-LeftSidebar.propTypes = {
+ZoneManager.propTypes = {
   originZones: PropTypes.node,
   destinationZones: PropTypes.node
 }
 
-export default LeftSidebar
+export default ZoneManager

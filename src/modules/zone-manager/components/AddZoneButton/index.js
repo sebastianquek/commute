@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ZoneButton from '../ZoneButton'
+import ZoneButton from '../../../core/components/ZoneButton'
 
 const AddZoneButton = (props) => {
   return (
