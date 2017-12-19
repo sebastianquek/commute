@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import ZoneDataContainer from '../ZoneDataContainer'
+import ZoneDataRow from '../ZoneDataRow'
 import ZoneFeedback from '../ZoneFeedback'
 
 const List = styled.div`
@@ -17,19 +17,31 @@ const List = styled.div`
   transition: 0.2s all;
 `
 
-const ZoneDataList = (props) => {
+const ZoneDataList = ({
+  hoveredZoneData,
+  originZonesData,
+  destinationZonesData
+}) => {
   return (
     <List>
-      {props.hoveredZoneData || <ZoneFeedback zoneDataContainer={<ZoneDataContainer dottedBorder />} feedback='Hover over a zone to see its land use' />}
-      {props.originZonesData}
-      {props.destinationZonesData}
-      {(!props.originZonesData && !props.destinationZonesData) && <ZoneFeedback zoneDataContainer={<ZoneDataContainer />} feedback='Select an origin or destination zone to see more details' />}
+      {hoveredZoneData ||
+        <ZoneFeedback
+          zoneDataContainer={<ZoneDataRow dottedBorder />}
+          feedback='Hover over a zone to see its land use' />}
+      {originZonesData}
+      {destinationZonesData}
+      {(!originZonesData && !destinationZonesData) &&
+        <ZoneFeedback
+          zoneDataContainer={<ZoneDataRow />}
+          feedback='Select an origin or destination zone to see more details' />}
     </List>
   )
 }
 
 ZoneDataList.propTypes = {
-
+  hoveredZoneData: PropTypes.node,
+  originZonesData: PropTypes.node,
+  destinationZonesData: PropTypes.node
 }
 
 export default ZoneDataList

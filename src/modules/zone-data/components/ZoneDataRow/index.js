@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import ZoneButton from '../../../core/components/ZoneButton'
 import {fadeSlideUp} from '../../../../utils/animations'
 
-const Container = styled.div`
+const Row = styled.div`
   margin: 1.3em 1em 0.8em 1.3em;
   padding: 1em;
   border-radius: ${({theme}) => theme.borderRadius};
@@ -14,7 +14,7 @@ const Container = styled.div`
   min-height: 100px;
 `
 
-const ContainerLabel = styled.div`
+const RowLabel = styled.div`
   position: absolute;
   top: -1em;
   left: -1em;
@@ -32,19 +32,27 @@ const ZoneName = styled.span`
   margin-right: 0.4em;
 `
 
-const ZoneDataCotainer = (props) => {
+const ZoneDataRow = ({
+  className,
+  children,
+  zoneName,
+  dottedBorder,
+  zoneColor,
+  zoneNum
+}) => {
   return (
-    <Container dottedBorder={props.dottedBorder} color={props.zoneColor} className={props.className}>
-      <ContainerLabel>
-        <ZoneButton color={props.zoneColor}>{props.zoneNum}</ZoneButton>
-        {props.zoneName && <ZoneName>{props.zoneName}</ZoneName>}
-      </ContainerLabel>
-      {props.children}
-    </Container>
+    <Row dottedBorder={dottedBorder} color={zoneColor} className={className}>
+      <RowLabel>
+        <ZoneButton color={zoneColor}>{zoneNum}</ZoneButton>
+        {zoneName && <ZoneName>{zoneName}</ZoneName>}
+      </RowLabel>
+      {children}
+    </Row>
   )
 }
 
-ZoneDataCotainer.propTypes = {
+ZoneDataRow.propTypes = {
+  className: PropTypes.string,
   children: PropTypes.node,
   zoneName: PropTypes.string,
   dottedBorder: PropTypes.bool,
@@ -52,4 +60,4 @@ ZoneDataCotainer.propTypes = {
   zoneNum: PropTypes.number
 }
 
-export default ZoneDataCotainer
+export default ZoneDataRow

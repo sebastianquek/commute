@@ -12,7 +12,7 @@ const ZoneManagerContainer = ({
   let counter = 1
   return (
     <ZoneManager
-      origins={origins.map(zoneId =>
+      origins={origins && origins.map(zoneId =>
         <SelectedZoneButton
           key={zoneId}
           onClick={() => ''}
@@ -20,7 +20,7 @@ const ZoneManagerContainer = ({
           {counter++}
         </SelectedZoneButton>
       )}
-      destinations={destinations.map(zoneId =>
+      destinations={destinations && destinations.map(zoneId =>
         <SelectedZoneButton
           key={zoneId}
           onClick={() => ''}
@@ -35,8 +35,8 @@ const ZoneManagerContainer = ({
 }
 
 ZoneManagerContainer.propTypes = {
-  origins: PropTypes.node,
-  destinations: PropTypes.node,
+  origins: PropTypes.arrayOf(PropTypes.number),
+  destinations: PropTypes.arrayOf(PropTypes.number),
   remove: PropTypes.func,
   setOriginSelectionMode: PropTypes.func,
   setDestinationSelectionMode: PropTypes.func
@@ -44,8 +44,9 @@ ZoneManagerContainer.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    origins: ownProps.origins || state.zoneSelections.categorizedZones.origins,
-    destinations: ownProps.destinations || state.zoneSelections.categorizedZones.destinations
+    origins: state.zoneSelections.categorizedZones.origins,
+    destinations: state.zoneSelections.categorizedZones.destinations,
+    ...ownProps
   }
 }
 

@@ -14,10 +14,9 @@ import ZoneButton from '../modules/core/components/ZoneButton'
 import AddZoneButton from '../modules/zone-manager/components/AddZoneButton'
 import SelectedZoneButton from '../modules/zone-manager/components/SelectedZoneButton'
 
-import ZoneDataList from '../modules/zone-data/components/ZoneDataList'
-import ZoneDataContainer from '../modules/zone-data/components/ZoneDataContainer'
+import { ZoneDataContainer, ZoneDataRow } from '../modules/zone-data/'
 
-import {ZoneManagerContainer} from '../modules/zone-manager'
+import { ZoneManagerContainer } from '../modules/zone-manager'
 
 const middleware = []
 if (process.env.NODE_ENV !== 'production') {
@@ -66,29 +65,30 @@ storiesOf('Zone buttons', module)
 
 storiesOf('Zone data list', module)
   .add('No zone selected', () =>
-    <ZoneDataList
+    <ZoneDataContainer
     />
   )
   .add('1 hovered zone', () =>
-    <ZoneDataList
-      hoveredZoneData={
-        <ZoneDataContainer zoneName="Toa Payoh West" dottedBorder>
-        </ZoneDataContainer>
-      }
+    <ZoneDataContainer
+      hoveredZone={{
+        name: 'Toa Payoh West'
+      }}
     />
   )
   .add('2 origin zones selected', () =>
-    <ZoneDataList
-      hoveredZoneData={
-        <ZoneDataContainer zoneName="Toa Payoh West" dottedBorder>
-        </ZoneDataContainer>
-      }
-      originZonesData={[
-        <ZoneDataContainer key="National University Of S'pore" zoneName="National University Of S'pore" zoneColor="#ADADAD" zoneNum={1}>
-        </ZoneDataContainer>,
-        <ZoneDataContainer key="Kent Ridge" zoneName="Kent Ridge" zoneColor="#C4C4C4" zoneNum={2}>
-        </ZoneDataContainer>
-      ]}
+    <ZoneDataContainer
+      hoveredZone={{
+        name: 'Toa Payoh West'
+      }}
+      originZones={[{
+        id: 123,
+        name: `National University Of S'pore`,
+        color: '#ADADAD'
+      }, {
+        id: 456,
+        name: 'Kent Ridge',
+        color: '#C4C4C4'
+      }]}
     />
   )
 
