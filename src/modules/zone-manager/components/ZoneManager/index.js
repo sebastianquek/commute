@@ -16,22 +16,29 @@ const Container = styled.div`
   transition: 0.2s all;
 `
 
-const ZoneManager = (props) => {
+const ZoneManager = ({
+  origins,
+  destinations,
+  setOriginSelectionMode,
+  setDestinationSelectionMode
+}) => {
   return (
     <Container>
-      <ZoneCategory category="Origins">
-        {props.originZones}
+      <ZoneCategory onClickAdd={setOriginSelectionMode} category="Origins">
+        {origins}
       </ZoneCategory>
-      <ZoneCategory category="Destinations">
-        {props.destinationZones}
+      <ZoneCategory onClickAdd={setDestinationSelectionMode} category="Destinations">
+        {destinations}
       </ZoneCategory>
     </Container>
   )
 }
 
 ZoneManager.propTypes = {
-  originZones: PropTypes.node,
-  destinationZones: PropTypes.node
+  origins: PropTypes.node,
+  destinations: PropTypes.node,
+  setOriginSelectionMode: PropTypes.func,
+  setDestinationSelectionMode: PropTypes.func
 }
 
 export default ZoneManager

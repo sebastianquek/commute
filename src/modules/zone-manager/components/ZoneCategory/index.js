@@ -32,13 +32,17 @@ const Children = styled.div`
   flex-direction: column;
 `
 
-const ZoneCategory = (props) => {
+const ZoneCategory = ({
+  category,
+  onClickAdd,
+  children
+}) => {
   return (
     <Container>
-      <Label>{props.category}</Label>
+      <Label>{category}</Label>
       <Children>
-        {props.children}
-        <AddZoneButton onClick={() => console.log('add')} />
+        {children}
+        <AddZoneButton onClick={onClickAdd} />
       </Children>
     </Container>
   )
@@ -46,6 +50,7 @@ const ZoneCategory = (props) => {
 
 ZoneCategory.propTypes = {
   category: PropTypes.string,
+  onClickAdd: PropTypes.func,
   children: PropTypes.node
 }
 

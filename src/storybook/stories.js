@@ -1,9 +1,14 @@
 import React from 'react'
-import { storiesOf } from '@storybook/react'
+import { storiesOf, addDecorator } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { withKnobs, array, object } from '@storybook/addon-knobs'
 import { injectGlobal } from 'styled-components'
 import ThemeProviderDecorator from './ThemeProviderDecorator'
+
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import { createLogger } from 'redux-logger'
+import rootReducer from '../rootReducer'
 
 import ZoneButton from '../modules/core/components/ZoneButton'
 import AddZoneButton from '../modules/zone-manager/components/AddZoneButton'
@@ -12,7 +17,27 @@ import SelectedZoneButton from '../modules/zone-manager/components/SelectedZoneB
 import ZoneDataList from '../modules/zone-data/components/ZoneDataList'
 import ZoneDataContainer from '../modules/zone-data/components/ZoneDataContainer'
 
-import ZoneManager from '../modules/zone-manager/components/ZoneManager'
+import {ZoneManagerContainer} from '../modules/zone-manager'
+
+const middleware = []
+if (process.env.NODE_ENV !== 'production') {
+  middleware.push(createLogger())
+}
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(...middleware)
+)
+
+const ReduxProviderDecorator = (storyFn) => (
+  <Provider store={store}>
+    {storyFn()}
+  </Provider>
+)
+
+addDecorator(withKnobs)
+addDecorator(ReduxProviderDecorator)
+addDecorator(ThemeProviderDecorator)
 
 injectGlobal`
   @import url('https://fonts.googleapis.com/css?family=Poppins');
@@ -29,8 +54,6 @@ injectGlobal`
 `
 
 storiesOf('Zone buttons', module)
-  .addDecorator(withKnobs)
-  .addDecorator(ThemeProviderDecorator)
   .add('Base zone button', () => {
     return <ZoneButton>10</ZoneButton>
   })
@@ -42,8 +65,6 @@ storiesOf('Zone buttons', module)
   })
 
 storiesOf('Zone data list', module)
-  .addDecorator(withKnobs)
-  .addDecorator(ThemeProviderDecorator)
   .add('No zone selected', () =>
     <ZoneDataList
     />
@@ -72,19 +93,6 @@ storiesOf('Zone data list', module)
   )
 
 storiesOf('Zone manager', module)
-  .addDecorator(withKnobs)
-  .addDecorator(ThemeProviderDecorator)
-  .add('No zone selected', () => {
-    return <ZoneManager />
-  })
-  .add('2 origin zones selected', () => {
-    return (
-      <ZoneManager
-        originZones={
-          <div>
-            <SelectedZoneButton>1</SelectedZoneButton>
-            <SelectedZoneButton>2</SelectedZoneButton>
-          </div>
-        } />
-    )
+  .add('base', () => {
+    return <ZoneManagerContainer />
   })
