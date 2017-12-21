@@ -12,6 +12,7 @@ const Row = styled.div`
   position: relative;
   animation: ${fadeSlideUp} 0.7s ease;
   min-height: 100px;
+  color: ${({theme}) => theme.colors.textPrimary};
 `
 
 const RowLabel = styled.div`
@@ -28,6 +29,7 @@ const ZoneName = styled.span`
   letter-spacing: ${({theme}) => theme.typography.headerLetterSpacing};
   font-weight: bold;
   font-size: ${({theme}) => theme.typography.headerSize};
+  color: ${({theme}) => theme.colors.textPrimary};
   margin-left: 0.5em;
   margin-right: 0.4em;
 `

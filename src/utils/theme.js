@@ -6,7 +6,8 @@ export default {
     borderSecondary: '#B2B2B2',
     iconPrimary: '#4F4F4F',
     iconWarning: 'red',
-    background: 'white'
+    background: 'white',
+    buttonBackground: '#E8E8E8'
   },
   typography: {
     headerLetterSpacing: '0.175em',

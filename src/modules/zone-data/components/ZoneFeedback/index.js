@@ -4,7 +4,8 @@ import styled from 'styled-components'
 import {fadeSlideUp} from '../../../../utils/animations'
 
 const FeedbackLabel = styled.div`
-  font-size: ${({theme}) => theme.typography.bodySize};  
+  font-size: ${({theme}) => theme.typography.bodySize};
+  color: ${({theme}) => theme.colors.textPrimary};
   font-style: italic;
   text-align: center;
   padding: 0 2.5em;

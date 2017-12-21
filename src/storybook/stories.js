@@ -14,9 +14,11 @@ import ZoneButton from '../modules/core/components/ZoneButton'
 import AddZoneButton from '../modules/zone-manager/components/AddZoneButton'
 import SelectedZoneButton from '../modules/zone-manager/components/SelectedZoneButton'
 
-import { ZoneDataContainer, ZoneDataRow } from '../modules/zone-data/'
+import { ZoneDataContainer } from '../modules/zone-data/'
 
 import { ZoneManagerContainer } from '../modules/zone-manager'
+
+import { DatetimeManager, ZoneHighlightControl, DatetimeSlider, DatetimePicker } from '../modules/datetime-manager'
 
 const middleware = []
 if (process.env.NODE_ENV !== 'production') {
@@ -93,6 +95,22 @@ storiesOf('Zone data list', module)
   )
 
 storiesOf('Zone manager', module)
-  .add('base', () => {
-    return <ZoneManagerContainer />
-  })
+  .add('base', () =>
+    <ZoneManagerContainer />
+  )
+
+storiesOf('Datetime manager', module)
+  .add('Zone highlight control', () =>
+    <ZoneHighlightControl>
+      <ZoneButton>1</ZoneButton>
+      <ZoneButton>2</ZoneButton>
+      <ZoneButton>3</ZoneButton>
+      <ZoneButton>4</ZoneButton>
+      <ZoneButton>5</ZoneButton>
+      <ZoneButton>6</ZoneButton>
+    </ZoneHighlightControl>
+  ).add('Datetime picker', () =>
+    <DatetimePicker />
+  ).add('Datetime slider', () =>
+    <DatetimeSlider />
+  )
