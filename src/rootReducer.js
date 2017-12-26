@@ -6,5 +6,5 @@ import map from './modules/map'
 export default combineReducers({
   zoneManager: zoneManager.reducer,
   zoneData: zoneData.reducer,
-  mapStyle: map.reducer
+  map: map.reducer
 })

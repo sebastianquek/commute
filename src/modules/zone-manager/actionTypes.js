@@ -1,4 +1,5 @@
-export const ADD = 'manager/ADD'
-export const REMOVE = 'manager/REMOVE'
+export const ADD_SELECTION = 'manager/ADD_SELECTION'
+export const REMOVE_SELECTION = 'manager/REMOVE_SELECTION'
+export const RESET_SELECTION_MODE = 'manager/RESET_SELECTION_MODE'
 export const SET_ORIGIN_SELECTION_MODE = 'manager/ORIGIN_SELECTION'
 export const SET_DESTINATION_SELECTION_MODE = 'manager/DESTINATION_SELECTION'

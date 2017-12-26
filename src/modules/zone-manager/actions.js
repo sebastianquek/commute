@@ -1,15 +1,19 @@
 import * as t from './actionTypes'
 
-export const add = (id, category) => ({
-  type: t.ADD,
+export const addSelection = (id, category) => ({
+  type: t.ADD_SELECTION,
   id,
   category
 })
 
-export const remove = (id, category) => ({
-  type: t.REMOVE,
+export const removeSelection = (id, category) => ({
+  type: t.REMOVE_SELECTION,
   id,
   category
+})
+
+export const resetSelectionMode = () => ({
+  type: t.RESET_SELECTION_MODE
 })
 
 export const setOriginSelectionMode = () => ({

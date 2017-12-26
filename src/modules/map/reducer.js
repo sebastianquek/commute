@@ -1,6 +1,8 @@
+import { combineReducers } from 'redux'
 import * as t from './actionTypes'
+import zoneManager from '../zone-manager'
 import {fromJS} from 'immutable'
-import { defaultMapStyle, zonesLayer, zonesHoverLayer } from './map-style'
+import { defaultMapStyle, zonesLayer, zonesHoverLayer, zonesOriginSelectionLayer, zonesDestinationSelectionLayer } from './map-style'
 
 function mapStyle (state = defaultMapStyle, action) {
   switch (action.type) {
@@ -22,10 +24,37 @@ function mapStyle (state = defaultMapStyle, action) {
         newState = state.update('layers', layers => layers.push(layer))
       }
       return newState
-      
+
+    case zoneManager.actionTypes.SET_ORIGIN_SELECTION_MODE:
+      if (!state.get('layers').contains(zonesOriginSelectionLayer)) {
+        return state.update('layers', layers => layers.push(zonesOriginSelectionLayer))
+      }
+      return state
+
+    case zoneManager.actionTypes.SET_DESTINATION_SELECTION_MODE:
+      if (!state.get('layers').contains(zonesDestinationSelectionLayer)) {
+        return state.update('layers', layers => layers.push(zonesDestinationSelectionLayer))
+      }
+      return state
+
     default:
       return state
   }
 }
 
-export default mapStyle
+const currentZone = (state = {
+  zoneId: null,
+  isSelected: false
+}, action) => {
+  switch (action.type) {
+    case t.HOVER_OVER_ZONE:
+      return {...state, zoneId: action.zoneId}
+    default:
+      return state
+  }
+}
+
+export default combineReducers({
+  mapStyle,
+  currentZone
+})

@@ -1,15 +1,16 @@
 import { combineReducers } from 'redux'
 import * as t from './actionTypes'
-import map from '../map'
 
-const zoneSelectionMode = (state = null, action) => {
+const zoneSelectionMode = (state = 'origin', action) => {
   switch (action.type) {
     case t.SET_ORIGIN_SELECTION_MODE:
       return 'origin'
     case t.SET_DESTINATION_SELECTION_MODE:
       return 'destination'
-    default:
+    case t.RESET_SELECTION_MODE:
       return null
+    default:
+      return state
   }
 }
 
@@ -18,7 +19,7 @@ const categorizedZones = (state = {
   destinations: [4, 5]
 }, action) => {
   switch (action.type) {
-    case t.ADD:
+    case t.ADD_SELECTION:
       if (!state[action.category].includes(action.id)) {
         return {
           ...state,
@@ -26,7 +27,7 @@ const categorizedZones = (state = {
         }
       }
       return state
-    case t.REMOVE:
+    case t.REMOVE_SELECTION:
       if (state[action.category].includes(action.id)) {
         return {
           ...state,
@@ -39,20 +40,7 @@ const categorizedZones = (state = {
   }
 }
 
-const currentZone = (state = {
-  zoneId: null,
-  isSelected: false
-}, action) => {
-  switch (action.type) {
-    case map.actionTypes.HOVER_OVER_ZONE:
-      return {...state, zoneId: action.zoneId}
-    default:
-      return state
-  }
-}
-
 export default combineReducers({
   zoneSelectionMode,
-  currentZone,
   categorizedZones
 })

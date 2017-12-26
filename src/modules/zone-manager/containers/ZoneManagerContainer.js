@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ZoneManager from '../components/ZoneManager'
 import SelectedZoneButton from '../components/SelectedZoneButton'
-import { add, remove, setOriginSelectionMode, setDestinationSelectionMode } from '../actions'
+import { removeSelection, setOriginSelectionMode, setDestinationSelectionMode } from '../actions'
 
 const ZoneManagerContainer = ({
-  origins, destinations, remove,
+  origins, destinations, removeSelection,
   setOriginSelectionMode, setDestinationSelectionMode
 }) => {
   let counter = 1
@@ -16,7 +16,7 @@ const ZoneManagerContainer = ({
         <SelectedZoneButton
           key={zoneId}
           onClick={() => ''}
-          onClickDelete={() => remove(zoneId, 'origins')}>
+          onClickDelete={() => removeSelection(zoneId, 'origins')}>
           {counter++}
         </SelectedZoneButton>
       )}
@@ -24,7 +24,7 @@ const ZoneManagerContainer = ({
         <SelectedZoneButton
           key={zoneId}
           onClick={() => ''}
-          onClickDelete={() => remove(zoneId, 'destinations')}>
+          onClickDelete={() => removeSelection(zoneId, 'destinations')}>
           {counter++}
         </SelectedZoneButton>
       )}
@@ -37,7 +37,7 @@ const ZoneManagerContainer = ({
 ZoneManagerContainer.propTypes = {
   origins: PropTypes.arrayOf(PropTypes.number),
   destinations: PropTypes.arrayOf(PropTypes.number),
-  remove: PropTypes.func,
+  removeSelection: PropTypes.func,
   setOriginSelectionMode: PropTypes.func,
   setDestinationSelectionMode: PropTypes.func
 }
@@ -51,7 +51,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = {
-  remove, setOriginSelectionMode, setDestinationSelectionMode
+  removeSelection, setOriginSelectionMode, setDestinationSelectionMode
 }
 
 export default connect(

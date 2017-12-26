@@ -27,3 +27,29 @@ export const zonesHoverLayer = fromJS({
   },
   filter: ['in', 'OBJECTID', '']
 })
+
+export const zonesOriginSelectionLayer = fromJS({
+  id: 'zonesOriginSelection',
+  source: 'zones',
+  type: 'fill',
+  interactive: true,
+  paint: {
+    'fill-color': 'rgba(0, 0, 0, 0)',
+    'fill-opacity': 0.5,
+    'fill-outline-color': 'blue'
+  },
+  filter: ['!in', 'OBJECTID', '']
+})
+
+export const zonesDestinationSelectionLayer = fromJS({
+  id: 'zonesDestinationSelection',
+  source: 'zones',
+  type: 'fill',
+  interactive: true,
+  paint: {
+    'fill-color': 'rgba(0, 0, 0, 0)',
+    'fill-opacity': 0.5,
+    'fill-outline-color': 'orange'
+  },
+  filter: ['!in', 'OBJECTID', '']
+})

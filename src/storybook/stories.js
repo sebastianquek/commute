@@ -27,7 +27,7 @@ const middleware = []
 middleware.push(thunkMiddleware) // thunk must be first
 
 if (process.env.NODE_ENV !== 'production') {
-  // middleware.push(createLogger())
+  middleware.push(createLogger())
 }
 
 const store = createStore(
@@ -106,6 +106,7 @@ storiesOf('Zone manager', module)
 
 storiesOf('Map', module)
   .add('base', () => <MapContainer />)
+  .add('origin selection mode', () => <MapContainer zoneSelectionMode='origin'/>)
 
 storiesOf('Tooltip', module)
   .add('no x and y', () => <Tooltip>this is a tooltip</Tooltip>)

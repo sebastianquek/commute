@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import MapGL from 'react-map-gl'
-import Tooltip from '../../../core/components/Tooltip'
+import Tooltip from '../Tooltip'
+import SelectionModeFeedback from '../SelectionModeFeedback'
 
 const MAPBOX_TOKEN = ''
 
@@ -80,6 +81,12 @@ export class Map extends Component {
             {this.state.hoveredFeature.properties.SUBZONE_N}
           </Tooltip>
         }
+
+        {this.props.zoneSelectionMode &&
+          <SelectionModeFeedback
+            selectionMode={this.props.zoneSelectionMode}
+            onClick={this.props.resetSelectionMode}/>
+        }
       </MapGL>
     )
   }
@@ -87,8 +94,12 @@ export class Map extends Component {
 
 Map.propTypes = {
   mapStyle: PropTypes.object.isRequired,
+  zoneSelectionMode: PropTypes.string,
+  categorizedZones: PropTypes.object.isRequired,
   fetchZones: PropTypes.func.isRequired,
-  hoverOverFeature: PropTypes.func.isRequired
+  hoverOverFeature: PropTypes.func.isRequired,
+  addSelection: PropTypes.func.isRequired,
+  resetSelectionMode: PropTypes.func.isRequired
 }
 
 export default Map
