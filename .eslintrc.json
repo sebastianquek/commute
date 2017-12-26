@@ -3,5 +3,8 @@
     "plugins": [
         "react"
     ],
-    "extends": ["standard", "plugin:react/recommended", "plugin:import/errors"]
+    "extends": ["standard", "plugin:react/recommended", "plugin:import/errors"],
+    "env": {
+        "browser": true
+    }
 }

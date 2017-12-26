@@ -8,6 +8,7 @@ import ThemeProviderDecorator from './ThemeProviderDecorator'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import { createLogger } from 'redux-logger'
+import thunkMiddleware from 'redux-thunk'
 import rootReducer from '../rootReducer'
 
 import ZoneButton from '../modules/core/components/ZoneButton'
@@ -18,7 +19,11 @@ import { ZoneDataContainer, ZoneDataRow } from '../modules/zone-data/'
 
 import { ZoneManagerContainer } from '../modules/zone-manager'
 
+import { MapContainer } from '../modules/map'
+
 const middleware = []
+middleware.push(thunkMiddleware) // thunk must be first
+
 if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
 }
@@ -96,3 +101,6 @@ storiesOf('Zone manager', module)
   .add('base', () => {
     return <ZoneManagerContainer />
   })
+
+storiesOf('Map', module)
+  .add('base', () => <MapContainer />)
