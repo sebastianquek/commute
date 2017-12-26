@@ -38,7 +38,8 @@ const ZoneDataContainer = ({
           <ZoneDataRow
             key={z.id}
             zoneName={z.SUBZONE_N}
-            zoneNum={counter++}>
+            zoneNum={counter++}
+            zoneColor={z.color}>
             {JSON.stringify(z)}
           </ZoneDataRow>
         </ScrollableAnchor>

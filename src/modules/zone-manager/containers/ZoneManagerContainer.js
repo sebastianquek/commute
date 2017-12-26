@@ -13,21 +13,21 @@ const ZoneManagerContainer = ({
   let counter = 1
   return (
     <ZoneManager
-      origins={origins && origins.map(zoneId =>
+      origins={origins && origins.map(zone =>
         <SelectedZoneButton
-          key={zoneId}
-          onClick={() => goToAnchor('' + zoneId, false)}
-          onClickDelete={() => removeSelection(zoneId, 'origins')}>
+          key={zone.id}
+          color={zone.color}
+          onClick={() => goToAnchor('' + zone.id, false)}
+          onClickDelete={() => removeSelection(zone.id, 'origins')}>
           {counter++}
         </SelectedZoneButton>
       )}
-      destinations={destinations && destinations.map(zoneId =>
+      destinations={destinations && destinations.map(zone =>
         <SelectedZoneButton
-          key={zoneId}
-          onClick={() => {
-            goToAnchor('' + zoneId, false)
-          }}
-          onClickDelete={() => removeSelection(zoneId, 'destinations')}>
+          key={zone.id}
+          color={zone.color}
+          onClick={() => goToAnchor('' + zone.id, false)}
+          onClickDelete={() => removeSelection(zone.id, 'destinations')}>
           {counter++}
         </SelectedZoneButton>
       )}
@@ -38,8 +38,8 @@ const ZoneManagerContainer = ({
 }
 
 ZoneManagerContainer.propTypes = {
-  origins: PropTypes.arrayOf(PropTypes.number),
-  destinations: PropTypes.arrayOf(PropTypes.number),
+  origins: PropTypes.arrayOf(PropTypes.object),
+  destinations: PropTypes.arrayOf(PropTypes.object),
   removeSelection: PropTypes.func,
   setOriginSelectionMode: PropTypes.func,
   setDestinationSelectionMode: PropTypes.func

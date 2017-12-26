@@ -2,13 +2,14 @@ import { combineReducers } from 'redux'
 import * as t from './actionTypes'
 import zoneManager from '../zone-manager'
 import {fromJS} from 'immutable'
-import { defaultMapStyle, zonesLayer, zonesHoverLayer, zonesOriginSelectionLayer, zonesDestinationSelectionLayer } from './map-style'
+import { defaultMapStyle, zonesLayer, zonesHoverLayer, zonesOriginSelectionLayer, zonesDestinationSelectionLayer, selectedZoneLayer } from './map-style'
 
 function mapStyle (state = defaultMapStyle, action) {
   switch (action.type) {
     case t.RECEIVE_ZONES:
       return state.setIn(['sources', 'zones'], fromJS({type: 'geojson', data: action.zones}))
         .update('layers', layers => layers.push(zonesLayer))
+      // return state
 
     case t.HOVER_OVER_ZONE:
       let newState
@@ -49,6 +50,17 @@ function mapStyle (state = defaultMapStyle, action) {
       return state.update('layers', layers =>
         layers.filterNot(l => l === zonesOriginSelectionLayer || l === zonesDestinationSelectionLayer)
       )
+
+    case t.COLOR_SELECTED_ZONES:
+      return action.zones.reduce((newState, z) => {
+        return newState.update('layers', layers => layers.push(selectedZoneLayer(z.id, z.color)))
+      }, state)
+
+    case zoneManager.actionTypes.ADD_SELECTION:
+      return state.update('layers', layers => layers.push(selectedZoneLayer(action.id, action.color)))
+
+    case zoneManager.actionTypes.REMOVE_SELECTION:
+      return state.update('layers', layers => layers.filterNot(l => l.get('id') === '' + action.id))
 
     default:
       return state

@@ -13,8 +13,8 @@ export const currentZoneDataSelector = createSelector(
 export const originZonesDataSelector = createSelector(
   [originZonesSelector, zoneDataSelector],
   (originZones, zoneData) => {
-    return originZones.reduce((data, zoneId) => {
-      data.push({...zoneData[zoneId], id: zoneId})
+    return originZones.reduce((data, zone) => {
+      data.push({...zoneData[zone.id], id: zone.id, color: zone.color})
       return data
     }, [])
   }
@@ -23,8 +23,8 @@ export const originZonesDataSelector = createSelector(
 export const destinationZonesDataSelector = createSelector(
   [destinationZonesSelector, zoneDataSelector],
   (destinationZones, zoneData) => {
-    return destinationZones.reduce((data, zoneId) => {
-      data.push({...zoneData[zoneId], id: zoneId})
+    return destinationZones.reduce((data, zone) => {
+      data.push({...zoneData[zone.id], id: zone.id, color: zone.color})
       return data
     }, [])
   }

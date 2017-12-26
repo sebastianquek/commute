@@ -29,6 +29,7 @@ export class Map extends Component {
     this.onViewportChange = this.onViewportChange.bind(this)
     this.onLoad = this.onLoad.bind(this)
     this.handleHover = this.handleHover.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount () {
@@ -42,6 +43,7 @@ export class Map extends Component {
 
   onLoad () {
     this.props.fetchZones()
+    this.props.colorSelectedZones([...this.props.categorizedZones.origins, ...this.props.categorizedZones.destinations])
   }
 
   onViewportChange (viewport) {
@@ -68,6 +70,14 @@ export class Map extends Component {
     this.setState({hoveredFeature, x: offsetX, y: offsetY})
   }
 
+  handleClick (event) {
+    const {features} = event
+    if (this.props.zoneSelectionMode && features) {
+      const zone = features.find(f => f.layer.id === 'zones')
+      zone && this.props.addSelection(zone.properties.OBJECTID, 'red', this.props.zoneSelectionMode)
+    }
+  }
+
   render () {
     return (
       <Wrapper>
@@ -78,6 +88,7 @@ export class Map extends Component {
           onViewportChange={this.onViewportChange}
           onLoad={this.onLoad}
           onHover={this.handleHover}
+          onClick={this.handleClick}
           mapboxApiAccessToken={process.env.MAPBOX_TOKEN}>
 
           {this.state.hoveredFeature &&
@@ -106,7 +117,8 @@ Map.propTypes = {
   fetchZones: PropTypes.func.isRequired,
   hoverOverFeature: PropTypes.func.isRequired,
   addSelection: PropTypes.func.isRequired,
-  resetSelectionMode: PropTypes.func.isRequired
+  resetSelectionMode: PropTypes.func.isRequired,
+  colorSelectedZones: PropTypes.func.isRequired
 }
 
 export default Map

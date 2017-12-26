@@ -36,3 +36,8 @@ export function hoverOverFeature (feature) {
     }
   }
 }
+
+export const colorSelectedZones = zones => ({
+  type: t.COLOR_SELECTED_ZONES,
+  zones
+})

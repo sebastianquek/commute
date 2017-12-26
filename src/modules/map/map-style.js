@@ -32,7 +32,7 @@ export const zonesOriginSelectionLayer = fromJS({
   id: 'zonesOriginSelection',
   source: 'zones',
   type: 'fill',
-  interactive: true,
+  // interactive: true,
   paint: {
     'fill-color': 'rgba(0, 0, 0, 0)',
     'fill-opacity': 0.8,
@@ -45,11 +45,23 @@ export const zonesDestinationSelectionLayer = fromJS({
   id: 'zonesDestinationSelection',
   source: 'zones',
   type: 'fill',
-  interactive: true,
+  // interactive: true,
   paint: {
     'fill-color': 'rgba(0, 0, 0, 0)',
     'fill-opacity': 0.8,
     'fill-outline-color': 'orange'
   },
   filter: ['!in', 'OBJECTID', '']
+})
+
+export const selectedZoneLayer = (id, color = '#eee') => fromJS({
+  id: '' + id,
+  source: 'zones',
+  type: 'fill',
+  // interactive: true,
+  paint: {
+    'fill-color': color,
+    'fill-opacity': 0.8
+  },
+  filter: ['in', 'OBJECTID', id]
 })

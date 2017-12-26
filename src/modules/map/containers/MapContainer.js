@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Map from '../components/Map'
-import { fetchZones, hoverOverFeature } from '../actions'
+import { fetchZones, hoverOverFeature, colorSelectedZones } from '../actions'
 import zoneManager from '../../zone-manager'
 
 const MapContainer = (props) => {
@@ -20,7 +20,8 @@ MapContainer.propTypes = {
   fetchZones: PropTypes.func.isRequired,
   hoverOverFeature: PropTypes.func.isRequired,
   addSelection: PropTypes.func.isRequired,
-  resetSelectionMode: PropTypes.func.isRequired
+  resetSelectionMode: PropTypes.func.isRequired,
+  colorSelectedZones: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -36,7 +37,8 @@ const mapDispatchToProps = {
   fetchZones,
   hoverOverFeature,
   addSelection: zoneManager.actions.addSelection,
-  resetSelectionMode: zoneManager.actions.resetSelectionMode
+  resetSelectionMode: zoneManager.actions.resetSelectionMode,
+  colorSelectedZones
 }
 
 export default connect(

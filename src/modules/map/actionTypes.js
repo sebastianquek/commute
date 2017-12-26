@@ -1,3 +1,4 @@
 export const REQUEST_ZONES = 'map/REQUEST_ZONES'
 export const RECEIVE_ZONES = 'map/RECEIVE_ZONES'
 export const HOVER_OVER_ZONE = 'map/HOVER_OVER_ZONE'
+export const COLOR_SELECTED_ZONES = 'map/COLOR_SELECTED_ZONES'

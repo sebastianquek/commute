@@ -1,8 +1,9 @@
 import * as t from './actionTypes'
 
-export const addSelection = (id, category) => ({
+export const addSelection = (id, color, category) => ({
   type: t.ADD_SELECTION,
   id,
+  color,
   category
 })
 
