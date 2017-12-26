@@ -13,6 +13,7 @@ const Row = styled.div`
   animation: ${fadeSlideUp} 0.7s ease;
   min-height: 100px;
   transition: 0.2s all;
+  word-wrap: break-word;
 `
 
 const RowLabel = styled.div`
