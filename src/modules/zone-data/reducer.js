@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import * as t from './actionTypes'
+import map from '../map'
 
 const zoneDataFilters = (state = {}, action) => {
   switch (action.type) {
@@ -25,6 +26,19 @@ const zoneDataFilters = (state = {}, action) => {
   }
 }
 
+const zoneData = (state = {}, action) => {
+  switch (action.type) {
+    case map.actionTypes.RECEIVE_ZONES:
+      return action.zones.features.reduce((zones, f) => {
+        zones[f.properties.OBJECTID] = f.properties
+        return zones
+      }, {})
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
-  zoneDataFilters
+  zoneDataFilters,
+  zoneData
 })

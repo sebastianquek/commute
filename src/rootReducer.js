@@ -4,7 +4,7 @@ import zoneData from './modules/zone-data'
 import map from './modules/map'
 
 export default combineReducers({
-  zoneSelections: zoneManager.reducer,
+  zoneManager: zoneManager.reducer,
   zoneData: zoneData.reducer,
   mapStyle: map.reducer
 })

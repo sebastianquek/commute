@@ -44,8 +44,8 @@ ZoneManagerContainer.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    origins: state.zoneSelections.categorizedZones.origins,
-    destinations: state.zoneSelections.categorizedZones.destinations,
+    origins: state.zoneManager.categorizedZones.origins,
+    destinations: state.zoneManager.categorizedZones.destinations,
     ...ownProps
   }
 }

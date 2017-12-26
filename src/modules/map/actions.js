@@ -32,7 +32,7 @@ const hoverOverZone = zoneId => ({
 export function hoverOverFeature (feature) {
   return dispatch => {
     if (feature.layer.id === 'zones') {
-      dispatch(hoverOverZone(feature.properties.SUBZONE_C))
+      dispatch(hoverOverZone(feature.properties.OBJECTID))
     }
   }
 }

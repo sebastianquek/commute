@@ -25,5 +25,5 @@ export const zonesHoverLayer = fromJS({
     'fill-opacity': 0.8,
     'fill-outline-color': '#fff'
   },
-  filter: ['in', 'SUBZONE_C', '']
+  filter: ['in', 'OBJECTID', '']
 })

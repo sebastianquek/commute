@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import * as t from './actionTypes'
+import map from '../map'
 
 const zoneSelectionMode = (state = null, action) => {
   switch (action.type) {
@@ -38,7 +39,20 @@ const categorizedZones = (state = {
   }
 }
 
+const currentZone = (state = {
+  zoneId: null,
+  isSelected: false
+}, action) => {
+  switch (action.type) {
+    case map.actionTypes.HOVER_OVER_ZONE:
+      return {...state, zoneId: action.zoneId}
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   zoneSelectionMode,
+  currentZone,
   categorizedZones
 })
