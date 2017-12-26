@@ -21,11 +21,13 @@ import { ZoneManagerContainer } from '../modules/zone-manager'
 
 import { MapContainer } from '../modules/map'
 
+import Tooltip from '../modules/core/components/Tooltip'
+
 const middleware = []
 middleware.push(thunkMiddleware) // thunk must be first
 
 if (process.env.NODE_ENV !== 'production') {
-  middleware.push(createLogger())
+  // middleware.push(createLogger())
 }
 
 const store = createStore(
@@ -104,3 +106,8 @@ storiesOf('Zone manager', module)
 
 storiesOf('Map', module)
   .add('base', () => <MapContainer />)
+
+storiesOf('Tooltip', module)
+  .add('no x and y', () => <Tooltip>this is a tooltip</Tooltip>)
+  .add('with x and y', () => <Tooltip x={50} y={100}>x is 50, y is 100</Tooltip>)
+  .add('long text', () => <Tooltip x={50} y={100}>x is 50, y is 100</Tooltip>)

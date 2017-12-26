@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import MapGL from 'react-map-gl'
+import Tooltip from '../../../core/components/Tooltip'
 
 const MAPBOX_TOKEN = ''
 
@@ -52,12 +53,13 @@ export class Map extends Component {
   }
 
   handleHover (event) {
-    const {features} = event
+    const {features, srcEvent: {offsetX, offsetY}} = event
+    let hoveredFeature = null
     if (features && features[0]) {
-      this.props.hoverOverFeature(features[0])
-      // const hoveredZone = features.find(f => f.layer.id === 'zones')
-      // hoveredZone && this.props.hoverOverZone(hoveredZone)
+      hoveredFeature = features[0]
+      this.props.hoverOverFeature(hoveredFeature)
     }
+    this.setState({hoveredFeature, x: offsetX, y: offsetY})
   }
 
   render () {
@@ -70,6 +72,14 @@ export class Map extends Component {
         onLoad={this.onLoad}
         onHover={this.handleHover}
         mapboxApiAccessToken={MAPBOX_TOKEN}>
+
+        {this.state.hoveredFeature &&
+          <Tooltip x={this.state.x} y={this.state.y}>
+            {this.state.hoveredFeature.properties.REGION_N}<br/>
+            {this.state.hoveredFeature.properties.PLN_AREA_N}<br/>
+            {this.state.hoveredFeature.properties.SUBZONE_N}
+          </Tooltip>
+        }
       </MapGL>
     )
   }
