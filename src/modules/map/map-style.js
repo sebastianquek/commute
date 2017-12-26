@@ -10,7 +10,7 @@ export const zonesLayer = fromJS({
   interactive: true,
   paint: {
     'fill-color': 'rgba(0, 0, 0, 0)',
-    'fill-opacity': 0.5,
+    'fill-opacity': 0.4,
     'fill-outline-color': '#fff'
   }
 })
@@ -35,7 +35,7 @@ export const zonesOriginSelectionLayer = fromJS({
   interactive: true,
   paint: {
     'fill-color': 'rgba(0, 0, 0, 0)',
-    'fill-opacity': 0.5,
+    'fill-opacity': 0.8,
     'fill-outline-color': 'blue'
   },
   filter: ['!in', 'OBJECTID', '']
@@ -48,7 +48,7 @@ export const zonesDestinationSelectionLayer = fromJS({
   interactive: true,
   paint: {
     'fill-color': 'rgba(0, 0, 0, 0)',
-    'fill-opacity': 0.5,
+    'fill-opacity': 0.8,
     'fill-outline-color': 'orange'
   },
   filter: ['!in', 'OBJECTID', '']

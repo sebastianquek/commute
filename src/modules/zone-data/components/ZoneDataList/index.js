@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import ZoneDataRow from '../ZoneDataRow'
 import ZoneFeedback from '../ZoneFeedback'
+import ListSeparator from '../ListSeparator'
 
 const List = styled.div`
   position: absolute;
@@ -12,9 +13,9 @@ const List = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0.3em;
-  height: 100%;
   width: 500px;
   transition: 0.2s all;
+  background: white;
 `
 
 const ZoneDataList = ({
@@ -28,7 +29,9 @@ const ZoneDataList = ({
         <ZoneFeedback
           zoneDataContainer={<ZoneDataRow dottedBorder />}
           feedback='Hover over a zone to see its land use' />}
+      <ListSeparator>Origins</ListSeparator>
       {originZonesData}
+      <ListSeparator>Destinations</ListSeparator>
       {destinationZonesData}
       {(!originZonesData && !destinationZonesData) &&
         <ZoneFeedback

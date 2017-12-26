@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import MapGL from 'react-map-gl'
+import styled from 'styled-components'
 import Tooltip from '../Tooltip'
 import SelectionModeFeedback from '../SelectionModeFeedback'
 
-const MAPBOX_TOKEN = ''
+const Wrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+`
 
 export class Map extends Component {
   constructor (props) {
@@ -65,29 +70,31 @@ export class Map extends Component {
 
   render () {
     return (
-      <MapGL
-        ref={map => (this.mapRef = map)}
-        {...this.state.viewport}
-        mapStyle={this.props.mapStyle}
-        onViewportChange={this.onViewportChange}
-        onLoad={this.onLoad}
-        onHover={this.handleHover}
-        mapboxApiAccessToken={MAPBOX_TOKEN}>
+      <Wrapper>
+        <MapGL
+          ref={map => (this.mapRef = map)}
+          {...this.state.viewport}
+          mapStyle={this.props.mapStyle}
+          onViewportChange={this.onViewportChange}
+          onLoad={this.onLoad}
+          onHover={this.handleHover}
+          mapboxApiAccessToken={process.env.MAPBOX_TOKEN}>
 
-        {this.state.hoveredFeature &&
-          <Tooltip x={this.state.x} y={this.state.y}>
-            {this.state.hoveredFeature.properties.REGION_N}<br/>
-            {this.state.hoveredFeature.properties.PLN_AREA_N}<br/>
-            {this.state.hoveredFeature.properties.SUBZONE_N}
-          </Tooltip>
-        }
+          {this.state.hoveredFeature &&
+            <Tooltip x={this.state.x} y={this.state.y}>
+              {this.state.hoveredFeature.properties.REGION_N}<br/>
+              {this.state.hoveredFeature.properties.PLN_AREA_N}<br/>
+              {this.state.hoveredFeature.properties.SUBZONE_N}
+            </Tooltip>
+          }
 
-        {this.props.zoneSelectionMode &&
-          <SelectionModeFeedback
-            selectionMode={this.props.zoneSelectionMode}
-            onClick={this.props.resetSelectionMode}/>
-        }
-      </MapGL>
+          {this.props.zoneSelectionMode &&
+            <SelectionModeFeedback
+              selectionMode={this.props.zoneSelectionMode}
+              onClick={this.props.resetSelectionMode}/>
+          }
+        </MapGL>
+      </Wrapper>
     )
   }
 }

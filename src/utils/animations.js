@@ -11,6 +11,17 @@ export const fadeSlideUp = keyframes`
   }
 `
 
+export const fadeSlideDown = keyframes`
+  from {
+    opacity: 0;
+    transform: translate(0, -2em);
+  }
+
+  to {
+    transform: translate(0, 0);
+  }
+`
+
 export const fadeSlideUpRotated = keyframes`
   from {
     opacity: 0;

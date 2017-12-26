@@ -5,7 +5,12 @@ import { Provider } from 'react-redux'
 import { createLogger } from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import rootReducer from './rootReducer'
-import ZoneManager from './modules/zone-manager'
+import { injectGlobal, ThemeProvider } from 'styled-components'
+import { configureAnchors } from 'react-scrollable-anchor'
+import theme from './utils/theme'
+import { ZoneManagerContainer } from './modules/zone-manager'
+import { MapContainer } from './modules/map/index'
+import ZoneDataContainer from './modules/zone-data/containers/ZoneDataContainer'
 
 const middleware = []
 middleware.push(thunkMiddleware)
@@ -19,9 +24,29 @@ const store = createStore(
   applyMiddleware(...middleware)
 )
 
+injectGlobal`
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+`
+
+configureAnchors({offset: -30})
+
 ReactDOM.render(
   <Provider store={store}>
-    <ZoneManager />
+    <ThemeProvider theme={theme}>
+      <div>
+        <ZoneManagerContainer />
+        <MapContainer />
+        <ZoneDataContainer />
+      </div>
+    </ThemeProvider>
   </Provider>,
   document.getElementById('root')
 )

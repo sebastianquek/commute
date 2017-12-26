@@ -7,7 +7,7 @@ import {fadeSlideUp} from '../../../../utils/animations'
 const Container = styled.div`
   display: flex;
   position: relative;
-  margin-bottom: 1.6em;
+  margin-bottom: 2em;
   animation: ${fadeSlideUp} 0.7s ease;
   
   :last-of-type {

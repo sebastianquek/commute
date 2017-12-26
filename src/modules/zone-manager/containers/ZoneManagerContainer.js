@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { goToAnchor } from 'react-scrollable-anchor'
 import ZoneManager from '../components/ZoneManager'
 import SelectedZoneButton from '../components/SelectedZoneButton'
 import { removeSelection, setOriginSelectionMode, setDestinationSelectionMode } from '../actions'
@@ -15,7 +16,7 @@ const ZoneManagerContainer = ({
       origins={origins && origins.map(zoneId =>
         <SelectedZoneButton
           key={zoneId}
-          onClick={() => ''}
+          onClick={() => goToAnchor('' + zoneId, false)}
           onClickDelete={() => removeSelection(zoneId, 'origins')}>
           {counter++}
         </SelectedZoneButton>
@@ -23,7 +24,9 @@ const ZoneManagerContainer = ({
       destinations={destinations && destinations.map(zoneId =>
         <SelectedZoneButton
           key={zoneId}
-          onClick={() => ''}
+          onClick={() => {
+            goToAnchor('' + zoneId, false)
+          }}
           onClickDelete={() => removeSelection(zoneId, 'destinations')}>
           {counter++}
         </SelectedZoneButton>

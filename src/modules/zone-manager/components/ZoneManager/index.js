@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import ZoneCategory from '../ZoneCategory'
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   border-right: 1px solid ${({theme}) => theme.colors.borderSecondary};
@@ -14,6 +14,8 @@ const Container = styled.div`
   padding: 0.8em 0.3em 0 0.6em;
   height: 100%;
   transition: 0.2s all;
+  background: white;
+  z-index: 2;
 `
 
 const ZoneManager = ({

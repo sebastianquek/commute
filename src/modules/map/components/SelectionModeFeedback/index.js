@@ -1,17 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import { fadeSlideDown } from '../../../../utils/animations'
 
 const Wrapper = styled.div`
   padding: 1em 1.4em;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 0 0 ${({theme}) => theme.borderRadius} 0;
+  background: white;
+  border-radius: 0 0 ${({theme}) => `${theme.borderRadius} ${theme.borderRadius}`};
   position: absolute;
+  left: 100px;
   display: flex;
+  animation: ${fadeSlideDown} 0.7s;
 `
 
 const Feedback = styled.span`
-  color: white;
+  color: ${({theme}) => theme.colors.textPrimary};
+  font-weight: bold;
+  font-size: 1.2em;
   margin-right: 1em;
 `
 

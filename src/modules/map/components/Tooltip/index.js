@@ -11,11 +11,12 @@ const Wrapper = styled.div.attrs({
   position: absolute;
   padding: 0.6em 0.8em;
   max-width: 200px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.8);
   color: white;
   border-radius: ${({theme}) => theme.borderRadius};
   font-size: ${({theme}) => theme.typography.subHeaderSize};
   font-family: 'Barlow', sans-serif;
+  letter-spacing: 1px;
 `
 
 const Tooltip = (props) => {

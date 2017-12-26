@@ -12,6 +12,7 @@ const Row = styled.div`
   position: relative;
   animation: ${fadeSlideUp} 0.7s ease;
   min-height: 100px;
+  transition: 0.2s all;
 `
 
 const RowLabel = styled.div`
@@ -32,23 +33,18 @@ const ZoneName = styled.span`
   margin-right: 0.4em;
 `
 
-const ZoneDataRow = ({
-  className,
-  children,
-  zoneName,
-  dottedBorder,
-  zoneColor,
-  zoneNum
-}) => {
-  return (
-    <Row dottedBorder={dottedBorder} color={zoneColor} className={className}>
-      <RowLabel>
-        <ZoneButton color={zoneColor}>{zoneNum}</ZoneButton>
-        {zoneName && <ZoneName>{zoneName}</ZoneName>}
-      </RowLabel>
-      {children}
-    </Row>
-  )
+class ZoneDataRow extends React.Component {
+  render () {
+    return (
+      <Row dottedBorder={this.props.dottedBorder} color={this.props.zoneColor} className={this.props.className}>
+        <RowLabel>
+          <ZoneButton color={this.props.zoneColor}>{this.props.zoneNum}</ZoneButton>
+          {this.props.zoneName && <ZoneName>{this.props.zoneName}</ZoneName>}
+        </RowLabel>
+        {this.props.children}
+      </Row>
+    )
+  }
 }
 
 ZoneDataRow.propTypes = {

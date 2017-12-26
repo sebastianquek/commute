@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import * as t from './actionTypes'
 
-const zoneSelectionMode = (state = 'origin', action) => {
+const zoneSelectionMode = (state = null, action) => {
   switch (action.type) {
     case t.SET_ORIGIN_SELECTION_MODE:
       return 'origin'
@@ -16,7 +16,7 @@ const zoneSelectionMode = (state = 'origin', action) => {
 
 const categorizedZones = (state = {
   origins: [1, 2],
-  destinations: [4, 5]
+  destinations: [4, 5, 6, 7, 8, 9, 10]
 }, action) => {
   switch (action.type) {
     case t.ADD_SELECTION:

@@ -1,9 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import ScrollableAnchor from 'react-scrollable-anchor'
 import ZoneDataList from '../components/ZoneDataList'
 import ZoneDataRow from '../components/ZoneDataRow'
 import {filterNumCommuters} from '../actions'
+import {currentZoneDataSelector, originZonesDataSelector, destinationZonesDataSelector} from '../selectors'
 
 const ZoneDataContainer = ({
   hoveredZone,
@@ -15,27 +17,31 @@ const ZoneDataContainer = ({
     <ZoneDataList
       hoveredZoneData={hoveredZone &&
         <ZoneDataRow
-          zoneName={hoveredZone.name}
+          zoneName={hoveredZone.SUBZONE_N}
           dottedBorder>
-          Land composition here
+          {JSON.stringify(hoveredZone)}
         </ZoneDataRow>
       }
       originZonesData={originZones && originZones.map(z =>
-        <ZoneDataRow
-          key={z.id}
-          zoneName={z.name}
-          zoneNum={counter++}
-          zoneColor={z.color}>
-          Data here
-        </ZoneDataRow>
+        <ScrollableAnchor key={z.id} id={'' + z.id}>
+          <ZoneDataRow
+            key={z.id}
+            zoneName={z.SUBZONE_N}
+            zoneNum={counter++}
+            zoneColor={z.color}>
+            {JSON.stringify(z)}
+          </ZoneDataRow>
+        </ScrollableAnchor>
       )}
       destinationZonesData={destinationZones && destinationZones.map(z =>
-        <ZoneDataRow
-          key={z.id}
-          zoneName={z.name}
-          zoneNum={counter++}>
-          Data here
-        </ZoneDataRow>
+        <ScrollableAnchor key={z.id} id={'' + z.id}>
+          <ZoneDataRow
+            key={z.id}
+            zoneName={z.SUBZONE_N}
+            zoneNum={counter++}>
+            {JSON.stringify(z)}
+          </ZoneDataRow>
+        </ScrollableAnchor>
       )}
     />
   )
@@ -49,9 +55,9 @@ ZoneDataContainer.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    hoveredZone: null,
-    originZones: null,
-    destinationZones: null,
+    hoveredZone: currentZoneDataSelector(state),
+    originZones: originZonesDataSelector(state),
+    destinationZones: destinationZonesDataSelector(state),
     ...ownProps
   }
 }

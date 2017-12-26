@@ -26,16 +26,29 @@ function mapStyle (state = defaultMapStyle, action) {
       return newState
 
     case zoneManager.actionTypes.SET_ORIGIN_SELECTION_MODE:
+      newState = state.update('layers', layers => layers.filterNot(l => l === zonesDestinationSelectionLayer))
       if (!state.get('layers').contains(zonesOriginSelectionLayer)) {
-        return state.update('layers', layers => layers.push(zonesOriginSelectionLayer))
+        let idx = state.get('layers').findIndex(item =>
+          item.get('id') === zonesHoverLayer.get('id')
+        )
+        newState = state.update('layers', layers => layers.insert(idx - 1, zonesOriginSelectionLayer))
       }
-      return state
+      return newState
 
     case zoneManager.actionTypes.SET_DESTINATION_SELECTION_MODE:
+      newState = state.update('layers', layers => layers.filterNot(l => l === zonesOriginSelectionLayer))
       if (!state.get('layers').contains(zonesDestinationSelectionLayer)) {
-        return state.update('layers', layers => layers.push(zonesDestinationSelectionLayer))
+        let idx = state.get('layers').findIndex(item =>
+          item.get('id') === zonesHoverLayer.get('id')
+        )
+        newState = state.update('layers', layers => layers.insert(idx - 1, zonesDestinationSelectionLayer))
       }
-      return state
+      return newState
+
+    case zoneManager.actionTypes.RESET_SELECTION_MODE:
+      return state.update('layers', layers =>
+        layers.filterNot(l => l === zonesOriginSelectionLayer || l === zonesDestinationSelectionLayer)
+      )
 
     default:
       return state
@@ -43,12 +56,12 @@ function mapStyle (state = defaultMapStyle, action) {
 }
 
 const currentZone = (state = {
-  zoneId: null,
+  id: null,
   isSelected: false
 }, action) => {
   switch (action.type) {
     case t.HOVER_OVER_ZONE:
-      return {...state, zoneId: action.zoneId}
+      return {...state, id: action.zoneId}
     default:
       return state
   }
