@@ -4,6 +4,7 @@ import MapGL from 'react-map-gl'
 import styled from 'styled-components'
 import Tooltip from '../Tooltip'
 import SelectionModeFeedback from '../SelectionModeFeedback'
+import c from '../../../../utils/randomColor'
 
 const Wrapper = styled.div`
   position: fixed;
@@ -74,7 +75,7 @@ export class Map extends Component {
     const {features} = event
     if (this.props.zoneSelectionMode && features) {
       const zone = features.find(f => f.layer.id === 'zones')
-      zone && this.props.addSelection(zone.properties.OBJECTID, 'red', this.props.zoneSelectionMode)
+      zone && this.props.addSelection(zone.properties.OBJECTID, c.next().value, this.props.zoneSelectionMode)
     }
   }
 

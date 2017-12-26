@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import * as t from './actionTypes'
+import c from '../../utils/randomColor'
 
 const zoneSelectionMode = (state = null, action) => {
   switch (action.type) {
@@ -14,10 +15,11 @@ const zoneSelectionMode = (state = null, action) => {
   }
 }
 
-const categorizedZones = (state = {
-  origins: [{id: 1, color: 'red'}, {id: 2, color: 'green'}],
-  destinations: [{id: 3, color: 'yellow'}, {id: 4, color: 'purple'}, {id: 5, color: 'brown'}]
-}, action) => {
+const initialZones = {
+  origins: [{id: 1, color: c.next().value}, {id: 2, color: c.next().value}],
+  destinations: [{id: 3, color: c.next().value}, {id: 4, color: c.next().value}, {id: 5, color: c.next().value}]
+}
+const categorizedZones = (state = initialZones, action) => {
   switch (action.type) {
     case t.ADD_SELECTION:
       if (!state[action.category].map(z => z.id).includes(action.id)) {

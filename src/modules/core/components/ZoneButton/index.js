@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {fadeSlideUpRotated} from '../../../../utils/animations'
+import { shouldTextBeDark } from '../../../../utils/randomColor'
+import { fadeSlideUpRotated } from '../../../../utils/animations'
 
 const Button = styled.button`
   cursor: pointer;
@@ -15,7 +16,7 @@ const Button = styled.button`
   border-radius: ${({theme}) => theme.borderRadius};
   transition: 0.2s all;
   font-family: inherit;
-  font-weight: bold;
+  font-weight: 600;
   z-index: 2;
   animation: ${fadeSlideUpRotated} 0.7s ease;
   
@@ -27,7 +28,7 @@ const Button = styled.button`
   > span {
     display: inline-block;
     transform: rotate(-45deg);
-    color: ${({theme}) => theme.colors.textPrimary};
+    color: ${({darkText, theme}) => darkText ? theme.colors.textPrimary : theme.colors.textSecondaryAlt};
     font-size: 0.9em;
   }
 
@@ -38,7 +39,7 @@ const Button = styled.button`
 
 const ZoneButton = (props) => {
   return (
-    <Button onClick={props.onClick} {...props}>
+    <Button onClick={props.onClick} {...props} darkText={shouldTextBeDark(props.color)}>
       <span>{props.children}</span>
     </Button>
   )

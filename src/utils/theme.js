@@ -2,9 +2,11 @@ export default {
   colors: {
     textPrimary: '#4F4F4F',
     textSecondary: '#8C8C8C',
+    textSecondaryAlt: 'white',
     borderPrimary: '#4F4F4F',
     borderSecondary: '#B2B2B2',
     iconPrimary: '#4F4F4F',
+    iconPrimaryAlt: 'white',
     iconWarning: 'red',
     background: 'white'
   },
