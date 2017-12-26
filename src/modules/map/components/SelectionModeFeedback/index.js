@@ -28,7 +28,7 @@ const Button = styled.button`
 const SelectionModeFeedback = ({selectionMode, onClick}) => {
   return (
     <Wrapper>
-      <Feedback>{selectionMode === 'origin' ? 'Selecting origin zones' : 'Selecting destination zones'}</Feedback>
+      <Feedback>{selectionMode === 'origins' ? 'Selecting origin zones' : 'Selecting destination zones'}</Feedback>
       <Button onClick={onClick}>Done</Button>
     </Wrapper>
   )
