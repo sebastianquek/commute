@@ -49,7 +49,7 @@ const config = {
         use: [{
           loader: 'babel-loader',
           options: BABEL_CONFIG
-        }, 'eslint-loader']
+        }]
       }
     ]
   },
