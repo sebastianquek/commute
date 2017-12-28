@@ -13,7 +13,7 @@ export function shouldTextBeDark (color) {
 
 function * colorGenerator () {
   const hues = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
-  let currentHues = hues
+  let currentHues = [...hues]
   while (true) {
     if (currentHues.length === 0) {
       currentHues = hues
