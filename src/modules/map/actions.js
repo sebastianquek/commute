@@ -1,6 +1,5 @@
 import * as t from './actionTypes'
 import * as topojson from 'topojson-client'
-import ZONES from './zones.json'
 
 const requestZones = () => ({
   type: t.REQUEST_ZONES
@@ -12,14 +11,11 @@ const receiveZones = geojson => ({
 })
 
 export function fetchZones () {
-  return dispatch => {
+  return async dispatch => {
     dispatch(requestZones())
-    // return fetch('http://localhost:1337/api/v1/zones')
-    //   .then(response => response.json())
-    //   .then(zones => {
-    //     dispatch(receiveZones(zones))
-    //   })
-    const data = topojson.feature(ZONES, ZONES.objects.zones)
+    const res = await fetch('http://localhost:1337/api/v2/zones')
+    const resJson = await res.json()
+    const data = topojson.feature(resJson, resJson.objects.zones)
     dispatch(receiveZones(data))
   }
 }

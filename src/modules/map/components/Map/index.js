@@ -42,8 +42,8 @@ export class Map extends Component {
     window.removeEventListener('resize', this.resize)
   }
 
-  onLoad () {
-    this.props.fetchZones()
+  async onLoad () {
+    await this.props.fetchZones()
     this.props.colorSelectedZones([...this.props.categorizedZones.origins, ...this.props.categorizedZones.destinations])
   }
 
