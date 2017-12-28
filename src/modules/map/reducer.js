@@ -57,7 +57,10 @@ function mapStyle (state = defaultMapStyle, action) {
       }, state)
 
     case zoneManager.actionTypes.ADD_SELECTION:
-      return state.update('layers', layers => layers.push(selectedZoneLayer(action.id, action.color)))
+      if (state.get('layers').findIndex(layer => layer.get('id') === '' + action.id) === -1) {
+        return state.update('layers', layers => layers.push(selectedZoneLayer(action.id, action.color)))
+      }
+      return state
 
     case zoneManager.actionTypes.REMOVE_SELECTION:
       return state.update('layers', layers => layers.filterNot(l => l.get('id') === '' + action.id))
