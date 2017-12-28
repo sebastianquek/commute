@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   background: white;
   border-radius: 0 0 ${({theme}) => `${theme.borderRadius} ${theme.borderRadius}`};
   position: absolute;
-  left: 100px;
+  left: 120px;
   display: flex;
   animation: ${fadeSlideDown} 0.7s;
 `
