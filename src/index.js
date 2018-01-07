@@ -9,8 +9,9 @@ import { injectGlobal, ThemeProvider } from 'styled-components'
 import { configureAnchors } from 'react-scrollable-anchor'
 import theme from './utils/theme'
 import { ZoneManagerContainer } from './modules/zone-manager'
-import { MapContainer } from './modules/map/index'
-import ZoneDataContainer from './modules/zone-data/containers/ZoneDataContainer'
+import { MapContainer } from './modules/map'
+import { ZoneDataContainer } from './modules/zone-data'
+import { DatetimeManager } from './modules/datetime-manager'
 
 const middleware = []
 middleware.push(thunkMiddleware)
@@ -44,6 +45,7 @@ ReactDOM.render(
       <div>
         <ZoneManagerContainer />
         <MapContainer />
+        <DatetimeManager />
         <ZoneDataContainer />
       </div>
     </ThemeProvider>

@@ -7,7 +7,6 @@ const AbsoluteWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
   z-index: 2;
 `
 
@@ -15,7 +14,7 @@ const FixedWrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  bottom: 0;
+  bottom: 300px;
   border-right: 1px solid ${({theme}) => theme.colors.borderSecondary};
   display: flex;
   flex-direction: column;

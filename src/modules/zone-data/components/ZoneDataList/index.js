@@ -17,6 +17,7 @@ const List = styled.div`
   width: 500px;
   transition: 0.2s all;
   background: white;
+  z-index: 2;
 `
 
 const ZoneDataList = ({

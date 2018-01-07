@@ -50,6 +50,9 @@ const config = {
           loader: 'babel-loader',
           options: BABEL_CONFIG
         }]
+      }, {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
       }
     ]
   },

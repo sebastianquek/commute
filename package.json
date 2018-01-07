@@ -12,10 +12,10 @@
     "d3-transition": "^1.1.1",
     "immutable": "^3.8.2",
     "lodash.throttle": "^4.1.1",
+    "moment": "^2.20.1",
     "polished": "^1.9.0",
     "prop-types": "^15.6.0",
     "randomcolor": "^0.5.3",
-    "moment": "^2.20.1",
     "react": "^16.2.0",
     "react-dates": "^16.0.1",
     "react-dom": "^16.2.0",
@@ -29,7 +29,8 @@
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
     "styled-components": "^2.2.4",
-    "topojson-client": "^3.0.0"
+    "topojson-client": "^3.0.0",
+    "victory": "^0.24.3"
   },
   "devDependencies": {
     "@storybook/addon-console": "^1.0.0",
@@ -40,6 +41,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "css-loader": "^0.28.8",
     "dotenv-webpack": "^1.5.4",
     "eslint": "^4.13.1",
     "eslint-config-standard": "^11.0.0-beta.0",
