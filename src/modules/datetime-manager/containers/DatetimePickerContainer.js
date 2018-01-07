@@ -2,29 +2,29 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setFirstDatetime } from '../actions'
-import { currentDateSelector } from '../selectors'
+import { dateDomainSelector } from '../selectors'
 import DatetimePicker from '../components/DatetimePicker'
 
 const DatetimePickerContainer = ({
-  date,
+  dateDomain,
   setFirstDatetime
 }) => {
   return (
     <DatetimePicker
-      date={date}
+      dateDomain={dateDomain}
       setFirstDatetime={setFirstDatetime}
     />
   )
 }
 
 DatetimePickerContainer.propTypes = {
-  date: PropTypes.object,
+  dateDomain: PropTypes.array,
   setFirstDatetime: PropTypes.func
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    date: currentDateSelector(state),
+    dateDomain: dateDomainSelector(state),
     ...ownProps
   }
 }

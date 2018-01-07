@@ -55,14 +55,9 @@ class DatetimeSlider extends React.Component {
     }
     if (this.props.brushDomain.x[0].getTime() !== domain.x[0].getTime() ||
         this.props.brushDomain.x[1].getTime() !== domain.x[1].getTime()) {
-      // this.setState({brushDomain: domain})
       this.props.setDatetimeBrushDomain(domain)
     }
   }
-
-  // componentWillReceiveProps (nextProps) {
-  //   this.setState({brushDomain: nextProps.brushDomain})
-  // }
 
   formatTimeAxisTick (time) {
     return moment(time).format('Do MMM YYYY')
@@ -95,7 +90,7 @@ class DatetimeSlider extends React.Component {
                 fontFamily: `'Poppins', sans-serif`,
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
-                letterSpacing: '2.8px'
+                letterSpacing: '2.1px'
               }
             }}
           />

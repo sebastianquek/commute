@@ -17,7 +17,7 @@
     "prop-types": "^15.6.0",
     "randomcolor": "^0.5.3",
     "react": "^16.2.0",
-    "react-dates": "^16.0.1",
+    "react-day-picker": "^7.0.6",
     "react-dom": "^16.2.0",
     "react-draggable": "^3.0.4",
     "react-faux-dom": "^4.1.0",

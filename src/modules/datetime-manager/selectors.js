@@ -5,9 +5,4 @@ export const brushDomainSelector = state => ({
   y: state.datetimeBrushDomain.y
 })
 
-export const currentDateSelector = state => {
-  if (state.datetimeBrushDomain.x) {
-    return state.datetimeBrushDomain.x[0]
-  }
-  return {}
-}
+export const dateDomainSelector = state => state.datetimeBrushDomain.x

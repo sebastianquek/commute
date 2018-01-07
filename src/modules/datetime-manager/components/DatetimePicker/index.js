@@ -1,31 +1,52 @@
 import React from 'react'
-import ReactDom from 'react-dom'
 import PropTypes from 'prop-types'
-import moment from 'moment'
-import 'react-dates/initialize'
-import 'react-dates/lib/css/_datepicker.css'
+// import moment from 'moment'
 import styled from 'styled-components'
-import {DayPickerSingleDateController, DayPickerNavigation} from 'react-dates'
+import DayPicker from 'react-day-picker'
+import 'react-day-picker/lib/style.css'
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 
   .DayPicker {
-    left: -1.3em;
+    margin-left: -1.5em;
+    margin-right: 1.6em;
+    margin-top: -0.6em;
+    background: transparent;
   }
 
-  .CalendarMonth_caption {
-    padding-top: 14px;
-    padding-bottom: 34px;
+  .DayPicker-wrapper:focus {
+    outline: none;
   }
 
-  .DayPickerNavigation_button__horizontal {
-    top: 10px;
+  .DayPicker-NavButton {
+    right: 0.8em;
   }
 
-  .DayPicker_weekHeader {
-    top: 52px;
+  .DayPicker-Caption {
+    > div {
+      font-weight: 700;
+    }
+  }
+
+  .DayPicker-Weekday, .DayPicker-Day {
+    padding: 0.3em 0.46em;
+    font-size: 0.84em;
+  }
+
+  .DayPicker-Weekday {
+    font-size: 0.7em;
+  }
+
+  .DayPicker-Day:not(.DayPicker-Day--outside) {
+    border: 1px solid #eee;
+  }
+
+  .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover,
+  .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
+    border-radius: 0;
+    transition: all 0.1s;
   }
 `
 
@@ -41,102 +62,45 @@ const Header = styled.span`
 class DatetimePicker extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-      focused: true,
-      month: this.props.date.getMonth()
-    }
     this.handleDateChange = this.handleDateChange.bind(this)
-    this.handleFocusChange = this.handleFocusChange.bind(this)
-    this.handleChangeMonthClick = this.handleChangeMonthClick.bind(this)
   }
 
-  isBeforeDay (a, b) {
-    if (!moment.isMoment(a) || !moment.isMoment(b)) return false
-    const aYear = a.year()
-    const aMonth = a.month()
-    const bYear = b.year()
-    const bMonth = b.month()
-    const isSameYear = aYear === bYear
-    const isSameMonth = aMonth === bMonth
-    if (isSameYear && isSameMonth) return a.date() < b.date()
-    if (isSameYear) return aMonth < bMonth
-    return aYear < bYear
-  }
-
-  handleDateChange (date) {
-    this.props.setFirstDatetime(date.toDate())
-  }
-
-  handleFocusChange () {
-    this.setState({focused: true})
-  }
-
-  componentDidMount () {
-    const nav = ReactDom.findDOMNode(this).getElementsByClassName('DayPickerNavigation_button')
-    this.prevMonthButton = nav[0]
-    this.nextMonthButton = nav[1]
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.date.getTime() === this.props.date.getTime()) return
-    const newMonth = nextProps.date.getMonth()
-    const monthDiff = newMonth - this.state.month
-    if (monthDiff > 0) {
-      for (let i = 0; i < monthDiff; i++) this.nextMonthButton.click()
-    } else if (monthDiff < 0) {
-      for (let i = 0; i < Math.abs(monthDiff); i++) this.prevMonthButton.click()
-    }
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    if (nextProps.date.getTime() === this.props.date.getTime()) {
-      return false
-    }
-    return true
-  }
-
-  handleChangeMonthClick (newMonth) {
-    this.setState({month: newMonth.month()})
+  handleDateChange (date, { disabled, selected }) {
+    if (!disabled) this.props.setFirstDatetime(date)
   }
 
   render () {
     return (
       <Wrapper>
         <Header>Date</Header>
-        <DayPickerSingleDateController
-          date={moment(this.props.date)}
-          onDateChange={this.handleDateChange}
-          focused={this.state.focused}
-          onFocusChange={this.handleFocusChange}
-          hideKeyboardShortcutsPanel={true}
-          numberOfMonths={1}
-          daySize={28}
-          noBorder={true}
-          transitionDuration={100}
-          initialVisibleMonth={() => moment(this.props.date)}
-          isOutsideRange={day =>
-            this.isBeforeDay(day, moment(this.props.firstDate)) ||
-            !this.isBeforeDay(day, moment(this.props.lastDate))
-          }
-          renderMonth={month => moment(month).format('MMM YYYY')}
-          onPrevMonthClick={this.handleChangeMonthClick}
-          onNextMonthClick={this.handleChangeMonthClick}
-        />
+        <DayPicker
+          month={this.props.dateDomain[0]}
+          fromMonth={this.props.minDate}
+          toMonth={this.props.maxDate}
+          disabledDays={{
+            after: this.props.maxDate,
+            before: this.props.minDate
+          }}
+          onDayClick={this.handleDateChange}
+          selectedDays={{
+            from: this.props.dateDomain[0],
+            to: this.props.dateDomain[1]
+          }} />
       </Wrapper>
     )
   }
 }
 
 DatetimePicker.propTypes = {
-  date: PropTypes.object,
-  firstDate: PropTypes.string,
-  lastDate: PropTypes.string,
+  dateDomain: PropTypes.array,
+  minDate: PropTypes.object,
+  maxDate: PropTypes.object,
   setFirstDatetime: PropTypes.func
 }
 
 DatetimePicker.defaultProps = {
-  firstDate: '20161001',
-  lastDate: '20161127'
+  minDate: new Date(2016, 9, 1),
+  maxDate: new Date(2016, 10, 27)
 }
 
 export default DatetimePicker
