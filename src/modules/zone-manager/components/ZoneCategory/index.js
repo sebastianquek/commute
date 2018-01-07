@@ -24,7 +24,7 @@ const Label = styled.span`
   writing-mode: vertical-rl;
   margin: 0 0.3em 0 0;
   text-align: right;
-  color: ${({theme}) => theme.colors.textSecondary}
+  color: ${({theme}) => theme.colors.textSecondary};
 `
 
 const Children = styled.div`

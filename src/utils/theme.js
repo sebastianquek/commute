@@ -8,7 +8,8 @@ export default {
     iconPrimary: '#4F4F4F',
     iconPrimaryAlt: 'white',
     iconWarning: 'red',
-    background: 'white'
+    background: 'white',
+    buttonBackground: '#E8E8E8'
   },
   typography: {
     headerLetterSpacing: '0.175em',

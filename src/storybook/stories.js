@@ -15,13 +15,11 @@ import ZoneButton from '../modules/core/components/ZoneButton'
 import AddZoneButton from '../modules/zone-manager/components/AddZoneButton'
 import SelectedZoneButton from '../modules/zone-manager/components/SelectedZoneButton'
 
-import { ZoneDataContainer, ZoneDataRow } from '../modules/zone-data/'
+import { ZoneDataContainer } from '../modules/zone-data/'
 
 import { ZoneManagerContainer } from '../modules/zone-manager'
 
-import { MapContainer } from '../modules/map'
-
-import Tooltip from '../modules/core/components/Tooltip'
+import { MapContainer, Tooltip } from '../modules/map'
 
 const middleware = []
 middleware.push(thunkMiddleware) // thunk must be first
