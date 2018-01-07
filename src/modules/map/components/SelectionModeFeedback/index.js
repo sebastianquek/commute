@@ -11,6 +11,8 @@ const Wrapper = styled.div`
   left: 120px;
   display: flex;
   animation: ${fadeSlideDown} 0.7s;
+  border: 1px solid ${({theme}) => theme.colors.borderSecondary};
+  border-top: none;
 `
 
 const Feedback = styled.span`
