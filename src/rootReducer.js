@@ -8,5 +8,6 @@ export default combineReducers({
   zoneManager: zoneManager.reducer,
   zoneData: zoneData.reducer,
   map: map.reducer,
-  datetimeBrushDomain: datetimeManager.reducer
+  datetimeBrushDomain: datetimeManager.reducer.datetimeBrushDomain,
+  ridershipData: datetimeManager.reducer.ridershipData
 })

@@ -5,6 +5,7 @@ import { goToAnchor } from 'react-scrollable-anchor'
 import ZoneManager from '../components/ZoneManager'
 import SelectedZoneButton from '../components/SelectedZoneButton'
 import { removeSelection, setOriginSelectionMode, setDestinationSelectionMode } from '../actions'
+import { originZonesSelector, destinationsZonesSelector } from '../selectors'
 
 const ZoneManagerContainer = ({
   origins, destinations, removeSelection,
@@ -47,8 +48,8 @@ ZoneManagerContainer.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    origins: state.zoneManager.categorizedZones.origins,
-    destinations: state.zoneManager.categorizedZones.destinations,
+    origins: originZonesSelector(state),
+    destinations: destinationsZonesSelector(state),
     ...ownProps
   }
 }

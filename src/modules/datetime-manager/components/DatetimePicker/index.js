@@ -66,6 +66,7 @@ class DatetimePicker extends React.Component {
   }
 
   handleDateChange (date, { disabled, selected }) {
+    date.setHours(0)
     if (!disabled) this.props.setFirstDatetime(date)
   }
 
@@ -96,11 +97,6 @@ DatetimePicker.propTypes = {
   minDate: PropTypes.object,
   maxDate: PropTypes.object,
   setFirstDatetime: PropTypes.func
-}
-
-DatetimePicker.defaultProps = {
-  minDate: new Date(2016, 9, 1),
-  maxDate: new Date(2016, 10, 27)
 }
 
 export default DatetimePicker

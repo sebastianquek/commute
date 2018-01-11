@@ -1,28 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {VictoryChart, VictoryBrushContainer, VictoryTheme, VictoryArea, VictoryAxis} from 'victory'
+import { VictoryArea } from 'victory'
 import moment from 'moment'
 import styled from 'styled-components'
+import BrushedChartWrapper from '../BrushedChartWrapper'
 
 const Wrapper = styled.div`
   width: 100%;
 `
+
 class DatetimeSlider extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       width: 0,
       height: 0,
-      data: [
-        {x: new Date(2016, 9, 1), y: 125},
-        {x: new Date(2016, 9, 3), y: 257},
-        {x: new Date(2016, 9, 10), y: 345},
-        {x: new Date(2016, 9, 20), y: 515},
-        {x: new Date(2016, 9, 30), y: 132},
-        {x: new Date(2016, 10, 15), y: 305},
-        {x: new Date(2016, 10, 16), y: 270},
-        {x: new Date(2016, 10, 26), y: 470}
-      ]
+      departureData: {},
+      arrivalData: {}
     }
     this.updateDimensions = this.updateDimensions.bind(this)
     this.handleBrush = this.handleBrush.bind(this)
@@ -38,6 +32,41 @@ class DatetimeSlider extends React.Component {
   componentDidMount () {
     window.addEventListener('resize', this.updateDimensions)
     this.updateDimensions()
+    this.props.fetchRidership()
+  }
+
+  componentWillReceiveProps (newProps) {
+    if (Object.keys(this.props.data).length === 0 ||
+        this.props.minDate.getTime() !== newProps.minDate.getTime() ||
+        this.props.maxDate.getTime() !== newProps.maxDate.getTime()) {
+      const minDate = moment(newProps.minDate)
+      const maxDate = moment(newProps.maxDate)
+      const step = moment.duration(newProps.step)
+      const allData = Object.keys(newProps.data).reduce((allData, id) => {
+        let departureData = []
+        let arrivalData = []
+        for (let m = moment(minDate); m.isBefore(maxDate); m.add(step)) {
+          let departure = 0
+          let arrival = 0
+          if (newProps.data[id][m.toISOString()]) {
+            departure = newProps.data[id][m.toISOString()].departure || 0
+            arrival = newProps.data[id][m.toISOString()].arrival || 0
+          }
+          departureData.push({
+            x: m.toDate(),
+            y: departure
+          })
+          arrivalData.push({
+            x: m.toDate(),
+            y: arrival
+          })
+        }
+        allData.departure[id] = departureData
+        allData.arrival[id] = arrivalData
+        return allData
+      }, {departure: {}, arrival: {}})
+      this.setState({departureData: allData.departure, arrivalData: allData.arrival})
+    }
   }
 
   componentWillUnmount () {
@@ -50,7 +79,6 @@ class DatetimeSlider extends React.Component {
       newDate.setMilliseconds(0)
       newDate.setSeconds(0)
       newDate.setMinutes(0)
-      newDate.setHours(0)
       domain.x[i] = newDate
     }
     if (this.props.brushDomain.x[0].getTime() !== domain.x[0].getTime() ||
@@ -59,55 +87,53 @@ class DatetimeSlider extends React.Component {
     }
   }
 
-  formatTimeAxisTick (time) {
-    return moment(time).format('Do MMM YYYY')
-  }
-
   render () {
+    const departureCharts = Object.keys(this.state.departureData).reduce((components, id) => {
+      components.push(
+        <VictoryArea
+          key={id}
+          data={this.state.departureData[id]}
+          style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0}}}
+          barRatio={1}
+        />
+      )
+      return components
+    }, [])
+
+    const arrivalCharts = Object.keys(this.state.arrivalData).reduce((components, id) => {
+      components.push(
+        <VictoryArea
+          key={id}
+          data={this.state.arrivalData[id]}
+          style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0}}}
+          barRatio={1}
+        />
+      )
+      return components
+    }, [])
+
     return (
       <Wrapper innerRef={ref => (this.ref = ref)}>
-        <VictoryChart
-          padding={{top: 16, bottom: 40, left: 60, right: 26}}
+        <BrushedChartWrapper
           width={this.state.width}
-          height={this.state.height}
-          theme={VictoryTheme.material}
-          containerComponent={
-            <VictoryBrushContainer
-              brushDomain={this.props.brushDomain}
-              brushDimension="x"
-              onBrushDomainChange={this.handleBrush}
-            />
-          }
-        >
-          <VictoryAxis
-            dependentAxis
-            label='Departures'
-            style={{
-              tickLabels: {fontFamily: `'Poppins', sans-serif`},
-              axisLabel: {
-                fontSize: '12px',
-                padding: 45,
-                fontFamily: `'Poppins', sans-serif`,
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                letterSpacing: '2.1px'
-              }
-            }}
-          />
-          <VictoryAxis
-            tickFormat={this.formatTimeAxisTick}
-            scale={{x: 'time'}}
-            style={{tickLabels: {fontFamily: `'Poppins', sans-serif`}}}
-          />
-          <VictoryArea
-            data={this.state.data}
-            style={{ data: { fill: '#c43a31' } }}
-            animate={{
-              duration: 2000,
-              onLoad: { duration: 1000 }
-            }}
-          />
-        </VictoryChart>
+          height={this.state.height / 2}
+          brushDomain={this.props.brushDomain}
+          minDate={this.props.minDate}
+          maxDate={this.props.maxDate}
+          handleBrush={this.handleBrush}
+          yLabel='Departures'>
+          {departureCharts}
+        </BrushedChartWrapper>
+        <BrushedChartWrapper
+          width={this.state.width}
+          height={this.state.height / 2}
+          brushDomain={this.props.brushDomain}
+          minDate={this.props.minDate}
+          maxDate={this.props.maxDate}
+          handleBrush={this.handleBrush}
+          yLabel='Arrivals'>
+          {arrivalCharts}
+        </BrushedChartWrapper>
       </Wrapper>
     )
   }
@@ -115,7 +141,17 @@ class DatetimeSlider extends React.Component {
 
 DatetimeSlider.propTypes = {
   brushDomain: PropTypes.object,
-  setDatetimeBrushDomain: PropTypes.func
+  data: PropTypes.object,
+  minDate: PropTypes.object,
+  maxDate: PropTypes.object,
+  step: PropTypes.string,
+  zoneColors: PropTypes.object,
+  setDatetimeBrushDomain: PropTypes.func,
+  fetchRidership: PropTypes.func
+}
+
+DatetimeSlider.defaultProps = {
+  data: {}
 }
 
 export default DatetimeSlider
