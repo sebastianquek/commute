@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import MapGL from 'react-map-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
 import styled from 'styled-components'
 import throttle from 'lodash.throttle'
 import Tooltip from '../Tooltip'
