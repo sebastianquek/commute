@@ -1,4 +1,5 @@
 // import { createSelector } from 'reselect'
+import zoneManager from '../zone-manager'
 
 export const brushDomainSelector = state => ({
   x: state.datetimeBrushDomain.x,
@@ -11,6 +12,10 @@ export const maxDateSelector = state => state.datetimeBrushDomain.maxX
 export const stepSelector = state => state.datetimeBrushDomain.step
 
 export const ridershipDataSelector = state => {
-  // Need to filter out the relevant data in the current time window
-  return state.ridershipData
+  const zoneIds = zoneManager.selectors.allZoneIdsSelector(state)
+  const ridership = zoneIds.reduce((data, key) => {
+    data[key] = state.ridershipData[key] || {}
+    return data
+  }, {})
+  return ridership
 }

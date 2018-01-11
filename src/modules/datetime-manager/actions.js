@@ -22,10 +22,10 @@ const receiveRidership = data => ({
   data
 })
 
-export function fetchRidership () {
+export function fetchRidership (zoneIds) {
   return async (dispatch, getState) => {
     const state = getState()
-    const zoneIds = zoneManager.selectors.allZoneIdsSelector(state)
+    zoneIds = zoneIds || zoneManager.selectors.allZoneIdsSelector(state)
     const minDate = moment(minDateSelector(state))
     const maxDate = moment(maxDateSelector(state))
     const duration = moment.duration(maxDate.diff(minDate))

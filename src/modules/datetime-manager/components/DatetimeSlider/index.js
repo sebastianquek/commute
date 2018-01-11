@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { VictoryArea } from 'victory'
 import moment from 'moment'
 import styled from 'styled-components'
+import isEqual from 'lodash.isequal'
 import BrushedChartWrapper from '../BrushedChartWrapper'
 
 const Wrapper = styled.div`
@@ -36,7 +37,7 @@ class DatetimeSlider extends React.Component {
   }
 
   componentWillReceiveProps (newProps) {
-    if (Object.keys(this.props.data).length === 0 ||
+    if (!isEqual(this.props.data, newProps.data) ||
         this.props.minDate.getTime() !== newProps.minDate.getTime() ||
         this.props.maxDate.getTime() !== newProps.maxDate.getTime()) {
       const minDate = moment(newProps.minDate)

@@ -1,11 +1,17 @@
 import * as t from './actionTypes'
+import datetimeManager from '../datetime-manager'
 
-export const addSelection = (id, color, category) => ({
-  type: t.ADD_SELECTION,
-  id,
-  color,
-  category
-})
+export const addSelection = (id, color, category) => {
+  return async (dispatch) => {
+    dispatch(datetimeManager.actions.fetchRidership(id))
+    dispatch({
+      type: t.ADD_SELECTION,
+      id,
+      color,
+      category
+    })
+  }
+}
 
 export const removeSelection = (id, category) => ({
   type: t.REMOVE_SELECTION,
