@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { VictoryArea } from 'victory'
+import { VictoryBar } from 'victory'
 import moment from 'moment'
 import styled from 'styled-components'
 import isEqual from 'lodash.isequal'
@@ -34,6 +34,10 @@ class DatetimeSlider extends React.Component {
     window.addEventListener('resize', this.updateDimensions)
     this.updateDimensions()
     this.props.fetchRidership()
+  }
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    return !isEqual(nextProps, this.props) || !isEqual(nextState, this.state)
   }
 
   componentWillReceiveProps (newProps) {
@@ -91,11 +95,12 @@ class DatetimeSlider extends React.Component {
   render () {
     const departureCharts = Object.keys(this.state.departureData).reduce((components, id) => {
       components.push(
-        <VictoryArea
+        <VictoryBar
           key={id}
           data={this.state.departureData[id]}
           style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0}}}
           barRatio={1}
+          alignment='start'
         />
       )
       return components
@@ -103,11 +108,12 @@ class DatetimeSlider extends React.Component {
 
     const arrivalCharts = Object.keys(this.state.arrivalData).reduce((components, id) => {
       components.push(
-        <VictoryArea
+        <VictoryBar
           key={id}
           data={this.state.arrivalData[id]}
           style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0}}}
           barRatio={1}
+          alignment='start'
         />
       )
       return components
