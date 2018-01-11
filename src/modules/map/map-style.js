@@ -1,5 +1,5 @@
 import {fromJS} from 'immutable'
-import MAP_STYLE from './style.json'
+import MAP_STYLE from './style2.json'
 
 export const defaultMapStyle = fromJS(MAP_STYLE)
 
@@ -11,7 +11,7 @@ export const zonesLayer = fromJS({
   paint: {
     'fill-color': 'rgba(0, 0, 0, 0)',
     'fill-opacity': 0.4,
-    'fill-outline-color': '#fff'
+    'fill-outline-color': '#000'
   }
 })
 
@@ -21,9 +21,9 @@ export const zonesHoverLayer = fromJS({
   type: 'fill',
   interactive: true,
   paint: {
-    'fill-color': '#fff',
-    'fill-opacity': 0.8,
-    'fill-outline-color': '#fff'
+    'fill-color': '#000',
+    'fill-opacity': 0.4,
+    'fill-outline-color': '#000'
   },
   filter: ['in', 'OBJECTID', '']
 })

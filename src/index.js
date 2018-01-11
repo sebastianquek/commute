@@ -17,7 +17,7 @@ const middleware = []
 middleware.push(thunkMiddleware)
 
 if (process.env.NODE_ENV !== 'production') {
-  middleware.push(createLogger())
+  // middleware.push(createLogger())
 }
 
 const store = createStore(
@@ -28,12 +28,20 @@ const store = createStore(
 injectGlobal`
   * {
     box-sizing: border-box;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-kerning: auto;
+  }
+
+  html {
+    font-family: 'Poppins', sans-serif;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Poppins', sans-serif;
   }
 `
 
