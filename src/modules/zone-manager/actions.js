@@ -3,13 +3,13 @@ import datetimeManager from '../datetime-manager'
 
 export const addSelection = (id, color, category) => {
   return async (dispatch) => {
-    dispatch(datetimeManager.actions.fetchRidership(id))
     dispatch({
       type: t.ADD_SELECTION,
       id,
       color,
       category
     })
+    dispatch(datetimeManager.actions.fetchRidership(id))
   }
 }
 
