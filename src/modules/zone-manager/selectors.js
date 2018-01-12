@@ -15,8 +15,8 @@ export const allZoneIdsSelector = createSelector(
 export const zoneColorsSelector = createSelector(
   originZonesSelector,
   destinationsZonesSelector,
-  (origins, destinations) => [
+  (origins, destinations) => ({
     ...origins.reduce((obj, o) => ({...obj, [o.id]: o.color}), {}),
     ...destinations.reduce((obj, d) => ({...obj, [d.id]: d.color}), {})
-  ]
+  })
 )
