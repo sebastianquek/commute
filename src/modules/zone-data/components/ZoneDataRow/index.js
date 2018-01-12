@@ -5,8 +5,8 @@ import ZoneButton from '../../../core/components/ZoneButton'
 import {fadeSlideUp} from '../../../../utils/animations'
 
 const Row = styled.div`
-  margin: 1.3em 1em 0.8em 1.3em;
-  padding: 1em;
+  margin: 1.3em 1em 0.8em 1.4em;
+  padding: 1.1em 1em 1em 1em;
   border-radius: ${({theme}) => theme.borderRadius};
   border: 1px ${({dottedBorder}) => dottedBorder ? 'dashed' : 'solid'} ${({color}) => color};
   position: relative;
@@ -19,8 +19,8 @@ const Row = styled.div`
 
 const RowLabel = styled.div`
   position: absolute;
-  top: -1em;
-  left: -1em;
+  top: -1.15em;
+  left: -1.15em;
   background-color: ${({theme}) => theme.colors.background};
   padding-right: 0.2em;
   padding-bottom: 0.2em;

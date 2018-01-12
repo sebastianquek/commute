@@ -1,9 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import ZoneDataRow from '../ZoneDataRow'
-import ZoneFeedback from '../ZoneFeedback'
 import ListSeparator from '../ListSeparator'
+import HoveredZoneDataRowContainer from '../../containers/HoveredZoneDataRowContainer'
+import OriginZonesDataRowsContainer from '../../containers/OriginZonesDataRowsContainer'
+import DestinationZonesDataRowsContainer from '../../containers/DestinationZonesDataRowsContainer'
 
 const List = styled.div`
   position: absolute;
@@ -20,33 +20,18 @@ const List = styled.div`
   z-index: 2;
 `
 
-const ZoneDataList = ({
-  hoveredZoneData,
-  originZonesData,
-  destinationZonesData
-}) => {
-  return (
-    <List>
-      {hoveredZoneData ||
-        <ZoneFeedback
-          zoneDataContainer={<ZoneDataRow dottedBorder />}
-          feedback='Hover over a zone to see its land use' />}
-      <ListSeparator>Origins</ListSeparator>
-      {originZonesData}
-      <ListSeparator>Destinations</ListSeparator>
-      {destinationZonesData}
-      {(!originZonesData && !destinationZonesData) &&
-        <ZoneFeedback
-          zoneDataContainer={<ZoneDataRow />}
-          feedback='Select an origin or destination zone to see more details' />}
-    </List>
-  )
-}
-
-ZoneDataList.propTypes = {
-  hoveredZoneData: PropTypes.node,
-  originZonesData: PropTypes.node,
-  destinationZonesData: PropTypes.node
+class ZoneDataList extends React.Component {
+  render () {
+    return (
+      <List>
+        <HoveredZoneDataRowContainer />
+        <ListSeparator>Origins</ListSeparator>
+        <OriginZonesDataRowsContainer />
+        <ListSeparator>Destinations</ListSeparator>
+        <DestinationZonesDataRowsContainer />
+      </List>
+    )
+  }
 }
 
 export default ZoneDataList

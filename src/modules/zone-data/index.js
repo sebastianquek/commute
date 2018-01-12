@@ -1,8 +1,7 @@
 import * as actions from './actions'
 import reducer from './reducer'
 import * as selectors from './selectors'
-import ZoneDataContainer from './containers/ZoneDataContainer'
-import ZoneDataRow from './components/ZoneDataRow'
+import ZoneDataList from './components/ZoneDataList'
 
 export default {actions, reducer, selectors}
-export {ZoneDataContainer, ZoneDataRow}
+export { ZoneDataList }

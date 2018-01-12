@@ -29,3 +29,8 @@ export const destinationZonesDataSelector = createSelector(
     }, [])
   }
 )
+
+export const numOriginZonesSelector = createSelector(
+  originZonesSelector,
+  originZones => originZones.length
+)

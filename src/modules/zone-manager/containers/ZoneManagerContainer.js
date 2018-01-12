@@ -11,25 +11,25 @@ const ZoneManagerContainer = ({
   origins, destinations, removeSelection,
   setOriginSelectionMode, setDestinationSelectionMode
 }) => {
-  let counter = 1
+  const initialIdx = origins.length
   return (
     <ZoneManager
-      origins={origins && origins.map(zone =>
+      origins={origins && origins.map((zone, idx) =>
         <SelectedZoneButton
           key={zone.id}
           color={zone.color}
           onClick={() => goToAnchor('' + zone.id, false)}
           onClickDelete={() => removeSelection(zone.id, 'origins')}>
-          {counter++}
+          {idx + 1}
         </SelectedZoneButton>
       )}
-      destinations={destinations && destinations.map(zone =>
+      destinations={destinations && destinations.map((zone, idx) =>
         <SelectedZoneButton
           key={zone.id}
           color={zone.color}
           onClick={() => goToAnchor('' + zone.id, false)}
           onClickDelete={() => removeSelection(zone.id, 'destinations')}>
-          {counter++}
+          {initialIdx + idx + 1}
         </SelectedZoneButton>
       )}
       setOriginSelectionMode={setOriginSelectionMode}
