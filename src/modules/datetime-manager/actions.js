@@ -8,9 +8,19 @@ export const setDatetimeBrushDomain = domain => ({
   domain
 })
 
-export const setFirstDatetime = datetime => ({
-  type: t.SET_FIRST_DATETIME,
-  firstDatetime: datetime
+export const setFirstDatetime = datetime => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: t.SET_START_DATETIME_BRUSH_DOMAIN,
+      startDatetime: datetime,
+      maxDate: maxDateSelector(getState())
+    })
+  }
+}
+
+export const setDatetimeZoomDomain = domain => ({
+  type: t.SET_DATETIME_ZOOM_DOMAIN,
+  domain
 })
 
 const requestRidership = () => ({

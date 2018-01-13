@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { setDatetimeBrushDomain } from '../actions'
-import { brushDomainSelector, minDateSelector, maxDateSelector, stepSelector } from '../selectors'
+import { setDatetimeBrushDomain, setDatetimeZoomDomain } from '../actions'
+import { brushDomainSelector, zoomDomainSelector, minDateSelector, maxDateSelector, stepSelector } from '../selectors'
 import Brushes from '../components/Brushes'
 
 const BrushContainer = (props) => {
@@ -19,6 +19,7 @@ BrushContainer.propTypes = {
 const mapStateToProps = (state, ownProps) => {
   return {
     brushDomain: brushDomainSelector(state),
+    zoomDomain: zoomDomainSelector(state),
     minDate: minDateSelector(state),
     maxDate: maxDateSelector(state),
     step: stepSelector(state),
@@ -27,7 +28,8 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = {
-  setDatetimeBrushDomain
+  setDatetimeBrushDomain,
+  setDatetimeZoomDomain
 }
 
 export default connect(

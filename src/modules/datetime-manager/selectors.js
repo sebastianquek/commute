@@ -7,10 +7,18 @@ export const brushDomainSelector = createSelector(
   (x, y) => ({x, y})
 )
 
-export const dateDomainSelector = state => state.datetimeBrushDomain.x
-export const minDateSelector = state => state.datetimeBrushDomain.minX
-export const maxDateSelector = state => state.datetimeBrushDomain.maxX
-export const stepSelector = state => state.datetimeBrushDomain.step
+export const zoomDomainSelector = createSelector(
+  state => state.datetimeZoomDomain.x,
+  state => state.datetimeZoomDomain.y,
+  (x, y) => ({x, y})
+)
+
+export const minDateSelector = state => state.ridershipDomain.minX
+export const maxDateSelector = state => state.ridershipDomain.maxX
+export const stepSelector = state => state.ridershipDomain.step
+
+export const brushedDateDomainSelector = state => state.datetimeBrushDomain.x
+export const zoomedDateDomainSelector = state => state.datetimeZoomDomain.x
 
 export const ridershipDataSelector = createSelector(
   state => zoneManager.selectors.allZoneIdsSelector(state),

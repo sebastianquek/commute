@@ -3,9 +3,7 @@ import * as t from './actionTypes'
 
 export const datetimeBrushDomain = (state = {
   x: [moment('2017-10-21T00:00:00+08:00').toDate(), moment('2017-10-25T00:00:00+08:00').toDate()],
-  minX: moment('2017-10-21T00:00:00+08:00').toDate(),
-  maxX: moment('2017-10-25T00:00:00+08:00').toDate(),
-  step: 'PT1H'
+  y: [0, 1]
 }, action) => {
   switch (action.type) {
     case t.SET_DATETIME_BRUSH_DOMAIN:
@@ -14,13 +12,39 @@ export const datetimeBrushDomain = (state = {
         x: action.domain.x,
         y: action.domain.y
       }
-    case t.SET_FIRST_DATETIME:
+    case t.SET_START_DATETIME_BRUSH_DOMAIN:
       const duration = moment.duration(moment(state.x[1]).diff(moment(state.x[0])))
-      const x1 = moment(action.firstDatetime).add(duration)
+      const x1 = moment(action.startDatetime).add(duration)
       return {
         ...state,
-        x: [action.firstDatetime, x1.isBefore(state.maxX) ? x1.toDate() : state.maxX]
+        x: [action.startDatetime, x1.isBefore(action.maxDate) ? x1.toDate() : action.maxDate]
       }
+    default:
+      return state
+  }
+}
+
+export const datetimeZoomDomain = (state = {
+  x: [moment('2017-10-21T00:00:00+08:00').toDate(), moment('2017-10-25T00:00:00+08:00').toDate()]
+}, action) => {
+  switch (action.type) {
+    case t.SET_DATETIME_ZOOM_DOMAIN:
+      return {
+        ...state,
+        x: action.domain.x,
+        y: action.domain.y
+      }
+    default:
+      return state
+  }
+}
+
+export const ridershipDomain = (state = {
+  minX: moment('2017-10-21T00:00:00+08:00').toDate(),
+  maxX: moment('2017-10-25T00:00:00+08:00').toDate(),
+  step: 'PT1H'
+}, action) => {
+  switch (action.type) {
     default:
       return state
   }
