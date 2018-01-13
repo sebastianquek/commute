@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import MapGL from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import styled from 'styled-components'
-import throttle from 'lodash.throttle'
 import Tooltip from '../Tooltip'
 import SelectionModeFeedback from '../SelectionModeFeedback'
 import c from '../../../../utils/randomColor'
@@ -32,7 +31,6 @@ export class Map extends Component {
     this.onViewportChange = this.onViewportChange.bind(this)
     this.onLoad = this.onLoad.bind(this)
     this.handleHover = this.handleHover.bind(this)
-    this.handleHover = throttle(this.handleHover, 50)
     this.handleClick = this.handleClick.bind(this)
   }
 
@@ -65,13 +63,13 @@ export class Map extends Component {
   }
 
   handleHover (event) {
-    const {features, srcEvent: {offsetX, offsetY}} = event
+    const {features, srcEvent: {x, y}} = event
     let hoveredFeature = null
     if (features && features[0]) {
       hoveredFeature = features[0]
       this.props.hoverOverFeature(hoveredFeature)
     }
-    this.setState({hoveredFeature, x: offsetX, y: offsetY})
+    this.setState({hoveredFeature, x, y})
   }
 
   handleClick (event) {
