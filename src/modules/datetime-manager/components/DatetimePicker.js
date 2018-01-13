@@ -47,6 +47,10 @@ const Wrapper = styled.div`
     border-radius: 0;
     transition: all 0.1s;
   }
+
+  .DayPicker-Day--brushed:hover {
+    background-color: #51a0fa !important;
+  }
 `
 
 const Header = styled.span`
@@ -70,6 +74,27 @@ class DatetimePicker extends React.Component {
   }
 
   render () {
+    const modifiers = {
+      zoomed: {
+        from: this.props.zoomedDateDomain[0],
+        to: this.props.zoomedDateDomain[1]
+      },
+      brushed: {
+        from: this.props.brushedDateDomain[0],
+        to: this.props.brushedDateDomain[1]
+      }
+    }
+
+    const modifiersStyles = {
+      zoomed: {
+        color: '#4a90e2'
+      },
+      brushed: {
+        color: 'white',
+        backgroundColor: '#4a90e2'
+      }
+    }
+
     return (
       <Wrapper>
         <Header>Date</Header>
@@ -82,10 +107,8 @@ class DatetimePicker extends React.Component {
             before: this.props.minDate
           }}
           onDayClick={this.handleDateChange}
-          selectedDays={{
-            from: this.props.dateDomain[0],
-            to: this.props.dateDomain[1]
-          }} />
+          modifiers={modifiers}
+          modifiersStyles={modifiersStyles} />
       </Wrapper>
     )
   }
