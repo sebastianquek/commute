@@ -1,8 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import DatetimePickerContainer from '../../containers/DatetimePickerContainer'
-import DatetimeSliderContainer from '../../containers/DatetimeSliderContainer'
+import DatetimePickerContainer from '../containers/DatetimePickerContainer'
+import DatetimeSlider from '../components/DatetimeSlider'
 
 const Wrapper = styled.div`
   height: 300px;
@@ -15,20 +14,15 @@ const Wrapper = styled.div`
   padding: 1.2em calc(500px + 1.2em) 1.2em 1.4em;
   border-top: 1px solid ${({theme}) => theme.colors.borderSecondary};
   display: flex;
-  // align-items: center;
 `
 
 const DatetimeManager = () => {
   return (
     <Wrapper>
       <DatetimePickerContainer />
-      <DatetimeSliderContainer />
+      <DatetimeSlider />
     </Wrapper>
   )
-}
-
-DatetimeManager.propTypes = {
-
 }
 
 export default DatetimeManager
