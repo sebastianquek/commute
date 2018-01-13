@@ -7,16 +7,15 @@ import { fadeSlideUpRotated } from '../../../../utils/animations'
 const Button = styled.button`
   cursor: pointer;
   border: 1px ${({dottedBorder}) => dottedBorder ? 'dashed' : 'solid'} ${({theme}) => theme.colors.borderPrimary};
-  margin: 0.4em;
+  margin: 0.5em;
   padding: 0;
   background-color: ${({color}) => color};
   transform: rotate(45deg);
-  height: 1.5em;
-  width: 1.5em;
+  height: 1.7em;
+  width: 1.7em;
   border-radius: ${({theme}) => theme.borderRadius};
   transition: 0.2s all;
-  font-family: inherit;
-  font-weight: 600;
+ 
   z-index: 2;
   animation: ${fadeSlideUpRotated} 0.7s ease;
   
@@ -29,7 +28,9 @@ const Button = styled.button`
     display: inline-block;
     transform: rotate(-45deg);
     color: ${({darkText, theme}) => darkText ? theme.colors.textPrimary : theme.colors.textSecondaryAlt};
-    font-size: 0.9em;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    font-size: 1em;
   }
 
   :focus {

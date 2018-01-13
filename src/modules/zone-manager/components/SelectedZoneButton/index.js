@@ -17,7 +17,7 @@ const DeleteButton = styled.button`
   border: none;
   background-color: ${({color}) => color};
   opacity: 0;
-  margin-left: -1.2em;
+  margin-left: -1.8em;
   padding: 0.2em 0.2em 0.2em 1.2em;
   border-radius: 0 ${({theme}) => theme.borderRadius} ${({theme}) => theme.borderRadius};
   font-family: inherit;
@@ -29,18 +29,18 @@ const DeleteButton = styled.button`
 
   svg {
     fill: ${({darkText, theme}) => darkText ? theme.colors.iconPrimary : theme.colors.iconPrimaryAlt};
-    height: 1em;
-    width: 1em;
+    height: 1.2em;
+    width: 1.2em;
   }
 
   ${ZoneButtonWithDelete}:hover + & {
     opacity: 1;
-    transform: translate(0, -1px);
+    transform: translate(8px, -1px);
   }
 
   :hover {
     opacity: 1;
-    transform: translate(0, 0);
+    transform: translate(8px, 0);
   }
 
   :hover svg {

@@ -19,7 +19,7 @@ const FixedWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0.8em 0.3em 0.8em 0.6em;
+  padding: 0.8em 0.6em 0.8em 0.6em;
   transition: 0.2s all;
   background: white;
   overflow-y: auto;
