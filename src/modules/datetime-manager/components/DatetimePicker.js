@@ -74,7 +74,7 @@ class DatetimePicker extends React.Component {
       <Wrapper>
         <Header>Date</Header>
         <DayPicker
-          month={this.props.dateDomain[0]}
+          month={this.props.brushedDateDomain[0]}
           fromMonth={this.props.minDate}
           toMonth={this.props.maxDate}
           disabledDays={{
@@ -92,7 +92,8 @@ class DatetimePicker extends React.Component {
 }
 
 DatetimePicker.propTypes = {
-  dateDomain: PropTypes.array,
+  brushedDateDomain: PropTypes.array,
+  zoomedDateDomain: PropTypes.array,
   minDate: PropTypes.object,
   maxDate: PropTypes.object,
   setFirstDatetime: PropTypes.func

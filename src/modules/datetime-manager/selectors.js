@@ -28,3 +28,22 @@ export const ridershipDataSelector = createSelector(
     return data
   }, {})
 )
+
+export const maxRidershipRangeSelector = createSelector(
+  ridershipDataSelector,
+  ridershipData => {
+    const dataSortedByDatetime = Object.keys(ridershipData).reduce((dataSortedByDatetime, key) => {
+      Object.keys(ridershipData[key]).forEach(datetime => {
+        if (!dataSortedByDatetime.hasOwnProperty(datetime)) {
+          dataSortedByDatetime[datetime] = [0, 0]
+        }
+        dataSortedByDatetime[datetime] = [
+          dataSortedByDatetime[datetime][0] + (ridershipData[key][datetime]['arrival'] || 0),
+          dataSortedByDatetime[datetime][1] + (ridershipData[key][datetime]['departure'] || 0)
+        ]
+      })
+      return dataSortedByDatetime
+    }, {})
+    return Math.max(1, Object.keys(dataSortedByDatetime).reduce((maxVal, key) => Math.max(maxVal, ...dataSortedByDatetime[key]), 0))
+  }
+)
