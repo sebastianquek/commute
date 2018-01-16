@@ -46,16 +46,16 @@ class Brushes extends React.Component {
     return (
       <Wrapper>
         <VictoryChart
-          padding={{top: 12, bottom: 30, left: 60, right: 36}}
+          padding={{top: 0, bottom: 0, left: 60, right: 36}}
           width={this.props.width}
-          height={this.props.height / 3}
+          height={this.props.height / 6}
           domain={this.props.zoomDomain}
           containerComponent={
             <VictoryBrushContainer
               brushDomain={this.props.brushDomain}
               brushDimension='x'
               onBrushDomainChange={this.handleBrush}
-              style={{height: this.props.height / 3}}
+              style={{height: this.props.height / 6, marginBottom: '1em'}}
             />
           }
         >

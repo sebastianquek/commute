@@ -1,8 +1,9 @@
 import React from 'react'
-import { VictoryChart, VictoryAxis, VictoryStack, VictoryTheme, VictoryZoomContainer } from 'victory'
+import { VictoryChart, VictoryAxis, VictoryStack, VictoryTheme, VictoryZoomContainer, VictoryGroup, VictoryLabel, VictoryTooltip, createContainer } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import styled from 'styled-components'
+import theme from '../../../utils/theme'
 
 const formatTimeAxisTick = time => moment(time).format('ha Do MMM')
 const formatYAxisTick = value => Math.abs(Number(value))
@@ -10,6 +11,8 @@ const formatYAxisTick = value => Math.abs(Number(value))
 const ChartWrapper = styled.div`
   height: 50%;
 `
+
+const VictoryZoomAndVoronoiContainer = createContainer('zoom', 'voronoi')
 
 class Chart extends React.Component {
   constructor (props) {
@@ -38,11 +41,22 @@ class Chart extends React.Component {
           theme={VictoryTheme.material}
           domain={{x: [this.props.minDate, this.props.maxDate], y: this.props.bottomChart ? [-this.props.maxY, 0] : [0, this.props.maxY]}}
           containerComponent={
-            <VictoryZoomContainer
+            <VictoryZoomAndVoronoiContainer
               zoomDomain={this.props.zoomDomain}
               zoomDimension='x'
               onZoomDomainChange={this.handleZoom}
               minimumZoom={{x: moment.duration(6, 'hours').asMilliseconds()}}
+              voronoiDimension='x'
+              labels={(d) => d.y}
+              labelComponent={
+                <VictoryTooltip
+                  orientation='left'
+                  cornerRadius={2}
+                  dx={2}
+                  flyoutStyle={{fill: 'white', stroke: theme.colors.borderSecondary}}
+                  pointerLength={5}
+                  pointerWidth={10}/>
+              }
             />
           }
         >
