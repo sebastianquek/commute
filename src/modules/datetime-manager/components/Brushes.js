@@ -23,11 +23,12 @@ const Feedback = styled.span`
   text-transform: uppercase;
   letter-spacing: ${({theme}) => theme.typography.headerLetterSpacing};
   font-weight: bold;
-  font-size: ${({theme}) => theme.typography.subHeaderSize};
+  font-size: 0.6em;
   color: ${({theme}) => theme.colors.textWarning};
   opacity: ${({visible}) => visible ? 1 : 0};
   transform: ${({visible}) => visible ? 'translateY(0)' : 'translateY(-20px)'};
   transition: all 0.7s;
+  font-family: 'Barlow', sans-serif;
 `
 
 class Brushes extends React.Component {
@@ -38,6 +39,7 @@ class Brushes extends React.Component {
       allowDrag: true
     }
     this.handleBrush = this.handleBrush.bind(this)
+    this.calcRoundedZoomDomain = this.calcRoundedZoomDomain.bind(this)
   }
 
   handleBrush (domain) {
@@ -52,7 +54,7 @@ class Brushes extends React.Component {
     }
   }
 
-  componentWillReceiveProps (newProps) {
+  calcRoundedZoomDomain (newProps) {
     const roundedZoomDomainX = [
       this.roundToStep(newProps.zoomDomain.x[0], 'PT1H', 'ceil'),
       this.roundToStep(newProps.zoomDomain.x[1], 'PT1H', 'floor')
@@ -65,6 +67,41 @@ class Brushes extends React.Component {
       roundedZoomDomainX,
       allowDrag
     })
+  }
+
+  moveToBrushedDomain (newProps) {
+    if (
+      this.props.brushDomain.x[0].getTime() !== newProps.brushDomain.x[0].getTime() &&
+      this.props.brushDomain.x[1].getTime() !== newProps.brushDomain.x[1].getTime() &&
+      (newProps.brushDomain.x[0].getTime() < newProps.zoomDomain.x[0].getTime() ||
+      newProps.brushDomain.x[1].getTime() > newProps.zoomDomain.x[1].getTime())
+    ) {
+      const zoomDomainMiddleToEndDuration = moment.duration(moment(newProps.zoomDomain.x[1]).diff(moment(newProps.zoomDomain.x[0])) / 2)
+      const brushDomainMiddleToEndDuration = moment.duration(moment(newProps.brushDomain.x[1]).diff(moment(newProps.brushDomain.x[0])) / 2)
+      const newZoomDomain = {
+        x: [
+          moment(newProps.brushDomain.x[0]).add(brushDomainMiddleToEndDuration).subtract(zoomDomainMiddleToEndDuration).toDate(),
+          moment(newProps.brushDomain.x[1]).subtract(brushDomainMiddleToEndDuration).add(zoomDomainMiddleToEndDuration).toDate()
+        ]
+      }
+      if (newZoomDomain.x[0].getTime() < this.props.minDate.getTime()) {
+        newZoomDomain.x = [
+          this.props.minDate,
+          moment(this.props.minDate).add(zoomDomainMiddleToEndDuration).add(zoomDomainMiddleToEndDuration).toDate()
+        ]
+      } else if (newZoomDomain.x[1].getTime() > this.props.maxDate.getTime()) {
+        newZoomDomain.x = [
+          moment(this.props.maxDate).subtract(zoomDomainMiddleToEndDuration).subtract(zoomDomainMiddleToEndDuration).toDate(),
+          this.props.maxDate
+        ]
+      }
+      this.props.setDatetimeZoomDomain(newZoomDomain)
+    }
+  }
+
+  componentWillReceiveProps (newProps) {
+    this.calcRoundedZoomDomain(newProps)
+    this.moveToBrushedDomain(newProps)
   }
 
   roundToStep (date, step = 'PT1H', direction) {
@@ -82,7 +119,7 @@ class Brushes extends React.Component {
   render () {
     return (
       <Wrapper>
-        <Feedback visible={!this.state.allowDrag}>Brush panning disabled, zoom out to enable</Feedback>
+        <Feedback visible={!this.state.allowDrag}>Brush panning is disabled, ensure entire brush is visible to re-enable</Feedback>
         <VictoryChart
           padding={{top: 0, bottom: 0, left: 60, right: 36}}
           width={this.props.width}
@@ -123,7 +160,8 @@ Brushes.propTypes = {
   step: PropTypes.string.isRequired,
   minDate: PropTypes.object.isRequired,
   maxDate: PropTypes.object.isRequired,
-  setDatetimeBrushDomain: PropTypes.func.isRequired
+  setDatetimeBrushDomain: PropTypes.func.isRequired,
+  setDatetimeZoomDomain: PropTypes.func.isRequired
 }
 
 export default Brushes
