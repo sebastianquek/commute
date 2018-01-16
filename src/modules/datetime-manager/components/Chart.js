@@ -47,13 +47,14 @@ class Chart extends React.Component {
               onZoomDomainChange={this.handleZoom}
               minimumZoom={{x: moment.duration(6, 'hours').asMilliseconds()}}
               voronoiDimension='x'
-              labels={(d) => d.y}
+              labels={(d) => `${moment(d.x).format('ha Do MMM')}: ${d.y}`}
               labelComponent={
                 <VictoryTooltip
                   orientation='left'
                   cornerRadius={2}
                   dx={2}
                   flyoutStyle={{fill: 'white', stroke: theme.colors.borderSecondary}}
+                  style={{fontFamily: `'Barlow', sans-serif`}}
                   pointerLength={5}
                   pointerWidth={10}/>
               }
