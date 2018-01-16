@@ -121,9 +121,9 @@ class Brushes extends React.Component {
       <Wrapper>
         <Feedback visible={!this.state.allowDrag}>Brush panning is disabled, ensure entire brush is visible to re-enable</Feedback>
         <VictoryChart
-          padding={{top: 0, bottom: 0, left: 60, right: 36}}
+          padding={{top: 0, bottom: 0, left: 0, right: 0}}
           width={this.props.width}
-          height={this.props.height / 6}
+          height={this.props.height / 5.5}
           domain={this.props.zoomDomain}
           containerComponent={
             <VictoryBrushContainer
@@ -131,7 +131,7 @@ class Brushes extends React.Component {
               brushDomain={this.props.brushDomain}
               brushDimension='x'
               onBrushDomainChange={this.handleBrush}
-              style={{height: this.props.height / 6, marginBottom: '1em'}}
+              style={{height: this.props.height / 5.5, marginLeft: '58px', marginRight: '34px', marginBottom: '1em'}}
               brushStyle={{stroke: 'transparent', fill: 'black', fillOpacity: 0.1, cursor: this.state.allowDrag ? 'move' : 'auto'}}
             />
           }
