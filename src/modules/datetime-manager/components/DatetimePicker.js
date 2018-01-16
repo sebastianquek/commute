@@ -40,12 +40,12 @@ const Wrapper = styled.div`
 
   .DayPicker-Day:not(.DayPicker-Day--outside) {
     border: 1px solid #eee;
+    transition: all 0.3s;
   }
 
   .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover,
   .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
     border-radius: 0;
-    transition: all 0.1s;
   }
 
   .DayPicker-Day--brushed:hover {
