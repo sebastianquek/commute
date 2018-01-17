@@ -25,9 +25,9 @@ class Charts extends React.Component {
     // Set bar chart width based on zoom level
     if (this.props.step === newProps.step ||
       (this.props.step !== newProps.step && numKeysInOld !== numKeysInNew)) {
-      const zoomDomainLength = moment(newProps.zoomDomain.x[1]).diff(moment(newProps.zoomDomain.x[0]))
+      const zoomDomainLength = moment(newProps.zoomDomain.x[1]).diff(newProps.zoomDomain.x[0])
       const stepMilliseconds = moment.duration(newProps.step).as('milliseconds')
-      this.setState({barWidth: 0.8 * newProps.width / Math.floor(zoomDomainLength / stepMilliseconds)})
+      this.setState({barWidth: 0.8 * newProps.width / Math.ceil(zoomDomainLength / stepMilliseconds)})
     }
     // Update ridership data if required
     if (
