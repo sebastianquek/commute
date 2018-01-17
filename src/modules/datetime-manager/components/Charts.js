@@ -108,7 +108,6 @@ class Charts extends React.Component {
             key={id}
             data={data}
             style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0, width: this.state.barWidth}}}
-            barRatio={1}
             alignment='start'
           />
         )
@@ -124,7 +123,6 @@ class Charts extends React.Component {
             data={data}
             y={d => d.y * -1}
             style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0, width: this.state.barWidth}}}
-            barRatio={1}
             alignment='start'
           />
         )

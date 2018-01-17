@@ -12,16 +12,19 @@ const Wrapper = styled.div`
 const ButtonGroup = styled.div`
   display: flex;
   margin-bottom: 0.9em;
+  margin-top: 0.2em;
 `
 
 const Button = styled.button`
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Barlow', sans-serif;
   background-color: transparent;
   border: 1px solid ${({theme}) => theme.colors.borderSecondary};
   border-right: none;
   cursor: pointer;
   color: ${({theme}) => theme.colors.textPrimary};
   transition: 0.2s all;
+  padding: 0.3em 0.46em;
+  font-size: 0.84em;
 
   ${({selected}) => selected && css`
     color: white;

@@ -8,7 +8,7 @@ const Wrapper = styled.span`
   font-size: ${({theme}) => theme.typography.subHeaderSize};
   color: ${({theme}) => theme.colors.textSecondary};
   text-transform: uppercase;
-  margin-bottom: 0.2em;
+  margin-bottom: 0.3em;
 `
 
 const Subheader = ({children}) => {

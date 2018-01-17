@@ -11,18 +11,15 @@ const Wrapper = styled.div`
   grid-area: picker;
 
   .DayPicker {
-    margin-left: -1.5em;
-    margin-right: 1.2em;
-    margin-top: -0.6em;
     background: transparent;
   }
 
+  .DayPicker-wrapper {
+    padding: 0;
+  }
+  
   .DayPicker-wrapper:focus {
     outline: none;
-  }
-
-  .DayPicker-Caption {
-    color: ${({theme}) => theme.colors.textPrimary};
   }
   
   .DayPicker-NavButton {
@@ -30,14 +27,22 @@ const Wrapper = styled.div`
   }
 
   .DayPicker-Caption {
+    color: ${({theme}) => theme.colors.textPrimary};
+    padding-left: 0;
+
     > div {
       font-weight: 700;
     }
   }
 
+  .DayPicker-Month {
+    margin: 0;
+  }
+
   .DayPicker-Weekday, .DayPicker-Day {
     padding: 0.3em 0.46em;
     font-size: 0.84em;
+    font-family: 'Barlow', sans-serif;
   }
 
   .DayPicker-Weekday {

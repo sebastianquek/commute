@@ -73,7 +73,8 @@ class Chart extends React.Component {
                 fontFamily: `'Poppins', sans-serif`,
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
-                letterSpacing: '2.1px'
+                letterSpacing: '2.1px',
+                fill: theme.colors.textPrimary
               }
             }}
           />

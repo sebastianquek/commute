@@ -22,6 +22,8 @@ const Wrapper = styled.div`
     'controls slider';
   justify-items: start;
   align-items: start;
+  grid-row-gap: 1.6em;
+  grid-column-gap: 2em;
 `
 
 const DatetimeManager = () => {
