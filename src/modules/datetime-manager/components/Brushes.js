@@ -71,10 +71,10 @@ class Brushes extends React.Component {
 
   moveToBrushedDomain (newProps) {
     if (
-      this.props.brushDomain.x[0].getTime() !== newProps.brushDomain.x[0].getTime() &&
-      this.props.brushDomain.x[1].getTime() !== newProps.brushDomain.x[1].getTime() &&
-      (newProps.brushDomain.x[0].getTime() < newProps.zoomDomain.x[0].getTime() ||
-      newProps.brushDomain.x[1].getTime() > newProps.zoomDomain.x[1].getTime())
+      (!moment(this.props.brushDomain.x[0]).isSame(newProps.brushDomain.x[0]) ||
+      !moment(this.props.brushDomain.x[1]).isSame(newProps.brushDomain.x[1])) &&
+      !(moment(newProps.brushDomain.x[0]).isBetween(...newProps.zoomDomain.x) ||
+      moment(newProps.brushDomain.x[1]).isBetween(...newProps.zoomDomain.x))
     ) {
       const zoomDomainMiddleToEndDuration = moment.duration(moment(newProps.zoomDomain.x[1]).diff(moment(newProps.zoomDomain.x[0])) / 2)
       const brushDomainMiddleToEndDuration = moment.duration(moment(newProps.brushDomain.x[1]).diff(moment(newProps.brushDomain.x[0])) / 2)
