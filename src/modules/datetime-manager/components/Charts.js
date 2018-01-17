@@ -9,7 +9,8 @@ class Charts extends React.Component {
     super(props)
     this.state = {
       departureData: {},
-      arrivalData: {}
+      arrivalData: {},
+      barWidth: 10
     }
   }
 
@@ -18,6 +19,12 @@ class Charts extends React.Component {
   }
 
   componentWillReceiveProps (newProps) {
+    // Set bar chart width based on zoom level
+    const zoomDomainLength = moment(newProps.zoomDomain.x[1]).diff(moment(newProps.zoomDomain.x[0]))
+    const stepMilliseconds = moment.duration(newProps.step).as('milliseconds')
+    this.setState({barWidth: 0.8 * newProps.width / Math.floor(zoomDomainLength / stepMilliseconds)})
+
+    // Update ridership data if required
     const numKeysInNew = Object.keys(newProps.data).reduce((length, key) => length + Object.keys(newProps.data[key]).length, 0)
     const numKeysInOld = Object.keys(this.props.data).reduce((length, key) => length + Object.keys(this.props.data[key]).length, 0)
     if (
@@ -97,7 +104,7 @@ class Charts extends React.Component {
           <VictoryBar
             key={id}
             data={data}
-            style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0, width: 10}}}
+            style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0, width: this.state.barWidth}}}
             barRatio={1}
             alignment='start'
           />
@@ -113,7 +120,7 @@ class Charts extends React.Component {
             key={id}
             data={data}
             y={d => d.y * -1}
-            style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0, width: 10}}}
+            style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0, width: this.state.barWidth}}}
             barRatio={1}
             alignment='start'
           />
