@@ -5,7 +5,7 @@ import moment from 'moment'
 import styled from 'styled-components'
 import theme from '../../../utils/theme'
 
-const formatTimeAxisTick = time => moment(time).format('ha Do MMM')
+const formatTime = time => moment(time).format('h.mma Do MMM')
 const formatYAxisTick = value => Math.abs(Number(value))
 
 const ChartWrapper = styled.div`
@@ -47,7 +47,7 @@ class Chart extends React.Component {
               onZoomDomainChange={this.handleZoom}
               minimumZoom={{x: moment.duration(6, 'hours').asMilliseconds()}}
               voronoiDimension='x'
-              labels={(d) => `${moment(d.x).format('ha Do MMM')}: ${d.y}`}
+              labels={(d) => `${formatTime(d.x)}: ${d.y}`}
               labelComponent={
                 <VictoryTooltip
                   orientation='left'
@@ -79,7 +79,7 @@ class Chart extends React.Component {
           />
           <VictoryAxis
             orientation={this.props.bottomChart ? 'top' : 'bottom'}
-            tickFormat={formatTimeAxisTick}
+            tickFormat={formatTime}
             scale={{x: 'time'}}
             style={{
               tickLabels: {

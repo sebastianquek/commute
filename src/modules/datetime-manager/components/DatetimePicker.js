@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import DayPicker from 'react-day-picker'
 import 'react-day-picker/lib/style.css'
+import Subheader from '../../core/components/Subheader'
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  grid-area: picker;
 
   .DayPicker {
     margin-left: -1.5em;
@@ -53,15 +55,6 @@ const Wrapper = styled.div`
   }
 `
 
-const Header = styled.span`
-  letter-spacing: ${({theme}) => theme.typography.headerLetterSpacing};
-  font-weight: bold;
-  font-size: ${({theme}) => theme.typography.subHeaderSize};
-  color: ${({theme}) => theme.colors.textSecondary};
-  text-transform: uppercase;
-  margin-bottom: 0.18em;
-`
-
 class DatetimePicker extends React.Component {
   constructor (props) {
     super(props)
@@ -97,7 +90,7 @@ class DatetimePicker extends React.Component {
 
     return (
       <Wrapper>
-        <Header>Date</Header>
+        <Subheader>Date</Subheader>
         <DayPicker
           month={this.props.brushedDateDomain[0]}
           fromMonth={this.props.minDate}

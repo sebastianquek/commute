@@ -19,14 +19,17 @@ class Charts extends React.Component {
   }
 
   componentWillReceiveProps (newProps) {
-    // Set bar chart width based on zoom level
-    const zoomDomainLength = moment(newProps.zoomDomain.x[1]).diff(moment(newProps.zoomDomain.x[0]))
-    const stepMilliseconds = moment.duration(newProps.step).as('milliseconds')
-    this.setState({barWidth: 0.8 * newProps.width / Math.floor(zoomDomainLength / stepMilliseconds)})
-
-    // Update ridership data if required
     const numKeysInNew = Object.keys(newProps.data).reduce((length, key) => length + Object.keys(newProps.data[key]).length, 0)
     const numKeysInOld = Object.keys(this.props.data).reduce((length, key) => length + Object.keys(this.props.data[key]).length, 0)
+
+    // Set bar chart width based on zoom level
+    if (this.props.step === newProps.step ||
+      (this.props.step !== newProps.step && numKeysInOld !== numKeysInNew)) {
+      const zoomDomainLength = moment(newProps.zoomDomain.x[1]).diff(moment(newProps.zoomDomain.x[0]))
+      const stepMilliseconds = moment.duration(newProps.step).as('milliseconds')
+      this.setState({barWidth: 0.8 * newProps.width / Math.floor(zoomDomainLength / stepMilliseconds)})
+    }
+    // Update ridership data if required
     if (
       numKeysInOld !== numKeysInNew ||
       this.props.minDate.getTime() !== newProps.minDate.getTime() ||

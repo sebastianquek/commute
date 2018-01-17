@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 
 const Feedback = styled.span`
   position: absolute;
-  bottom: 0;
+  bottom: 5%;
   width: 100%;
   text-align: center;
   text-transform: uppercase;
@@ -44,7 +44,7 @@ class Brushes extends React.Component {
 
   handleBrush (domain) {
     for (let i = 0; i < 2; i++) {
-      domain.x[i] = this.roundToStep(domain.x[i], 'PT1H')
+      domain.x[i] = this.roundToStep(domain.x[i], this.props.step)
     }
     if (
       this.props.brushDomain.x[0].getTime() !== domain.x[0].getTime() ||
@@ -56,8 +56,8 @@ class Brushes extends React.Component {
 
   calcRoundedZoomDomain (newProps) {
     const roundedZoomDomainX = [
-      this.roundToStep(newProps.zoomDomain.x[0], 'PT1H', 'ceil'),
-      this.roundToStep(newProps.zoomDomain.x[1], 'PT1H', 'floor')
+      this.roundToStep(newProps.zoomDomain.x[0], newProps.step, 'ceil'),
+      this.roundToStep(newProps.zoomDomain.x[1], newProps.step, 'floor')
     ]
     let allowDrag = true
     if (newProps.brushDomain.x[0] < roundedZoomDomainX[0] || newProps.brushDomain.x[1] > roundedZoomDomainX[1]) {
@@ -123,7 +123,7 @@ class Brushes extends React.Component {
         <VictoryChart
           padding={{top: 0, bottom: 0, left: 0, right: 0}}
           width={this.props.width}
-          height={this.props.height / 5.5}
+          height={this.props.height / 7.5}
           domain={this.props.zoomDomain}
           containerComponent={
             <VictoryBrushContainer
@@ -131,7 +131,7 @@ class Brushes extends React.Component {
               brushDomain={this.props.brushDomain}
               brushDimension='x'
               onBrushDomainChange={this.handleBrush}
-              style={{height: this.props.height / 5.5, marginLeft: '58px', marginRight: '34px', marginBottom: '1em'}}
+              style={{height: this.props.height / 7.5, marginLeft: '58px', marginRight: '34px', marginBottom: '1.1em'}}
               brushStyle={{stroke: 'transparent', fill: 'black', fillOpacity: 0.1, cursor: this.state.allowDrag ? 'move' : 'auto'}}
             />
           }

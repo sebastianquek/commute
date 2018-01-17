@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setFirstDatetime } from '../actions'
 import { brushedDateDomainSelector, zoomedDateDomainSelector, minDateSelector, maxDateSelector } from '../selectors'

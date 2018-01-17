@@ -2,10 +2,19 @@ import React from 'react'
 import styled from 'styled-components'
 import ChartsContainer from '../containers/ChartsContainer'
 import BrushesContainer from '../containers/BrushesContainer'
+import Subheader from '../../core/components/Subheader'
 
 const Wrapper = styled.div`
   width: 100%;
+  height: 100%;
+  grid-area: slider;
+  display: flex;
+  flex-direction: column;
+`
+
+const ChartsWrapper = styled.div`
   position: relative;
+  height: 100%;
 `
 
 class DatetimeSlider extends React.Component {
@@ -36,9 +45,12 @@ class DatetimeSlider extends React.Component {
 
   render () {
     return (
-      <Wrapper innerRef={ref => (this.ref = ref)}>
-        <ChartsContainer width={this.state.width} height={this.state.height}/>
-        <BrushesContainer width={this.state.width} height={this.state.height}/>
+      <Wrapper>
+        <Subheader>Ridership</Subheader>
+        <ChartsWrapper innerRef={ref => (this.ref = ref)}>
+          <ChartsContainer width={this.state.width} height={this.state.height}/>
+          <BrushesContainer width={this.state.width} height={this.state.height}/>
+        </ChartsWrapper>
       </Wrapper>
     )
   }

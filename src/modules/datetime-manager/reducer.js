@@ -45,6 +45,11 @@ export const ridershipDomain = (state = {
   step: 'PT1H'
 }, action) => {
   switch (action.type) {
+    case t.SET_STEP:
+      return {
+        ...state,
+        step: action.step
+      }
     default:
       return state
   }
@@ -66,7 +71,7 @@ export const ridershipData = (state = {}, action) => {
         return all
       }, {})
       return {
-        ...state,
+        // ...state,
         ...data
       }
     default:

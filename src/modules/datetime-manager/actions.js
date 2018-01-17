@@ -23,6 +23,16 @@ export const setDatetimeZoomDomain = domain => ({
   domain
 })
 
+export const setStep = step => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: t.SET_STEP,
+      step
+    })
+    dispatch(fetchRidership())
+  }
+}
+
 const requestRidership = () => ({
   type: t.REQUEST_RIDERSHIP
 })
