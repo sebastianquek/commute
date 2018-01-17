@@ -39,10 +39,10 @@ class Chart extends React.Component {
           width={this.props.width}
           height={this.props.height}
           theme={VictoryTheme.material}
-          domain={{x: [this.props.minDate, this.props.maxDate], y: this.props.bottomChart ? [-this.props.maxY, 0] : [0, this.props.maxY]}}
+          domain={{x: [this.props.minDate, this.props.maxDate]}}
           containerComponent={
             <VictoryZoomAndVoronoiContainer
-              zoomDomain={this.props.zoomDomain}
+              zoomDomain={{x: this.props.zoomDomain.x, y: this.props.bottomChart ? [-this.props.maxY, 0] : [0, this.props.maxY]}}
               zoomDimension='x'
               onZoomDomainChange={this.handleZoom}
               minimumZoom={{x: moment.duration(6, 'hours').asMilliseconds()}}
