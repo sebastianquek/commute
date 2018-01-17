@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { VictoryChart, VictoryAxis, VictoryBrushContainer } from 'victory'
 import moment from 'moment'
+import { formatTime } from './Chart'
 
 const Wrapper = styled.div`
   position: absolute;
@@ -31,6 +32,20 @@ const Feedback = styled.span`
   font-family: 'Barlow', sans-serif;
 `
 
+const DomainRange = styled.span`
+  position: absolute;
+  top: -18px;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: ${({theme}) => theme.typography.headerLetterSpacing};
+  font-weight: bold;
+  font-size: 0.7em;
+  color: ${({theme}) => theme.colors.textPrimary};
+  transition: all 0.7s;
+  font-family: 'Barlow', sans-serif;
+`
+
 class Brushes extends React.Component {
   constructor (props) {
     super(props)
@@ -44,7 +59,7 @@ class Brushes extends React.Component {
 
   handleBrush (domain) {
     for (let i = 0; i < 2; i++) {
-      domain.x[i] = this.roundToStep(domain.x[i], this.props.step)
+      domain.x[i] = this.roundToStep(this.props.minDate, domain.x[i], this.props.step)
     }
     if (
       this.props.brushDomain.x[0].getTime() !== domain.x[0].getTime() ||
@@ -56,8 +71,8 @@ class Brushes extends React.Component {
 
   calcRoundedZoomDomain (newProps) {
     const roundedZoomDomainX = [
-      this.roundToStep(newProps.zoomDomain.x[0], newProps.step, 'ceil'),
-      this.roundToStep(newProps.zoomDomain.x[1], newProps.step, 'floor')
+      this.roundToStep(newProps.minDate, newProps.zoomDomain.x[0], newProps.step, 'ceil'),
+      this.roundToStep(newProps.minDate, newProps.zoomDomain.x[1], newProps.step, 'floor')
     ]
     let allowDrag = true
     if (newProps.brushDomain.x[0] < roundedZoomDomainX[0] || newProps.brushDomain.x[1] > roundedZoomDomainX[1]) {
@@ -104,21 +119,23 @@ class Brushes extends React.Component {
     this.moveToBrushedDomain(newProps)
   }
 
-  roundToStep (date, step = 'PT1H', direction) {
+  roundToStep (minDate, date, step = 'PT1H', direction) {
+    const momentMinDateUnix = moment(minDate).unix()
     const momentDateUnix = moment(date).unix()
     const stepSeconds = moment.duration(step).as('seconds')
     if (direction === 'floor') {
-      return moment.unix(Math.floor(momentDateUnix / stepSeconds) * stepSeconds).toDate()
+      return moment.unix(momentMinDateUnix + Math.floor((momentDateUnix - momentMinDateUnix) / stepSeconds) * stepSeconds).toDate()
     } else if (direction === 'ceil') {
-      return moment.unix(Math.ceil(momentDateUnix / stepSeconds) * stepSeconds).toDate()
+      return moment.unix(momentMinDateUnix + Math.ceil((momentDateUnix - momentMinDateUnix) / stepSeconds) * stepSeconds).toDate()
     } else {
-      return moment.unix(Math.round(momentDateUnix / stepSeconds) * stepSeconds).toDate()
+      return moment.unix(momentMinDateUnix + Math.round((momentDateUnix - momentMinDateUnix) / stepSeconds) * stepSeconds).toDate()
     }
   }
 
   render () {
     return (
       <Wrapper>
+        <DomainRange>{`${formatTime(this.props.brushDomain.x[0])} – ${formatTime(this.props.brushDomain.x[1])}`}</DomainRange>
         <Feedback visible={!this.state.allowDrag}>Brush panning is disabled, ensure entire brush is visible to re-enable</Feedback>
         <VictoryChart
           padding={{top: 0, bottom: 0, left: 0, right: 0}}

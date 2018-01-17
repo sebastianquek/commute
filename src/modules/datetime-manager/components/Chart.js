@@ -1,11 +1,11 @@
 import React from 'react'
-import { VictoryChart, VictoryAxis, VictoryStack, VictoryTheme, VictoryZoomContainer, VictoryGroup, VictoryLabel, VictoryTooltip, createContainer } from 'victory'
+import { VictoryChart, VictoryAxis, VictoryStack, VictoryTheme, VictoryTooltip, createContainer } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import styled from 'styled-components'
 import theme from '../../../utils/theme'
 
-const formatTime = time => moment(time).format('h.mma Do MMM')
+export const formatTime = time => moment(time).format('h.mma Do MMM')
 const formatYAxisTick = value => Math.abs(Number(value))
 
 const ChartWrapper = styled.div`

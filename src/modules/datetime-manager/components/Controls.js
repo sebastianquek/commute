@@ -54,7 +54,7 @@ class Controls extends React.Component {
       'PT30M': '30 mins',
       'PT1H': '1 hr',
       'PT2H': '2 hrs',
-      'PT4H': '4 hrs'
+      'PT3H': '3 hrs'
     }
   }
 

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
   .DayPicker {
     margin-left: -1.5em;
-    margin-right: 1.6em;
+    margin-right: 1.2em;
     margin-top: -0.6em;
     background: transparent;
   }
@@ -21,6 +21,10 @@ const Wrapper = styled.div`
     outline: none;
   }
 
+  .DayPicker-Caption {
+    color: ${({theme}) => theme.colors.textPrimary};
+  }
+  
   .DayPicker-NavButton {
     right: 0.8em;
   }
