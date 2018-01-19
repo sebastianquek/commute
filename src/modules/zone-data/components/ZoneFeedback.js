@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {fadeSlideUp} from '../../../../utils/animations'
+import {fadeSlideUp} from '../../../utils/animations'
 
 const FeedbackLabel = styled.div`
   font-size: ${({theme}) => theme.typography.bodySize};

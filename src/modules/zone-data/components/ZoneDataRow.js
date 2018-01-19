@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import ZoneButton from '../../../core/components/ZoneButton'
-import {fadeSlideUp} from '../../../../utils/animations'
+import ZoneButton from '../../core/components/ZoneButton'
+import { fadeSlideUp } from '../../../utils/animations'
 
 const Row = styled.div`
   margin: 1.3em 1em 0.8em 1.4em;

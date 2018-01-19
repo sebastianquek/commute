@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import ListSeparator from '../ListSeparator'
-import HoveredZoneDataRowContainer from '../../containers/HoveredZoneDataRowContainer'
-import OriginZonesDataRowsContainer from '../../containers/OriginZonesDataRowsContainer'
-import DestinationZonesDataRowsContainer from '../../containers/DestinationZonesDataRowsContainer'
+import ListSeparator from './ListSeparator'
+import HoveredZoneDataRowContainer from '../containers/HoveredZoneDataRowContainer'
+import OriginZonesDataRowsContainer from '../containers/OriginZonesDataRowsContainer'
+import DestinationZonesDataRowsContainer from '../containers/DestinationZonesDataRowsContainer'
 
 const List = styled.div`
   position: absolute;
