@@ -9,7 +9,6 @@ function mapStyle (state = defaultMapStyle, action) {
     case t.RECEIVE_ZONES:
       return state.setIn(['sources', 'zones'], fromJS({type: 'geojson', data: action.zones}))
         .update('layers', layers => layers.push(zonesLayer))
-      // return state
 
     case t.HOVER_OVER_ZONE:
       let newState
@@ -76,7 +75,12 @@ const currentZone = (state = {
 }, action) => {
   switch (action.type) {
     case t.HOVER_OVER_ZONE:
-      return {...state, id: action.zoneId}
+      if (!state.isSelected) {
+        return {...state, id: action.zoneId}
+      }
+      return state
+    case t.TOGGLE_LOCK_HOVERED_ZONE:
+      return {...state, isSelected: !state.isSelected}
     default:
       return state
   }

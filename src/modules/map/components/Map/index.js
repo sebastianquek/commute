@@ -74,9 +74,13 @@ export class Map extends Component {
 
   handleClick (event) {
     const {features} = event
-    if (this.props.zoneSelectionMode && features) {
+    if (features) {
       const zone = features.find(f => f.layer.id === 'zones')
-      zone && this.props.addSelection(zone.properties.OBJECTID, c.next().value, this.props.zoneSelectionMode)
+      if (this.props.zoneSelectionMode) {
+        zone && this.props.addSelection(zone.properties.OBJECTID, c.next().value, this.props.zoneSelectionMode)
+      } else {
+        zone && this.props.selectFeature(zone)
+      }
     }
   }
 
@@ -118,6 +122,7 @@ Map.propTypes = {
   categorizedZones: PropTypes.object.isRequired,
   fetchZones: PropTypes.func.isRequired,
   hoverOverFeature: PropTypes.func.isRequired,
+  selectFeature: PropTypes.func.isRequired,
   addSelection: PropTypes.func.isRequired,
   resetSelectionMode: PropTypes.func.isRequired,
   colorSelectedZones: PropTypes.func.isRequired
