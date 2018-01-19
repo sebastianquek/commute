@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import * as t from './actionTypes'
 import map from '../map'
 
-const zoneDataFilters = (state = {}, action) => {
+export const zoneDataFilters = (state = {}, action) => {
   switch (action.type) {
     case t.FILTER_NUM_COMMUTERS:
       let newZoneDataFilter
@@ -26,7 +26,7 @@ const zoneDataFilters = (state = {}, action) => {
   }
 }
 
-const zoneData = (state = {}, action) => {
+export const zoneData = (state = {}, action) => {
   switch (action.type) {
     case map.actionTypes.RECEIVE_ZONES:
       return action.zones.features.reduce((zones, f) => {
@@ -37,8 +37,3 @@ const zoneData = (state = {}, action) => {
       return state
   }
 }
-
-export default combineReducers({
-  zoneDataFilters,
-  zoneData
-})

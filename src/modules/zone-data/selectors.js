@@ -3,7 +3,7 @@ import { createSelector } from 'reselect'
 export const currentZoneSelector = state => state.map.currentZone
 const originZonesSelector = state => state.zoneManager.categorizedZones.origins
 const destinationZonesSelector = state => state.zoneManager.categorizedZones.destinations
-const zoneDataSelector = state => state.zoneData.zoneData
+const zoneDataSelector = state => state.zoneData
 
 export const currentZoneDataSelector = createSelector(
   [currentZoneSelector, zoneDataSelector],
