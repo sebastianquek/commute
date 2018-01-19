@@ -1,11 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { destinationZonesDataSelector, numOriginZonesSelector } from '../selectors'
+import styled from 'styled-components'
 import DestinationZonesDataRows from '../components/DestinationZonesDataRows'
+import ListSeparator from '../components/ListSeparator'
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 const DestinationZonesDataRowsContainer = (props) => {
   return (
-    <DestinationZonesDataRows {...props} />
+    <Wrapper>
+      <ListSeparator>Destinations</ListSeparator>
+      <DestinationZonesDataRows {...props} />
+    </Wrapper>
   )
 }
 

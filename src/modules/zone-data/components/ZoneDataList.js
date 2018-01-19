@@ -25,9 +25,7 @@ class ZoneDataList extends React.Component {
     return (
       <List>
         <HoveredZoneDataRowContainer />
-        <ListSeparator>Origins</ListSeparator>
         <OriginZonesDataRowsContainer />
-        <ListSeparator>Destinations</ListSeparator>
         <DestinationZonesDataRowsContainer />
       </List>
     )
