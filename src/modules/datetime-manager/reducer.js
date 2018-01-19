@@ -71,7 +71,7 @@ export const ridershipData = (state = {}, action) => {
         return all
       }, {})
       return {
-        // ...state,
+        ...state,
         ...data
       }
     default:
