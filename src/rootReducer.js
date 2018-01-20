@@ -6,8 +6,9 @@ import datetimeManager from './modules/datetime-manager'
 
 export default combineReducers({
   zoneManager: zoneManager.reducer,
-  zoneData: zoneData.reducer.zoneData,
-  zoneDataFilters: zoneData.reducer.zoneDataFilters,
+  zoneCompositionData: zoneData.reducer.zoneCompositionData,
+  zoneJourneyData: zoneData.reducer.zoneJourneyData,
+  zoneJourneyDataFilters: zoneData.reducer.zoneJourneyDataFilters,
   map: map.reducer,
   datetimeBrushDomain: datetimeManager.reducer.datetimeBrushDomain,
   datetimeZoomDomain: datetimeManager.reducer.datetimeZoomDomain,

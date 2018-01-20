@@ -4,12 +4,12 @@ import ZoneDataRow from './ZoneDataRow'
 import ZoneFeedback from './ZoneFeedback'
 
 const HoveredZoneDataRow = (props) => {
-  if (props.hoveredZone) {
+  if (props.zoneComposition) {
     return (
       <ZoneDataRow
-        zoneName={props.hoveredZone.SUBZONE_N}
+        zoneName={props.zoneComposition.SUBZONE_N}
         dottedBorder>
-        {JSON.stringify(props.hoveredZone)}
+        {JSON.stringify(props.zoneComposition)}
       </ZoneDataRow>
     )
   } else {
@@ -20,7 +20,7 @@ const HoveredZoneDataRow = (props) => {
 }
 
 HoveredZoneDataRow.propTypes = {
-  hoveredZone: PropTypes.object
+  zoneComposition: PropTypes.object
 }
 
 export default HoveredZoneDataRow

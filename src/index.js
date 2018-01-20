@@ -10,7 +10,7 @@ import { configureAnchors } from 'react-scrollable-anchor'
 import theme from './utils/theme'
 import { ZoneManagerContainer } from './modules/zone-manager'
 import { MapContainer } from './modules/map'
-import { ZoneDataList } from './modules/zone-data'
+import { ZoneDataListContainer } from './modules/zone-data'
 import { DatetimeManager } from './modules/datetime-manager'
 
 const middleware = []
@@ -54,7 +54,7 @@ ReactDOM.render(
         <ZoneManagerContainer />
         <MapContainer />
         <DatetimeManager />
-        <ZoneDataList />
+        <ZoneDataListContainer />
       </div>
     </ThemeProvider>
   </Provider>,

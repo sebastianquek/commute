@@ -3,12 +3,27 @@ import { createSelector } from 'reselect'
 export const originZonesSelector = state => state.zoneManager.categorizedZones.origins
 export const destinationsZonesSelector = state => state.zoneManager.categorizedZones.destinations
 
-export const allZoneIdsSelector = createSelector(
+export const numOriginZonesSelector = createSelector(
   originZonesSelector,
+  originZones => originZones.length
+)
+
+export const originZoneIdsSelector = createSelector(
+  originZonesSelector,
+  origins => origins.map(o => o.id)
+)
+
+export const destinationsZoneIdsSelector = createSelector(
   destinationsZonesSelector,
-  (origins, destinations) => [
-    ...origins.map(o => o.id),
-    ...destinations.map(d => d.id)
+  destinations => destinations.map(d => d.id)
+)
+
+export const allZoneIdsSelector = createSelector(
+  originZoneIdsSelector,
+  destinationsZoneIdsSelector,
+  (originIds, destinationIds) => [
+    ...originIds,
+    ...destinationIds
   ]
 )
 

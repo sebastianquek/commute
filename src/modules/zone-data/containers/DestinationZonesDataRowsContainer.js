@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { destinationZonesDataSelector, numOriginZonesSelector } from '../selectors'
 import styled from 'styled-components'
+import { destinationZonesCompositionDataSelector, destinationZonesJourneyDataSelector } from '../selectors'
+import zoneManager from '../../zone-manager'
 import DestinationZonesDataRows from '../components/DestinationZonesDataRows'
 import ListSeparator from '../components/ListSeparator'
 
@@ -21,8 +22,9 @@ const DestinationZonesDataRowsContainer = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    destinationZones: destinationZonesDataSelector(state),
-    initialIdx: numOriginZonesSelector(state),
+    zoneCompositions: destinationZonesCompositionDataSelector(state),
+    zoneJourneys: destinationZonesJourneyDataSelector(state),
+    initialIdx: zoneManager.selectors.numOriginZonesSelector(state),
     ...ownProps
   }
 }

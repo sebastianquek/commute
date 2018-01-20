@@ -1,17 +1,18 @@
 import { createSelector } from 'reselect'
+import zoneManager from '../zone-manager'
+import map from '../map'
 
-export const currentZoneSelector = state => state.map.currentZone
-const originZonesSelector = state => state.zoneManager.categorizedZones.origins
-const destinationZonesSelector = state => state.zoneManager.categorizedZones.destinations
-const zoneDataSelector = state => state.zoneData
+const zoneCompositionDataSelector = state => state.zoneCompositionData
+const zoneJourneyDataSelector = state => state.zoneJourneyData
+const zoneJourneyDataFiltersSelector = state => state.zoneJourneyDataFilters
 
-export const currentZoneDataSelector = createSelector(
-  [currentZoneSelector, zoneDataSelector],
-  (currentZone, zoneData) => zoneData[currentZone.id]
+export const hoveredZoneCompositionDataSelector = createSelector(
+  [map.selectors.hoveredZoneSelector, zoneCompositionDataSelector],
+  (hoveredZone, zoneData) => zoneData[hoveredZone.id]
 )
 
-export const originZonesDataSelector = createSelector(
-  [originZonesSelector, zoneDataSelector],
+export const originZonesCompositionDataSelector = createSelector(
+  [zoneManager.selectors.originZonesSelector, zoneCompositionDataSelector],
   (originZones, zoneData) => {
     return originZones.reduce((data, zone) => {
       data.push({...zoneData[zone.id], id: zone.id, color: zone.color})
@@ -20,8 +21,18 @@ export const originZonesDataSelector = createSelector(
   }
 )
 
-export const destinationZonesDataSelector = createSelector(
-  [destinationZonesSelector, zoneDataSelector],
+export const originZonesJourneyDataSelector = createSelector(
+  [zoneManager.selectors.originZonesSelector, zoneJourneyDataSelector],
+  (originZones, zoneData) => {
+    return originZones.reduce((data, zone) => {
+      data.push({...zoneData[zone.id]})
+      return data
+    }, [])
+  }
+)
+
+export const destinationZonesCompositionDataSelector = createSelector(
+  [zoneManager.selectors.destinationsZonesSelector, zoneCompositionDataSelector],
   (destinationZones, zoneData) => {
     return destinationZones.reduce((data, zone) => {
       data.push({...zoneData[zone.id], id: zone.id, color: zone.color})
@@ -30,7 +41,12 @@ export const destinationZonesDataSelector = createSelector(
   }
 )
 
-export const numOriginZonesSelector = createSelector(
-  originZonesSelector,
-  originZones => originZones.length
+export const destinationZonesJourneyDataSelector = createSelector(
+  [zoneManager.selectors.destinationsZonesSelector, zoneJourneyDataSelector],
+  (destinationZones, zoneData) => {
+    return destinationZones.reduce((data, zone) => {
+      data.push({...zoneData[zone.id]})
+      return data
+    }, [])
+  }
 )

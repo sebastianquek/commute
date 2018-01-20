@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import ListSeparator from './ListSeparator'
 import HoveredZoneDataRowContainer from '../containers/HoveredZoneDataRowContainer'
@@ -21,6 +22,10 @@ const List = styled.div`
 `
 
 class ZoneDataList extends React.Component {
+  componentDidMount () {
+    this.props.fetchZoneJourneys()
+  }
+
   render () {
     return (
       <List>
@@ -30,6 +35,10 @@ class ZoneDataList extends React.Component {
       </List>
     )
   }
+}
+
+ZoneDataList.propTypes = {
+  fetchZoneJourneys: PropTypes.func.isRequired
 }
 
 export default ZoneDataList

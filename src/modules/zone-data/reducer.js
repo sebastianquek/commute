@@ -1,8 +1,7 @@
-import { combineReducers } from 'redux'
 import * as t from './actionTypes'
 import map from '../map'
 
-export const zoneDataFilters = (state = {}, action) => {
+export const zoneJourneyDataFilters = (state = {}, action) => {
   switch (action.type) {
     case t.FILTER_NUM_COMMUTERS:
       let newZoneDataFilter
@@ -26,12 +25,28 @@ export const zoneDataFilters = (state = {}, action) => {
   }
 }
 
-export const zoneData = (state = {}, action) => {
+export const zoneCompositionData = (state = {}, action) => {
   switch (action.type) {
     case map.actionTypes.RECEIVE_ZONES:
       return action.zones.features.reduce((zones, f) => {
         zones[f.properties.OBJECTID] = f.properties
         return zones
+      }, {})
+    default:
+      return state
+  }
+}
+
+export const zoneJourneyData = (state = {}, action) => {
+  switch (action.type) {
+    case t.RECEIVE_ZONE_JOURNEYS:
+      return action.journeys.features.reduce((allData, route) => {
+        const { journey_entry_zone, ...properties } = route.properties // eslint-disable-line
+        if (!allData.hasOwnProperty(journey_entry_zone)) {
+          allData[journey_entry_zone] = []
+        }
+        allData[journey_entry_zone].push(properties)
+        return allData
       }, {})
     default:
       return state
