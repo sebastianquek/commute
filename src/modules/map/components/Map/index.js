@@ -44,7 +44,7 @@ export class Map extends Component {
   }
 
   async onLoad () {
-    await this.props.fetchZones()
+    // await this.props.fetchZones()
     this.props.colorSelectedZones([...this.props.categorizedZones.origins, ...this.props.categorizedZones.destinations])
   }
 
@@ -120,7 +120,7 @@ Map.propTypes = {
   mapStyle: PropTypes.object.isRequired,
   zoneSelectionMode: PropTypes.string,
   categorizedZones: PropTypes.object.isRequired,
-  fetchZones: PropTypes.func.isRequired,
+  // fetchZones: PropTypes.func.isRequired,
   hoverOverFeature: PropTypes.func.isRequired,
   selectFeature: PropTypes.func.isRequired,
   addSelection: PropTypes.func.isRequired,

@@ -1,4 +1,5 @@
 import moment from 'moment'
+import * as topojson from 'topojson-client'
 import * as t from './actionTypes'
 import zoneManager from '../zone-manager'
 import datetimeManager from '../datetime-manager'
@@ -15,6 +16,25 @@ export const hoverRouteChoice = (zoneId, routeId) => ({
   id: zoneId,
   routeId
 })
+
+const requestZoneCompositions = () => ({
+  type: t.REQUEST_ZONE_COMPOSITIONS
+})
+
+const receiveZoneCompositions = geojson => ({
+  type: t.RECEIVE_ZONE_COMPOSITIONS,
+  zones: geojson
+})
+
+export function fetchZones () {
+  return async dispatch => {
+    dispatch(requestZoneCompositions())
+    const res = await fetch('http://localhost:1337/api/v2/zones')
+    const resJson = await res.json()
+    const data = topojson.feature(resJson, resJson.objects.zones)
+    dispatch(receiveZoneCompositions(data))
+  }
+}
 
 const requestZoneJourneys = () => ({
   type: t.REQUEST_ZONE_JOURNEYS

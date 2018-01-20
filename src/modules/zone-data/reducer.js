@@ -1,5 +1,4 @@
 import * as t from './actionTypes'
-import map from '../map'
 
 export const zoneJourneyDataFilters = (state = {}, action) => {
   switch (action.type) {
@@ -27,7 +26,7 @@ export const zoneJourneyDataFilters = (state = {}, action) => {
 
 export const zoneCompositionData = (state = {}, action) => {
   switch (action.type) {
-    case map.actionTypes.RECEIVE_ZONES:
+    case t.RECEIVE_ZONE_COMPOSITIONS:
       return action.zones.features.reduce((zones, f) => {
         zones[f.properties.OBJECTID] = f.properties
         return zones
