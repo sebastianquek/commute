@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-const Wrapper = styled.span`
+const Wrapper = styled.div`
   letter-spacing: ${({theme}) => theme.typography.headerLetterSpacing};
   font-weight: bold;
   font-size: ${({theme}) => theme.typography.subHeaderSize};

@@ -23,6 +23,7 @@ const FixedWrapper = styled.div`
   transition: 0.2s all;
   background: white;
   overflow-y: auto;
+  overflow-x: hidden;
 
   * {
     flex-shrink: 0;
