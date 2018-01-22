@@ -15,6 +15,7 @@ const Row = styled.div`
   transition: 0.2s all;
   word-wrap: break-word;
   color: ${({theme}) => theme.colors.textPrimary};
+  font-family: 'Barlow', sans-serif;
 `
 
 const RowLabel = styled.div`
@@ -34,6 +35,7 @@ const ZoneName = styled.span`
   color: ${({theme}) => theme.colors.textPrimary};
   margin-left: 0.5em;
   margin-right: 0.4em;
+  font-family: 'Poppins', sans-serif;
 `
 
 class ZoneDataRow extends React.Component {
