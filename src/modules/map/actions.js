@@ -3,6 +3,15 @@ import { goToAnchor } from 'react-scrollable-anchor'
 import { hoveredZoneSelector, isHoveredZoneSelectedSelector } from './selectors'
 import zoneManager from './../zone-manager'
 
+export const mapHasLoaded = () => ({
+  type: t.MAP_HAS_LOADED
+})
+
+export const addZoneCompositions = (geojson) => ({
+  type: t.ADD_ZONE_COMPOSITION,
+  zones: geojson
+})
+
 const hoverOverZone = zoneId => ({
   type: t.HOVER_OVER_ZONE,
   zoneId

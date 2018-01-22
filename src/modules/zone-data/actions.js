@@ -17,11 +17,11 @@ export const hoverRouteChoice = (zoneId, routeId) => ({
   routeId
 })
 
-const requestZoneCompositions = () => ({
+export const requestZoneCompositions = () => ({
   type: t.REQUEST_ZONE_COMPOSITIONS
 })
 
-const receiveZoneCompositions = geojson => ({
+export const receiveZoneCompositions = geojson => ({
   type: t.RECEIVE_ZONE_COMPOSITIONS,
   zones: geojson
 })
@@ -35,6 +35,10 @@ export function fetchZones () {
     dispatch(receiveZoneCompositions(data))
   }
 }
+export const requestZoneCompositionsError = error => ({
+  type: t.REQUEST_ZONE_COMPOSITIONS_ERROR,
+  error
+})
 
 const requestZoneJourneys = () => ({
   type: t.REQUEST_ZONE_JOURNEYS

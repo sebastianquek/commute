@@ -1,15 +1,14 @@
 import { combineReducers } from 'redux'
 import * as t from './actionTypes'
-// import zoneData from '../zone-data'
 import zoneManager from '../zone-manager'
 import {fromJS} from 'immutable'
 import { defaultMapStyle, zonesLayer, zonesHoverLayer, zonesOriginSelectionLayer, zonesDestinationSelectionLayer, selectedZoneLayer } from './map-style'
 
 function mapStyle (state = defaultMapStyle, action) {
   switch (action.type) {
-    // case zoneData.actionTypes.RECEIVE_ZONE_COMPOSITIONS:
-    //   return state.setIn(['sources', 'zones'], fromJS({type: 'geojson', data: action.zones}))
-    //     .update('layers', layers => layers.push(zonesLayer))
+    case t.ADD_ZONE_COMPOSITION:
+      return state.setIn(['sources', 'zones'], fromJS({type: 'geojson', data: action.zones}))
+        .update('layers', layers => layers.push(zonesLayer))
 
     case t.HOVER_OVER_ZONE:
       let newState
