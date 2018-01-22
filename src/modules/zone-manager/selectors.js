@@ -2,6 +2,8 @@ import { createSelector } from 'reselect'
 
 export const originZonesSelector = state => state.zoneManager.categorizedZones.origins
 export const destinationsZonesSelector = state => state.zoneManager.categorizedZones.destinations
+export const allZonesSelector = state => state.zoneManager.categorizedZones
+export const zoneSelectionModeSelector = state => state.zoneManager.zoneSelectionMode
 
 export const numOriginZonesSelector = createSelector(
   originZonesSelector,
