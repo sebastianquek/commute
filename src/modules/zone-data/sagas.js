@@ -1,8 +1,54 @@
-import { call, put } from 'redux-saga/effects'
+import moment from 'moment'
+import { select, call, put, take } from 'redux-saga/effects'
 import * as topojson from 'topojson-client'
+import { REQUEST_ZONE_JOURNEYS } from './actionTypes'
 import {
+  requestZoneJourneys, receiveZoneJourneys, requestZoneJourneysError,
   requestZoneCompositions, receiveZoneCompositions, requestZoneCompositionsError
 } from './actions'
+import zoneManager from '../zone-manager'
+import datetimeManager from '../datetime-manager'
+
+export function * watchAndUpdateZoneJourneys () {
+  while (true) {
+    const { id, category } = yield take([REQUEST_ZONE_JOURNEYS, zoneManager.actionTypes.ADD_SELECTION])
+
+    let originZoneIds = []
+    let destinationZoneIds = []
+
+    // Get current time window
+    const dateDomain = yield select(datetimeManager.selectors.brushedDateDomainSelector)
+    const startTime = moment(dateDomain[0])
+    const duration = moment.duration(moment(dateDomain[1]).diff(startTime))
+
+    if (id && category) { // Get specific zone's journeys
+      if (category === 'origins') originZoneIds.push(id)
+      else if (category === 'destinations') destinationZoneIds.push(id)
+    } else { // Get journeys for all currently selected zones
+      originZoneIds = yield select(zoneManager.selectors.originZoneIdsSelector)
+      destinationZoneIds = yield select(zoneManager.selectors.destinationsZoneIdsSelector)
+    }
+
+    try {
+      const journeys = yield call(fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration)
+      yield put(receiveZoneJourneys(journeys))
+    } catch (err) {
+      yield put(requestZoneJourneysError(err))
+    }
+  }
+}
+
+async function fetchZoneJourneys (originZoneIds, destinationZoneIds, startTime, duration) {
+  const query = `http://localhost:1337/api/v2/journeys?origins=${originZoneIds}&destinations=${destinationZoneIds}&startTime=${encodeURIComponent(startTime.format())}&duration=${duration.toISOString()}`
+  const res = await fetch(query)
+  const resJson = await res.json()
+  return resJson
+}
+
+// Called once on initialisation of the app
+export function * getInitialZoneJourneys () {
+  yield put(requestZoneJourneys())
+}
 
 async function fetchZoneCompositions () {
   const res = await fetch('http://localhost:1337/api/v2/zones')

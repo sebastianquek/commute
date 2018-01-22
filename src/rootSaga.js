@@ -3,6 +3,8 @@ import map from './modules/map'
 
 export default function * rootSaga () {
   yield [
+    zoneData.sagas.watchAndUpdateZoneJourneys(),
+    zoneData.sagas.getInitialZoneJourneys(),
     zoneData.sagas.getZoneCompositions(),
     map.sagas.displayZoneCompositions()
   ]
