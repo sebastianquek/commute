@@ -1,10 +1,9 @@
-import DatetimeManager from './components/DatetimeManager'
-import DatetimeSlider from './components/DatetimeSlider'
-import DatetimePicker from './components/DatetimePicker'
 import * as actionTypes from './actionTypes'
 import * as actions from './actions'
 import * as reducer from './reducer'
+import * as sagas from './sagas'
 import * as selectors from './selectors'
-export default {actionTypes, actions, reducer, selectors}
+import DatetimeManager from './components/DatetimeManager'
 
-export { DatetimeManager, DatetimeSlider, DatetimePicker }
+export default {actionTypes, actions, reducer, sagas, selectors}
+export { DatetimeManager }

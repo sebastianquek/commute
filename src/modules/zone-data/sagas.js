@@ -16,7 +16,7 @@ export function * watchAndUpdateZoneJourneys () {
     let originZoneIds = []
     let destinationZoneIds = []
 
-    // Get current time window
+    // Get current brushed time window
     const dateDomain = yield select(datetimeManager.selectors.brushedDateDomainSelector)
     const startTime = moment(dateDomain[0])
     const duration = moment.duration(moment(dateDomain[1]).diff(startTime))
@@ -38,16 +38,16 @@ export function * watchAndUpdateZoneJourneys () {
   }
 }
 
+// Called once on initialisation of the app
+export function * getInitialZoneJourneys () {
+  yield put(requestZoneJourneys())
+}
+
 async function fetchZoneJourneys (originZoneIds, destinationZoneIds, startTime, duration) {
   const query = `http://localhost:1337/api/v2/journeys?origins=${originZoneIds}&destinations=${destinationZoneIds}&startTime=${encodeURIComponent(startTime.format())}&duration=${duration.toISOString()}`
   const res = await fetch(query)
   const resJson = await res.json()
   return resJson
-}
-
-// Called once on initialisation of the app
-export function * getInitialZoneJourneys () {
-  yield put(requestZoneJourneys())
 }
 
 async function fetchZoneCompositions () {

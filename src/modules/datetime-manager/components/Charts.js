@@ -14,10 +14,6 @@ class Charts extends React.Component {
     }
   }
 
-  componentDidMount () {
-    this.props.fetchRidership()
-  }
-
   componentWillReceiveProps (newProps) {
     const numKeysInNew = Object.keys(newProps.data).reduce((length, key) => length + Object.keys(newProps.data[key]).length, 0)
     const numKeysInOld = Object.keys(this.props.data).reduce((length, key) => length + Object.keys(this.props.data[key]).length, 0)
@@ -171,7 +167,6 @@ Charts.propTypes = {
   zoneColors: PropTypes.object.isRequired,
   zoomDomain: PropTypes.object.isRequired,
   maxY: PropTypes.number.isRequired,
-  fetchRidership: PropTypes.func.isRequired,
   setDatetimeZoomDomain: PropTypes.func.isRequired
 }
 
