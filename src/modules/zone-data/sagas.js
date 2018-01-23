@@ -17,6 +17,7 @@ export function * watchAndUpdateZoneJourneys () {
     const { id, category } = yield take([
       REQUEST_ZONE_JOURNEYS,
       zoneManager.actionTypes.ADD_SELECTION,
+      zoneManager.actionTypes.REMOVE_SELECTION,
       datetimeManager.actionTypes.SET_DATETIME_BRUSH_DOMAIN
     ])
 
@@ -51,7 +52,9 @@ export function * getInitialZoneJourneys () {
 }
 
 async function fetchZoneJourneys (originZoneIds, destinationZoneIds, startTime, duration) {
-  const query = `http://localhost:1337/api/v2/journeys?origins=${originZoneIds}&destinations=${destinationZoneIds}&startTime=${encodeURIComponent(startTime.format())}&duration=${duration.toISOString()}`
+  let query = `http://localhost:1337/api/v2/journeys?startTime=${encodeURIComponent(startTime.format())}&duration=${duration.toISOString()}`
+  if (originZoneIds.length > 0) query += `&origins=${originZoneIds}`
+  if (destinationZoneIds.length > 0) query += `&destinations=${destinationZoneIds}`
   const res = await fetch(query)
   const resJson = await res.json()
   return resJson
