@@ -2,35 +2,46 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Map from '../components/Map'
 import { mapStyleSelector } from '../selectors'
-import { mapHasLoaded, hoverOverFeature, selectFeature, colorSelectedZones } from '../actions'
+import { mapHasLoaded, hoverOverFeature, clickFeatures } from '../actions'
 import zoneManager from '../../zone-manager'
-// import zoneData from '../../zone-data'
+import SelectionModeFeedback from '../components/SelectionModeFeedback'
 
 const MapContainer = (props) => {
   return (
-    <Map
-      {...props}
-    />
+    <div>
+      <Map
+        mapStyle={props.mapStyle}
+        mapHasLoaded={props.mapHasLoaded}
+        hoverOverFeature={props.hoverOverFeature}
+        clickFeatures={props.clickFeatures}
+      >
+      </Map>
+      {props.zoneSelectionMode &&
+        <SelectionModeFeedback
+          zoneSelectionMode={props.zoneSelectionMode}
+          resetSelectionMode={props.resetSelectionMode} />
+      }
+    </div>
   )
 }
 
-const mapStateToProps = (state, ownProps) => {
+MapContainer.propTypes = {
+  ...Map.propTypes,
+  ...SelectionModeFeedback.propTypes
+}
+
+const mapStateToProps = state => {
   return {
     mapStyle: mapStyleSelector(state),
-    zoneSelectionMode: zoneManager.selectors.zoneSelectionModeSelector(state),
-    categorizedZones: zoneManager.selectors.allZonesSelector(state),
-    ...ownProps
+    zoneSelectionMode: zoneManager.selectors.zoneSelectionModeSelector(state)
   }
 }
 
 const mapDispatchToProps = {
-  // fetchZones: zoneData.actions.fetchZones,
   mapHasLoaded,
   hoverOverFeature,
-  selectFeature,
-  addSelection: zoneManager.actions.addSelection,
-  resetSelectionMode: zoneManager.actions.resetSelectionMode,
-  colorSelectedZones
+  clickFeatures,
+  resetSelectionMode: zoneManager.actions.resetSelectionMode
 }
 
 export default connect(

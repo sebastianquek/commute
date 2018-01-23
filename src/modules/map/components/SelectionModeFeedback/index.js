@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   padding: 1em 1.4em;
   background: white;
   border-radius: 0 0 ${({theme}) => `${theme.borderRadius} ${theme.borderRadius}`};
-  position: absolute;
+  position: fixed;
   left: 120px;
   display: flex;
   animation: ${fadeSlideDown} 0.7s;
@@ -27,18 +27,18 @@ const Button = styled.button`
   font-family: inherit;
 `
 
-const SelectionModeFeedback = ({selectionMode, onClick}) => {
+const SelectionModeFeedback = ({zoneSelectionMode, resetSelectionMode}) => {
   return (
     <Wrapper>
-      <Feedback>{selectionMode === 'origins' ? 'Selecting origin zones' : 'Selecting destination zones'}</Feedback>
-      <Button onClick={onClick}>Done</Button>
+      <Feedback>{zoneSelectionMode === 'origins' ? 'Selecting origin zones' : 'Selecting destination zones'}</Feedback>
+      <Button onClick={resetSelectionMode}>Done</Button>
     </Wrapper>
   )
 }
 
 SelectionModeFeedback.propTypes = {
-  selectionMode: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired
+  zoneSelectionMode: PropTypes.string,
+  resetSelectionMode: PropTypes.func.isRequired
 }
 
 export default SelectionModeFeedback
