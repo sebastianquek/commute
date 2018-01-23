@@ -11,7 +11,14 @@ import datetimeManager from '../datetime-manager'
 
 export function * watchAndUpdateZoneJourneys () {
   while (true) {
-    const { id, category } = yield take([REQUEST_ZONE_JOURNEYS, zoneManager.actionTypes.ADD_SELECTION])
+    // Sagas run after reducers, so in this case, the new brush domain will
+    // already be updated in the state.
+    // https://redux-saga.js.org/docs/api/index.html#selectselector-args
+    const { id, category } = yield take([
+      REQUEST_ZONE_JOURNEYS,
+      zoneManager.actionTypes.ADD_SELECTION,
+      datetimeManager.actionTypes.SET_DATETIME_BRUSH_DOMAIN
+    ])
 
     let originZoneIds = []
     let destinationZoneIds = []
