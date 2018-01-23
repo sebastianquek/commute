@@ -21,21 +21,21 @@ export function * watchAndUpdateZoneJourneys () {
       datetimeManager.actionTypes.SET_DATETIME_BRUSH_DOMAIN
     ])
 
-    let originZoneIds = []
-    let destinationZoneIds = []
-
     // Get current brushed time window
     const dateDomain = yield select(datetimeManager.selectors.brushedDateDomainSelector)
     const startTime = moment(dateDomain[0])
     const duration = moment.duration(moment(dateDomain[1]).diff(startTime))
 
-    if (id && category) { // Get specific zone's journeys
-      if (category === 'origins') originZoneIds.push(id)
-      else if (category === 'destinations') destinationZoneIds.push(id)
-    } else { // Get journeys for all currently selected zones
-      originZoneIds = yield select(zoneManager.selectors.originZoneIdsSelector)
-      destinationZoneIds = yield select(zoneManager.selectors.destinationsZoneIdsSelector)
-    }
+    let originZoneIds = yield select(zoneManager.selectors.originZoneIdsSelector)
+    let destinationZoneIds = yield select(zoneManager.selectors.destinationsZoneIdsSelector)
+
+    // if (originZoneIds.length === 0 || destinationZoneIds.length === 0) {
+    //   // Get specific zone's journeys if there are no zones in the other category
+    //   if (id && category) {
+    //     if (category === 'origins') originZoneIds = [id]
+    //     else if (category === 'destinations') destinationZoneIds = [id]
+    //   }
+    // }
 
     try {
       const journeys = yield call(fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration)
