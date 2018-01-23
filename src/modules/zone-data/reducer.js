@@ -40,15 +40,19 @@ export const zoneJourneyData = (state = {}, action) => {
   switch (action.type) {
     case t.RECEIVE_ZONE_JOURNEYS:
       const newData = action.journeys.features.reduce((allData, route) => {
-        const { journey_entry_zone, ...properties } = route.properties // eslint-disable-line
+        const { journey_entry_zone, journey_exit_zone, ...properties } = route.properties // eslint-disable-line
         if (!allData.hasOwnProperty(journey_entry_zone)) {
           allData[journey_entry_zone] = []
         }
-        allData[journey_entry_zone].push(properties)
+        if (!allData.hasOwnProperty(journey_exit_zone)) {
+          allData[journey_exit_zone] = []
+        }
+        allData[journey_entry_zone].push({...properties, journey_exit_zone})
+        allData[journey_exit_zone].push({...properties, journey_entry_zone})
         return allData
       }, {})
       return {
-        ...state,
+        // ...state,
         ...newData
       }
     default:
