@@ -22,6 +22,7 @@ module.exports = {
     new CleanWebpackPlugin(['build']),
     new HtmlWebpackPlugin({
       title: 'Commute',
+      favicon: 'favicon.png',
       template: 'index.html',
       appMountId: 'root'
     })
