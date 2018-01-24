@@ -32,7 +32,7 @@ export function * getInitialRidership () {
 }
 
 async function fetchRidership (zoneIds, minDate, duration, step) {
-  const query = `http://localhost:1337/api/v2/ridership?zones=${zoneIds}&startTime=${encodeURIComponent(minDate.format())}&duration=${duration.toISOString()}&step=${step}`
+  const query = `/api/v2/ridership?zones=${zoneIds}&startTime=${encodeURIComponent(minDate.format())}&duration=${duration.toISOString()}&step=${step}`
   const res = await fetch(query)
   const data = await res.json()
   return data
