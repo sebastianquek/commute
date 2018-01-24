@@ -22,7 +22,7 @@ const sagaMiddleware = createSagaMiddleware()
 middleware.push(sagaMiddleware)
 
 if (process.env.NODE_ENV !== 'production') {
-  // middleware.push(createLogger())
+  middleware.push(createLogger())
 }
 
 const store = createStore(
@@ -65,5 +65,5 @@ ReactDOM.render(
       </div>
     </ThemeProvider>
   </Provider>,
-  document.getElementById('root')
+  document.body
 )
