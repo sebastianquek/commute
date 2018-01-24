@@ -10,5 +10,8 @@
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
+    <% if (htmlWebpackPlugin.options.appMountId) { %>
+      <div id="<%= htmlWebpackPlugin.options.appMountId%>"></div>
+    <% } %>
   </body>
 </html>

@@ -65,5 +65,5 @@ ReactDOM.render(
       </div>
     </ThemeProvider>
   </Provider>,
-  document.body
+  document.getElementById('root')
 )
