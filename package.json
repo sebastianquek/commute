@@ -43,6 +43,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.17",
     "css-loader": "^0.28.8",
     "dotenv-webpack": "^1.5.4",
     "eslint": "^4.15.0",
@@ -53,12 +54,14 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-standard": "^3.0.1",
-    "webpack-dev-server": "^2.10.1"
+    "webpack-dev-server": "^2.10.1",
+    "webpack-merge": "^4.1.1"
   },
   "scripts": {
     "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --progress --hot --open"
+    "start": "webpack-dev-server --progress --hot --open --config webpack.dev.js",
+    "build": "webpack --progress --config webpack.prod.js"
   },
   "author": "",
   "license": "ISC"
