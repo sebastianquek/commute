@@ -5,6 +5,7 @@ import styled from 'styled-components'
 const Wrapper = styled.div`
   letter-spacing: ${({theme}) => theme.typography.headerLetterSpacing};
   font-weight: bold;
+  font-family: 'Poppins', sans-serif;
   font-size: ${({theme}) => theme.typography.subHeaderSize};
   color: ${({theme}) => theme.colors.textSecondary};
   text-transform: uppercase;

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { fetchRidership, setDatetimeZoomDomain } from '../actions'
+import { setDatetimeZoomDomain } from '../actions'
 import { ridershipDataSelector, minDateSelector, maxDateSelector, zoomDomainSelector, stepSelector, maxRidershipRangeSelector } from '../selectors'
 import zoneManager from '../../zone-manager'
 import Charts from '../components/Charts'
@@ -27,7 +27,6 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = {
-  fetchRidership,
   setDatetimeZoomDomain
 }
 

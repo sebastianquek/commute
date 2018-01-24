@@ -1,14 +1,12 @@
-import moment from 'moment'
 import * as t from './actionTypes'
-import zoneManager from '../zone-manager'
-import { minDateSelector, maxDateSelector, stepSelector } from './selectors'
+import { maxDateSelector } from './selectors'
 
 export const setDatetimeBrushDomain = domain => ({
   type: t.SET_DATETIME_BRUSH_DOMAIN,
   domain
 })
 
-export const setFirstDatetime = datetime => {
+export const setStartDatetime = datetime => {
   return async (dispatch, getState) => {
     dispatch({
       type: t.SET_START_DATETIME_BRUSH_DOMAIN,
@@ -23,38 +21,21 @@ export const setDatetimeZoomDomain = domain => ({
   domain
 })
 
-export const setStep = step => {
-  return async (dispatch, getState) => {
-    dispatch({
-      type: t.SET_STEP,
-      step
-    })
-    dispatch(fetchRidership())
-  }
-}
+export const setStep = step => ({
+  type: t.SET_STEP,
+  step
+})
 
-const requestRidership = () => ({
+export const requestRidership = () => ({
   type: t.REQUEST_RIDERSHIP
 })
 
-const receiveRidership = data => ({
+export const requestRidershipError = error => ({
+  type: t.REQUEST_RIDERSHIP_ERROR,
+  error
+})
+
+export const receiveRidership = data => ({
   type: t.RECEIVE_RIDERSHIP,
   data
 })
-
-export function fetchRidership (zoneIds) {
-  return async (dispatch, getState) => {
-    const state = getState()
-    zoneIds = zoneIds || zoneManager.selectors.allZoneIdsSelector(state)
-    const minDate = moment(minDateSelector(state))
-    const maxDate = moment(maxDateSelector(state))
-    const duration = moment.duration(maxDate.diff(minDate))
-    const step = stepSelector(state)
-    dispatch(requestRidership())
-    const query = `http://localhost:1337/api/v2/ridership?zones=${zoneIds}&startTime=${encodeURIComponent(minDate.format())}&duration=${duration.toISOString()}&step=${step}`
-    const res = await fetch(query)
-    const data = await res.json()
-    // console.log(JSON.stringify(data, null, 2))
-    dispatch(receiveRidership(data))
-  }
-}

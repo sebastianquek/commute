@@ -1,20 +1,11 @@
 import * as t from './actionTypes'
-import datetimeManager from '../datetime-manager'
-import { fetchZoneJourneys } from '../zone-data/actions'
 
-export const addSelection = (id, color, category) => {
-  return async (dispatch) => {
-    dispatch({
-      type: t.ADD_SELECTION,
-      id,
-      color,
-      category
-    })
-    // TODO: Remove these dependencies
-    dispatch(datetimeManager.actions.fetchRidership(id))
-    dispatch(fetchZoneJourneys(id, category))
-  }
-}
+export const addSelection = (id, color, category) => ({
+  type: t.ADD_SELECTION,
+  id,
+  color,
+  category
+})
 
 export const removeSelection = (id, category) => ({
   type: t.REMOVE_SELECTION,

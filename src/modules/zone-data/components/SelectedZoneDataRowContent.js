@@ -3,22 +3,21 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Subheader from '../../core/components/Subheader'
 
-const Content = styled.div`
+const Section = styled.div`
   margin-bottom: 1em;
-  font-family: 'Barlow', sans-serif;
 `
 
 const SelectedZoneDataRowContent = (props) => {
   return (
     <div>
       <Subheader>Composition</Subheader>
-      <Content>
+      <Section>
         {JSON.stringify(props.zoneComposition)}
-      </Content>
+      </Section>
       <Subheader>Routes</Subheader>
-      <Content>
+      <Section>
         {JSON.stringify(props.zoneJourneys)}
-      </Content>
+      </Section>
     </div>
   )
 }

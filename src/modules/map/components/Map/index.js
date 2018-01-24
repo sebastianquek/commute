@@ -4,8 +4,6 @@ import MapGL from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import styled from 'styled-components'
 import Tooltip from '../Tooltip'
-import SelectionModeFeedback from '../SelectionModeFeedback'
-import c from '../../../../utils/randomColor'
 
 const Wrapper = styled.div`
   position: fixed;
@@ -43,9 +41,8 @@ export class Map extends Component {
     window.removeEventListener('resize', this.resize)
   }
 
-  async onLoad () {
-    await this.props.fetchZones()
-    this.props.colorSelectedZones([...this.props.categorizedZones.origins, ...this.props.categorizedZones.destinations])
+  onLoad () {
+    this.props.mapHasLoaded()
   }
 
   onViewportChange (viewport) {
@@ -75,12 +72,7 @@ export class Map extends Component {
   handleClick (event) {
     const {features} = event
     if (features) {
-      const zone = features.find(f => f.layer.id === 'zones')
-      if (this.props.zoneSelectionMode) {
-        zone && this.props.addSelection(zone.properties.OBJECTID, c.next().value, this.props.zoneSelectionMode)
-      } else {
-        zone && this.props.selectFeature(zone)
-      }
+      this.props.clickFeatures(features)
     }
   }
 
@@ -104,12 +96,6 @@ export class Map extends Component {
               {this.state.hoveredFeature.properties.SUBZONE_N}
             </Tooltip>
           }
-
-          {this.props.zoneSelectionMode &&
-            <SelectionModeFeedback
-              selectionMode={this.props.zoneSelectionMode}
-              onClick={this.props.resetSelectionMode}/>
-          }
         </MapGL>
       </Wrapper>
     )
@@ -118,14 +104,9 @@ export class Map extends Component {
 
 Map.propTypes = {
   mapStyle: PropTypes.object.isRequired,
-  zoneSelectionMode: PropTypes.string,
-  categorizedZones: PropTypes.object.isRequired,
-  fetchZones: PropTypes.func.isRequired,
+  mapHasLoaded: PropTypes.func.isRequired,
   hoverOverFeature: PropTypes.func.isRequired,
-  selectFeature: PropTypes.func.isRequired,
-  addSelection: PropTypes.func.isRequired,
-  resetSelectionMode: PropTypes.func.isRequired,
-  colorSelectedZones: PropTypes.func.isRequired
+  clickFeatures: PropTypes.func.isRequired
 }
 
 export default Map

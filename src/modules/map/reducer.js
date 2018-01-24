@@ -1,26 +1,24 @@
 import { combineReducers } from 'redux'
 import * as t from './actionTypes'
 import zoneManager from '../zone-manager'
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 import { defaultMapStyle, zonesLayer, zonesHoverLayer, zonesOriginSelectionLayer, zonesDestinationSelectionLayer, selectedZoneLayer } from './map-style'
 
 function mapStyle (state = defaultMapStyle, action) {
   switch (action.type) {
-    case t.RECEIVE_ZONES:
+    case t.ADD_ZONE_COMPOSITION:
       return state.setIn(['sources', 'zones'], fromJS({type: 'geojson', data: action.zones}))
         .update('layers', layers => layers.push(zonesLayer))
 
     case t.HOVER_OVER_ZONE:
       let newState
-      if (state.get('layers').contains(zonesHoverLayer)) {
-        let idx = state.get('layers').findIndex(item =>
-          item.get('id') === zonesHoverLayer.get('id')
-        )
-        newState = state.updateIn(['layers', idx, 'filter'], filter => {
-          filter.set(2, action.zoneId)
-        })
+      let idx = state.get('layers').findIndex(item =>
+        item.get('id') === zonesHoverLayer.get('id')
+      )
+      if (idx !== -1) {
+        newState = state.updateIn(['layers', idx, 'filter'], filter => filter.set(2, action.zoneId))
       } else {
-        const layer = zonesHoverLayer.update('filter', filter => filter.push(action.zoneId))
+        const layer = zonesHoverLayer.update('filter', filter => filter.set(2, action.zoneId))
         newState = state.update('layers', layers => layers.push(layer))
       }
       return newState

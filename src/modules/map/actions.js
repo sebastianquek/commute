@@ -1,64 +1,32 @@
 import * as t from './actionTypes'
-import * as topojson from 'topojson-client'
-import { goToAnchor } from 'react-scrollable-anchor'
-import { hoveredZoneSelector, isHoveredZoneSelectedSelector } from './selectors'
-import zoneManager from './../zone-manager'
 
-const requestZones = () => ({
-  type: t.REQUEST_ZONES
+export const mapHasLoaded = () => ({
+  type: t.MAP_HAS_LOADED
 })
 
-const receiveZones = geojson => ({
-  type: t.RECEIVE_ZONES,
+export const addZoneCompositions = (geojson) => ({
+  type: t.ADD_ZONE_COMPOSITION,
   zones: geojson
 })
 
-export function fetchZones () {
-  return async dispatch => {
-    dispatch(requestZones())
-    const res = await fetch('http://localhost:1337/api/v2/zones')
-    const resJson = await res.json()
-    const data = topojson.feature(resJson, resJson.objects.zones)
-    dispatch(receiveZones(data))
-  }
-}
+export const hoverOverFeature = feature => ({
+  type: t.HOVER_OVER_FEATURE,
+  feature
+})
 
-const hoverOverZone = zoneId => ({
+export const hoverOverZone = zoneId => ({
   type: t.HOVER_OVER_ZONE,
   zoneId
 })
 
-export function hoverOverFeature (feature) {
-  return (dispatch, getState) => {
-    if (feature.layer.id === 'zones') {
-      // Disable highlighting zones if hovered feature has been selected
-      if (!isHoveredZoneSelectedSelector(getState())) {
-        dispatch(hoverOverZone(feature.properties.OBJECTID))
-      }
-    }
-  }
-}
-
-const toggleLockHoveredZone = zoneId => ({
+export const toggleLockHoveredZone = zoneId => ({
   type: t.TOGGLE_LOCK_HOVERED_ZONE
 })
 
-export function selectFeature (feature) {
-  return (dispatch, getState) => {
-    if (feature.layer.id === 'zones') {
-      const hoveredZone = hoveredZoneSelector(getState())
-      // Toggle lock on hovered zone if the selected zone matches the current hovered zone
-      if (hoveredZone.id === feature.properties.OBJECTID) {
-        dispatch(toggleLockHoveredZone())
-      } else {
-        // Check if it's possible to scroll to selected zone
-        if (zoneManager.selectors.allZoneIdsSelector(getState()).includes(feature.properties.OBJECTID)) {
-          goToAnchor('' + feature.properties.OBJECTID, false)
-        }
-      }
-    }
-  }
-}
+export const clickFeatures = features => ({
+  type: t.CLICK_FEATURES,
+  features
+})
 
 export const colorSelectedZones = zones => ({
   type: t.COLOR_SELECTED_ZONES,
