@@ -8,6 +8,12 @@ module.exports = merge(common, {
     contentBase: [
       __dirname,
       path.resolve(__dirname, '../')
-    ]
+    ],
+    proxy: {
+      '/api/**': {
+        target: 'http://localhost:1337',
+        secure: false
+      }
+    }
   }
 })

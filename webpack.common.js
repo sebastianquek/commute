@@ -22,7 +22,8 @@ module.exports = {
     new CleanWebpackPlugin(['build']),
     new HtmlWebpackPlugin({
       title: 'Commute',
-      template: 'index.html'
+      template: 'index.html',
+      appMountId: 'root'
     })
   ],
   module: {
