@@ -24,14 +24,14 @@ const Button = styled.button`
   padding: 0.3em 0.46em;
   font-size: 0.84em;
 
-  ${({selected}) => selected && css`
+  ${({disabled}) => disabled && css`
     color: white;
     background-color: #4a90e2;
     border-color: #4a90e2;
     cursor: auto;
   `}
 
-  ${({selected}) => !selected && css`
+  ${({disabled}) => !disabled && css`
     :hover {
       box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 10px 0;
       transform: translate(0, -1px);
@@ -65,7 +65,7 @@ class Controls extends React.Component {
       if (key === this.props.step) {
         selected = true
       }
-      return <Button onClick={() => this.props.setStep(key)} key={key} selected={selected}>{this.durations[key]}</Button>
+      return <Button onClick={() => this.props.setStep(key)} key={key} disabled={selected}>{this.durations[key]}</Button>
     })
 
     return (
