@@ -12,26 +12,17 @@ const Wrapper = styled.div`
 const ZoneButtonWithDelete = styled(ZoneButton)`
 `
 
-const DeleteButton = styled.button`
-  cursor: pointer;
-  border: none;
+const OptionButtons = styled.div`
   background-color: ${({color}) => color};
   opacity: 0;
   margin-left: -1.8em;
+  margin-right: 1.8em;
   padding: 0.2em 0.2em 0.2em 1.2em;
   border-radius: 0 ${({theme}) => theme.borderRadius} ${({theme}) => theme.borderRadius};
-  font-family: inherit;
-  font-weight: bold;
   transition: 0.2s all;
   display: flex;
   align-items: center;
   transform: translate(-10px, 0);
-
-  svg {
-    fill: ${({darkText, theme}) => darkText ? theme.colors.iconPrimary : theme.colors.iconPrimaryAlt};
-    height: 1.2em;
-    width: 1.2em;
-  }
 
   ${ZoneButtonWithDelete}:hover + & {
     opacity: 1;
@@ -42,13 +33,37 @@ const DeleteButton = styled.button`
     opacity: 1;
     transform: translate(8px, 0);
   }
+`
 
-  :hover svg {
-    fill: ${({theme}) => theme.colors.iconWarning};
+const OptionButton = styled.button`
+  cursor: pointer;
+  border: none;
+  margin: 0;
+  padding: 0 0.2em;
+  background: transparent;
+  display: flex;
+  align-items: center;
+
+  svg {
+    fill: ${({darkText, theme}) => darkText ? theme.colors.iconPrimary : theme.colors.iconPrimaryAlt};
+    height: 1.3em;
+    width: 1.3em;
   }
 
   :focus {
     outline: none;
+  }
+`
+
+const EditButton = OptionButton.extend`
+  :hover svg {
+    fill: ${({theme}) => theme.colors.iconEdit};
+  }
+`
+
+const DeleteButton = OptionButton.extend`
+  :hover svg {
+    fill: ${({theme}) => theme.colors.iconWarning};
   }
 `
 
@@ -60,9 +75,14 @@ const SelectedZoneButton = (props) => {
         onClick={props.onClick}>
         {props.children}
       </ZoneButtonWithDelete>
-      <DeleteButton onClick={props.onClickDelete} color={props.color} darkText={shouldTextBeDark(props.color)}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792"><path d="M704 736v576q0 14-9 23t-23 9h-64q-14 0-23-9t-9-23v-576q0-14 9-23t23-9h64q14 0 23 9t9 23zm256 0v576q0 14-9 23t-23 9h-64q-14 0-23-9t-9-23v-576q0-14 9-23t23-9h64q14 0 23 9t9 23zm256 0v576q0 14-9 23t-23 9h-64q-14 0-23-9t-9-23v-576q0-14 9-23t23-9h64q14 0 23 9t9 23zm128 724v-948h-896v948q0 22 7 40.5t14.5 27 10.5 8.5h832q3 0 10.5-8.5t14.5-27 7-40.5zm-672-1076h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"/></svg>
-      </DeleteButton>
+      <OptionButtons color={props.color}>
+        <EditButton darkText={shouldTextBeDark(props.color)} title='Edit'>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792"><path d="M888 1184l116-116-152-152-116 116v56h96v96h56zm440-720q-16-16-33 1l-350 350q-17 17-1 33t33-1l350-350q17-17 1-33zm80 594v190q0 119-84.5 203.5t-203.5 84.5h-832q-119 0-203.5-84.5t-84.5-203.5v-832q0-119 84.5-203.5t203.5-84.5h832q63 0 117 25 15 7 18 23 3 17-9 29l-49 49q-14 14-32 8-23-6-45-6h-832q-66 0-113 47t-47 113v832q0 66 47 113t113 47h832q66 0 113-47t47-113v-126q0-13 9-22l64-64q15-15 35-7t20 29zm-96-738l288 288-672 672h-288v-288zm444 132l-92 92-288-288 92-92q28-28 68-28t68 28l152 152q28 28 28 68t-28 68z"/></svg>
+        </EditButton>
+        <DeleteButton onClick={props.onClickDelete} darkText={shouldTextBeDark(props.color)} title='Delete'>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M443.6 387.1L312.4 255.4l131.5-130c5.4-5.4 5.4-14.2 0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4 -3.7 0-7.2 1.5-9.8 4L256 197.8 124.9 68.3c-2.6-2.6-6.1-4-9.8-4 -3.7 0-7.2 1.5-9.8 4L68 105.9c-5.4 5.4-5.4 14.2 0 19.6l131.5 130L68.4 387.1c-2.6 2.6-4.1 6.1-4.1 9.8 0 3.7 1.4 7.2 4.1 9.8l37.4 37.6c2.7 2.7 6.2 4.1 9.8 4.1 3.5 0 7.1-1.3 9.8-4.1L256 313.1l130.7 131.1c2.7 2.7 6.2 4.1 9.8 4.1 3.5 0 7.1-1.3 9.8-4.1l37.4-37.6c2.6-2.6 4.1-6.1 4.1-9.8C447.7 393.2 446.2 389.7 443.6 387.1z"/></svg>
+        </DeleteButton>
+      </OptionButtons>
     </Wrapper>
   )
 }

@@ -8,6 +8,7 @@ export default {
     borderSecondary: '#B2B2B2',
     iconPrimary: '#4F4F4F',
     iconPrimaryAlt: 'white',
+    iconEdit: 'blue',
     iconWarning: 'red',
     background: 'white',
     buttonBackground: '#E8E8E8'
