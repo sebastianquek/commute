@@ -35,7 +35,7 @@ class Chart extends React.Component {
     return (
       <ChartWrapper>
         <VictoryChart
-          padding={{top: 6, bottom: 20, left: 60, right: 36}}
+          padding={{top: 8, bottom: 24, left: 60, right: 36}}
           width={this.props.width}
           height={this.props.height}
           theme={VictoryTheme.material}
@@ -104,7 +104,7 @@ class Chart extends React.Component {
                 transform: this.props.bottomChart ? 'translateY(-0.5px)' : 'translateY(0.5px)'
               },
               tickLabels: {
-                padding: 3,
+                padding: 5,
                 fontSize: `${theme.typography.baseSize * theme.typography.chartAxisTicksRemRatio}px`,
                 fontFamily: `'Barlow', sans-serif`,
                 display: this.props.bottomChart ? 'none' : 'visible'

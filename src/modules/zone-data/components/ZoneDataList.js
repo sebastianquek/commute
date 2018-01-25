@@ -11,7 +11,7 @@ const List = styled.div`
   border-left: 1px solid ${({theme}) => theme.colors.borderSecondary};
   display: flex;
   flex-direction: column;
-  padding: 0.3em;
+  padding: 0.3em 0.3em 0.3em 0.4em;
   min-height: 100vh;
   width: ${({theme}) => theme.dimensions.rightBarWidth};
   transition: 0.2s all;
