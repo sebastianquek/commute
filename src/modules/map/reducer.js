@@ -79,6 +79,8 @@ const currentZone = (state = {
       return state
     case t.TOGGLE_LOCK_HOVERED_ZONE:
       return {...state, isSelected: !state.isSelected}
+    case t.RESET_LOCK_HOVERED_ZONE:
+      return {...state, isSelected: false}
     default:
       return state
   }
