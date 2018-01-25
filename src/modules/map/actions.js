@@ -19,8 +19,12 @@ export const hoverOverZone = zoneId => ({
   zoneId
 })
 
-export const toggleLockHoveredZone = zoneId => ({
+export const toggleLockHoveredZone = () => ({
   type: t.TOGGLE_LOCK_HOVERED_ZONE
+})
+
+export const resetLockHoveredZone = () => ({
+  type: t.RESET_LOCK_HOVERED_ZONE
 })
 
 export const clickFeatures = features => ({
