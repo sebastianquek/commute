@@ -51,6 +51,10 @@ injectGlobal`
     margin: 0;
     padding: 0;
   }
+
+  button {
+    font-size: inherit;
+  }
 `
 
 configureAnchors({offset: -50})
