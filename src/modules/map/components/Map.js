@@ -87,6 +87,7 @@ export class Map extends Component {
           onLoad={this.onLoad}
           onHover={this.handleHover}
           onClick={this.handleClick}
+          doubleClickZoom={false}
           mapboxApiAccessToken={process.env.MAPBOX_TOKEN}>
 
           {this.state.hoveredFeature &&
