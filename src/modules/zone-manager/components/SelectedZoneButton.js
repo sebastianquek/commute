@@ -72,6 +72,7 @@ const SelectedZoneButton = (props) => {
     <Wrapper>
       <ZoneButtonWithDelete
         color={props.color}
+        title="Scroll to group's information"
         onClick={props.onClick}>
         {props.children}
       </ZoneButtonWithDelete>
