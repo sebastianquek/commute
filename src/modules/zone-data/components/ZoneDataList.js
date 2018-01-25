@@ -13,7 +13,7 @@ const List = styled.div`
   flex-direction: column;
   padding: 0.3em;
   min-height: 100vh;
-  width: 500px;
+  width: ${({theme}) => theme.dimensions.rightBarWidth};
   transition: 0.2s all;
   background: white;
   z-index: 2;

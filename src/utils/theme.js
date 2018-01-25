@@ -13,15 +13,19 @@ export default {
     buttonBackground: '#E8E8E8'
   },
   typography: {
-    baseSize: '12px',
+    baseSize: window.innerWidth <= 1280 ? 11 : 13,
     headerLetterSpacing: '0.175em',
     headerSize: '1em',
     subHeaderSize: '0.7em',
-    bodySize: '0.88em'
+    bodySize: '0.88em',
+    chartAxisLabelRemRatio: 0.9,
+    chartAxisTicksRemRatio: 0.84,
+    chartTooltipRemRatio: 0.84
+
   },
   dimensions: {
-    bottomBarMaxHeight: '300px',
-    rightBarMaxWidth: '200px'
+    bottomBarHeight: '22rem',
+    rightBarWidth: '34rem'
   },
   borderRadius: '0.3em'
 }

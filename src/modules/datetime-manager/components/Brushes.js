@@ -24,7 +24,7 @@ const Feedback = styled.span`
   text-transform: uppercase;
   letter-spacing: ${({theme}) => theme.typography.headerLetterSpacing};
   font-weight: bold;
-  font-size: 0.6em;
+  font-size: 0.7em;
   color: ${({theme}) => theme.colors.textWarning};
   opacity: ${({visible}) => visible ? 1 : 0};
   transform: ${({visible}) => visible ? 'translateY(0)' : 'translateY(-20px)'};
@@ -34,13 +34,13 @@ const Feedback = styled.span`
 
 const DomainRange = styled.span`
   position: absolute;
-  top: -18px;
+  top: -1.2rem;
   width: 100%;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: ${({theme}) => theme.typography.headerLetterSpacing};
   font-weight: bold;
-  font-size: 0.7em;
+  font-size: ${({theme}) => theme.typography.bodySize};
   color: ${({theme}) => theme.colors.textPrimary};
   transition: all 0.7s;
   font-family: 'Barlow', sans-serif;
@@ -229,7 +229,7 @@ class Brushes extends React.Component {
         <VictoryChart
           padding={{top: 0, bottom: 0, left: 0, right: 0}}
           width={this.props.width}
-          height={this.props.height / 7.5}
+          height={28}
           domain={this.props.zoomDomain}
           containerComponent={
             <VictoryBrushContainer
@@ -237,7 +237,7 @@ class Brushes extends React.Component {
               brushDomain={this.props.brushDomain}
               brushDimension='x'
               onBrushDomainChange={this.handleBrush}
-              style={{height: this.props.height / 7.5, marginLeft: '58px', marginRight: '34px', marginBottom: '1.1em'}}
+              style={{height: 28, marginLeft: '60px', marginRight: '36px', marginBottom: '14px'}}
               brushStyle={{stroke: 'transparent', fill: 'black', fillOpacity: 0.1, cursor: this.state.allowDrag ? 'move' : 'auto'}}
             />
           }

@@ -14,7 +14,7 @@ const FixedWrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  bottom: 380px;
+  bottom: ${({theme}) => theme.dimensions.bottomBarHeight};
   border-right: 1px solid ${({theme}) => theme.colors.borderSecondary};
   display: flex;
   flex-direction: column;

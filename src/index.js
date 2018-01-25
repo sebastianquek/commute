@@ -44,7 +44,7 @@ injectGlobal`
   html {
     font-family: 'Poppins', sans-serif;
     -webkit-text-size-adjust: 100%;
-    font-size: 13px;
+    font-size: ${theme.typography.baseSize}px;
   }
 
   body {
@@ -53,7 +53,7 @@ injectGlobal`
   }
 `
 
-configureAnchors({offset: -60})
+configureAnchors({offset: -50})
 
 ReactDOM.render(
   <Provider store={store}>

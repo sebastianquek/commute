@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   font-size: ${({theme}) => theme.typography.subHeaderSize};
   color: ${({theme}) => theme.colors.textSecondary};
   text-transform: uppercase;
-  margin-bottom: 0.3em;
+  margin-bottom: 0.4em;
 `
 
 const Subheader = ({children}) => {

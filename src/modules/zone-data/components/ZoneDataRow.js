@@ -6,7 +6,7 @@ import { fadeSlideUp } from '../../../utils/animations'
 
 const Row = styled.div`
   margin: 1.8em 1em 0.8em 1.4em;
-  padding: 1.8em 1em 1em 1em;
+  padding: 1.6em 1em 1em 1em;
   border-radius: ${({theme}) => theme.borderRadius};
   border: 1px ${({dottedBorder}) => dottedBorder ? 'dashed' : 'solid'} ${({color}) => color};
   position: relative;
