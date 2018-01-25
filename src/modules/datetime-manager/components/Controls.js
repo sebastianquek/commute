@@ -11,8 +11,6 @@ const Wrapper = styled.div`
 
 const ButtonGroup = styled.div`
   display: flex;
-  margin-bottom: 0.9em;
-  margin-top: 0.2em;
 `
 
 const Button = styled.button`

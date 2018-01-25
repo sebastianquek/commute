@@ -35,7 +35,7 @@ class Chart extends React.Component {
     return (
       <ChartWrapper>
         <VictoryChart
-          padding={{top: 12, bottom: 30, left: 60, right: 36}}
+          padding={{top: 8, bottom: 24, left: 60, right: 36}}
           width={this.props.width}
           height={this.props.height}
           theme={VictoryTheme.material}
@@ -53,8 +53,15 @@ class Chart extends React.Component {
                   orientation='left'
                   cornerRadius={2}
                   dx={2}
-                  flyoutStyle={{fill: 'white', stroke: theme.colors.borderSecondary}}
-                  style={{fontFamily: `'Barlow', sans-serif`}}
+                  flyoutStyle={{
+                    fill: 'white',
+                    stroke: theme.colors.borderSecondary
+                  }}
+                  style={{
+                    fontSize: `${theme.typography.baseSize * theme.typography.chartTooltipRemRatio}px`,
+                    fontFamily: `'Barlow', sans-serif`,
+                    padding: 0
+                  }}
                   pointerLength={5}
                   pointerWidth={10}/>
               }
@@ -66,9 +73,15 @@ class Chart extends React.Component {
             label={this.props.yLabel}
             tickFormat={formatYAxisTick}
             style={{
-              tickLabels: {fontFamily: `'Barlow', sans-serif`},
+              axis: {
+                strokeWidth: 1.3
+              },
+              tickLabels: {
+                fontSize: `${theme.typography.baseSize * theme.typography.chartAxisTicksRemRatio}px`,
+                fontFamily: `'Barlow', sans-serif`
+              },
               axisLabel: {
-                fontSize: '12px',
+                fontSize: `${theme.typography.baseSize * theme.typography.chartAxisLabelRemRatio}px`,
                 padding: 45,
                 fontFamily: `'Poppins', sans-serif`,
                 fontWeight: 'bold',
@@ -83,8 +96,16 @@ class Chart extends React.Component {
             tickFormat={formatTime}
             scale={{x: 'time'}}
             style={{
+              axis: {
+                strokeWidth: 1.3,
+                transform: this.props.bottomChart ? 'translateY(-0.5px)' : 'translateY(0.5px)'
+              },
+              ticks: {
+                transform: this.props.bottomChart ? 'translateY(-0.5px)' : 'translateY(0.5px)'
+              },
               tickLabels: {
-                padding: 10,
+                padding: 5,
+                fontSize: `${theme.typography.baseSize * theme.typography.chartAxisTicksRemRatio}px`,
                 fontFamily: `'Barlow', sans-serif`,
                 display: this.props.bottomChart ? 'none' : 'visible'
               }

@@ -44,15 +44,20 @@ injectGlobal`
   html {
     font-family: 'Poppins', sans-serif;
     -webkit-text-size-adjust: 100%;
+    font-size: ${theme.typography.baseSize}px;
   }
 
   body {
     margin: 0;
     padding: 0;
   }
+
+  button {
+    font-size: inherit;
+  }
 `
 
-configureAnchors({offset: -60})
+configureAnchors({offset: -50})
 
 ReactDOM.render(
   <Provider store={store}>
