@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { fadeSlideDown } from '../../../../utils/animations'
+import { fadeSlideDown } from '../../../utils/animations'
 
 const Wrapper = styled.div`
   padding: 1em 1.4em;

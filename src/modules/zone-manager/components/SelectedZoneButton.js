@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { withTheme } from 'styled-components'
-import ZoneButton from '../../../core/components/ZoneButton'
-import { shouldTextBeDark } from '../../../../utils/randomColor'
+import ZoneButton from '../../core/components/ZoneButton'
+import { shouldTextBeDark } from '../../../utils/randomColor'
 
 const Wrapper = styled.div`
   display: flex;

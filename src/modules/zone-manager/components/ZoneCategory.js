@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import AddZoneButton from '../AddZoneButton'
-import {fadeSlideUp} from '../../../../utils/animations'
+import AddZoneButton from './AddZoneButton'
+import {fadeSlideUp} from '../../../utils/animations'
 
 const Container = styled.div`
   display: flex;

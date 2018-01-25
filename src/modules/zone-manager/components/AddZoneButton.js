@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ZoneButton from '../../../core/components/ZoneButton'
+import ZoneButton from '../../core/components/ZoneButton'
 import styled from 'styled-components'
 
 const PlusSign = styled.span`

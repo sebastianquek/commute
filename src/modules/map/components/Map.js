@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import MapGL from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import styled from 'styled-components'
-import Tooltip from '../Tooltip'
+import Tooltip from './Tooltip'
 
 const Wrapper = styled.div`
   position: fixed;

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import ZoneCategory from '../ZoneCategory'
+import ZoneCategory from './ZoneCategory'
 
 const AbsoluteWrapper = styled.div`
   position: absolute;
