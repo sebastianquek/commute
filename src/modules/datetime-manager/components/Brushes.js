@@ -229,7 +229,7 @@ class Brushes extends React.Component {
         <VictoryChart
           padding={{top: 0, bottom: 0, left: 0, right: 0}}
           width={this.props.width}
-          height={32}
+          height={34}
           domain={this.props.zoomDomain}
           containerComponent={
             <VictoryBrushContainer
@@ -237,7 +237,7 @@ class Brushes extends React.Component {
               brushDomain={this.props.brushDomain}
               brushDimension='x'
               onBrushDomainChange={this.handleBrush}
-              style={{height: 32, marginLeft: '60px', marginRight: '36px', marginBottom: '16px'}}
+              style={{height: 34, marginLeft: '60px', marginRight: '36px', marginBottom: '16px'}}
               brushStyle={{stroke: 'transparent', fill: 'black', fillOpacity: 0.1, cursor: this.state.allowDrag ? 'move' : 'auto'}}
             />
           }
