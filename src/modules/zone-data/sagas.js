@@ -37,6 +37,7 @@ export function * watchAndUpdateZoneJourneys () {
     //   }
     // }
 
+    if (originZoneIds.length === 0 && destinationZoneIds.length === 0) continue
     try {
       const journeys = yield call(fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration)
       yield put(receiveZoneJourneys(journeys))
