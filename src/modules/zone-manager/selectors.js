@@ -1,47 +1,75 @@
 import { createSelector } from 'reselect'
 
-export const originZonesSelector = state => state.zoneManager.categorizedZones.origins
-export const destinationsZonesSelector = state => state.zoneManager.categorizedZones.destinations
 export const zoneSelectionModeSelector = state => state.zoneManager.zoneSelectionMode
 
-export const numOriginZonesSelector = createSelector(
-  originZonesSelector,
-  originZones => originZones.length
-)
+export const originGroupsSelector = state => state.zoneManager.categorizedZones.origins
+export const destinationGroupsSelector = state => state.zoneManager.categorizedZones.destinations
 
 export const originZoneIdsSelector = createSelector(
-  originZonesSelector,
-  origins => origins.map(o => o.id)
+  originGroupsSelector,
+  groups => groups.reduce((allZoneIds, g) => {
+    return [...allZoneIds, ...g.zoneIds]
+  }, [])
 )
 
-export const destinationsZoneIdsSelector = createSelector(
-  destinationsZonesSelector,
-  destinations => destinations.map(d => d.id)
+export const destinationZoneIdsSelector = createSelector(
+  destinationGroupsSelector,
+  groups => groups.reduce((allZoneIds, g) => {
+    return [...allZoneIds, ...g.zoneIds]
+  }, [])
 )
 
-export const allZonesSelector = createSelector(
-  originZonesSelector,
-  destinationsZonesSelector,
+export const originGroupIdsSelector = createSelector(
+  originGroupsSelector,
+  groups => groups.map(g => g.groupId)
+)
+
+export const destinationGroupIdsSelector = createSelector(
+  destinationGroupsSelector,
+  groups => groups.map(g => g.groupId)
+)
+
+export const allGroupsSelector = createSelector(
+  originGroupsSelector,
+  destinationGroupsSelector,
   (origins, destinations) => [
     ...origins,
     ...destinations
   ]
 )
 
+export const allGroupIdsSelector = createSelector(
+  originGroupIdsSelector,
+  destinationGroupIdsSelector,
+  (origins, destinations) => [
+    ...origins,
+    ...destinations
+  ]
+)
+
+// export const allZonesSelector = createSelector(
+//   originZonesSelector,
+//   destinationsZonesSelector,
+//   (origins, destinations) => [
+//     ...origins,
+//     ...destinations
+//   ]
+// )
+
 export const allZoneIdsSelector = createSelector(
   originZoneIdsSelector,
-  destinationsZoneIdsSelector,
+  destinationZoneIdsSelector,
   (originIds, destinationIds) => [
     ...originIds,
     ...destinationIds
   ]
 )
 
-export const zoneColorsSelector = createSelector(
-  originZonesSelector,
-  destinationsZonesSelector,
+export const groupColorsSelector = createSelector(
+  originGroupsSelector,
+  destinationGroupsSelector,
   (origins, destinations) => ({
-    ...origins.reduce((obj, o) => ({...obj, [o.id]: o.color}), {}),
-    ...destinations.reduce((obj, d) => ({...obj, [d.id]: d.color}), {})
+    ...origins.reduce((obj, o) => ({...obj, [o.groupId]: o.color}), {}),
+    ...destinations.reduce((obj, d) => ({...obj, [d.groupId]: d.color}), {})
   })
 )

@@ -6,20 +6,23 @@ import ZoneFeedback from './ZoneFeedback'
 import SelectedZoneDataRowContent from './SelectedZoneDataRowContent'
 
 const OriginZonesDataRows = (props) => {
-  if (props.zoneCompositions.length > 0) {
-    return props.zoneCompositions.map((z, idx) =>
-      <ScrollableAnchor key={z.id} id={'' + z.id}>
-        <ZoneDataRow
-          key={z.id}
-          zoneName={z.SUBZONE_N}
-          zoneNum={idx + 1}
-          zoneColor={z.color}>
-          <SelectedZoneDataRowContent
-            zoneComposition={z}
-            zoneJourneys={props.zoneJourneys[idx]} />
-        </ZoneDataRow>
-      </ScrollableAnchor>
-    )
+  const keys = Object.keys(props.zoneCompositions)
+  if (keys.length > 0) {
+    return keys.map((key, idx) => {
+      const group = props.zoneCompositions[key]
+      return (
+        <ScrollableAnchor key={key} id={'' + key}>
+          <ZoneDataRow
+            zoneName={group.zoneData[0] ? group.zoneData[0].SUBZONE_N : ''}
+            zoneNum={idx + 1}
+            zoneColor={group.color}>
+            <SelectedZoneDataRowContent
+              zoneComposition={group.zoneData}
+              zoneJourneys={props.zoneJourneys[key].zoneData} />
+          </ZoneDataRow>
+        </ScrollableAnchor>
+      )
+    })
   } else {
     return <ZoneFeedback
       zoneDataContainer={<ZoneDataRow />}
@@ -28,8 +31,8 @@ const OriginZonesDataRows = (props) => {
 }
 
 OriginZonesDataRows.propTypes = {
-  zoneCompositions: PropTypes.array,
-  zoneJourneys: PropTypes.array
+  zoneCompositions: PropTypes.object,
+  zoneJourneys: PropTypes.object
 }
 
 export default OriginZonesDataRows

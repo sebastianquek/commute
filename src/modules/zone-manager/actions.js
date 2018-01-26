@@ -1,16 +1,28 @@
 import * as t from './actionTypes'
 
-export const addSelection = (id, color, category) => ({
-  type: t.ADD_SELECTION,
-  id,
+export const addGroup = (groupId, color, category) => ({
+  type: t.ADD_GROUP,
+  groupId,
   color,
   category
 })
 
-export const removeSelection = (id, category) => ({
-  type: t.REMOVE_SELECTION,
-  id,
+export const removeGroup = (groupId, category) => ({
+  type: t.REMOVE_GROUP,
+  groupId,
   category
+})
+
+export const addZoneToGroup = (zoneId, groupId) => ({
+  type: t.ADD_ZONE_TO_GROUP,
+  zoneId,
+  groupId
+})
+
+export const removeZoneFromGroup = (zoneId, groupId) => ({
+  type: t.REMOVE_ZONE_FROM_GROUP,
+  zoneId,
+  groupId
 })
 
 export const resetSelectionMode = () => ({
@@ -23,4 +35,13 @@ export const setOriginSelectionMode = () => ({
 
 export const setDestinationSelectionMode = () => ({
   type: t.SET_DESTINATION_SELECTION_MODE
+})
+
+export const setEditingGroup = group => ({
+  type: t.SET_EDITING_GROUP,
+  group
+})
+
+export const resetEditingGroup = () => ({
+  type: t.RESET_EDITING_GROUP
 })

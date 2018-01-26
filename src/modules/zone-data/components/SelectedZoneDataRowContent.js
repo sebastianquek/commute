@@ -23,8 +23,8 @@ const SelectedZoneDataRowContent = (props) => {
 }
 
 SelectedZoneDataRowContent.propTypes = {
-  zoneComposition: PropTypes.object,
-  zoneJourneys: PropTypes.object
+  zoneComposition: PropTypes.array,
+  zoneJourneys: PropTypes.array
 }
 
 export default SelectedZoneDataRowContent

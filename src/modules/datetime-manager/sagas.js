@@ -7,7 +7,7 @@ import zoneManager from '../zone-manager'
 
 export function * watchAndUpdateRidership () {
   while (true) {
-    const { id, step } = yield take([REQUEST_RIDERSHIP, SET_STEP, zoneManager.actionTypes.ADD_SELECTION])
+    const { id, step } = yield take([REQUEST_RIDERSHIP, SET_STEP, zoneManager.actionTypes.ADD_ZONE_TO_GROUP])
 
     const zoneIds = id ? [id] : yield select(zoneManager.selectors.allZoneIdsSelector)
 

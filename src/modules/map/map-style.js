@@ -54,8 +54,8 @@ export const zonesDestinationSelectionLayer = fromJS({
   filter: ['!in', 'OBJECTID', '']
 })
 
-export const selectedZoneLayer = (id, color = '#eee') => fromJS({
-  id: '' + id,
+export const selectedGroupLayer = (groupId, color = '#eee', zoneIds = []) => fromJS({
+  id: '' + groupId,
   source: 'zones',
   type: 'fill',
   // interactive: true,
@@ -63,5 +63,5 @@ export const selectedZoneLayer = (id, color = '#eee') => fromJS({
     'fill-color': color,
     'fill-opacity': 0.8
   },
-  filter: ['in', 'OBJECTID', id]
+  filter: ['in', 'OBJECTID', ...zoneIds]
 })

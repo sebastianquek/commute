@@ -32,7 +32,7 @@ export const clickFeatures = features => ({
   features
 })
 
-export const colorSelectedZones = zones => ({
-  type: t.COLOR_SELECTED_ZONES,
-  zones
+export const colorSelectedGroups = groups => ({
+  type: t.COLOR_SELECTED_GROUPS,
+  groups
 })

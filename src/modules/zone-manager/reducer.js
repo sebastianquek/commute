@@ -15,28 +15,74 @@ const zoneSelectionMode = (state = null, action) => {
   }
 }
 
+const editingGroup = (state = null, action) => {
+  switch (action.type) {
+    case t.SET_EDITING_GROUP:
+      return action.groupId
+    case t.RESET_EDITING_GROUP:
+      return null
+    default:
+      return state
+  }
+}
+
 const initialZones = {
-  origins: [{id: 1, color: c.next().value}, {id: 2, color: c.next().value}],
-  destinations: [{id: 3, color: c.next().value}, {id: 4, color: c.next().value}, {id: 5, color: c.next().value}]
+  origins: [{groupId: 1, color: c.next().value, zoneIds: [1, 2]}, {groupId: 2, color: c.next().value, zoneIds: [3, 4, 5]}],
+  destinations: []
 }
 const categorizedZones = (state = initialZones, action) => {
   switch (action.type) {
-    case t.ADD_SELECTION:
-      if (!state[action.category].map(z => z.id).includes(action.id)) {
-        return {
-          ...state,
-          [action.category]: [...state[action.category], {id: action.id, color: action.color}]
+    case t.ADD_GROUP:
+      return {
+        ...state,
+        [action.category]: [
+          ...state[action.category],
+          {
+            groupId: action.groupId,
+            color: action.color,
+            zoneIds: []
+          }
+        ]
+      }
+
+    case t.ADD_ZONE_TO_GROUP:
+      for (let category of Object.keys(state)) {
+        const group = state[category].find(g => g.groupId === action.groupId)
+        if (group) {
+          group.zoneIds.push(action.zoneId)
+          return {
+            ...state,
+            [category]: [
+              ...state[category].filter(g => g.groupId !== action.groupId),
+              group
+            ]
+          }
         }
       }
       return state
-    case t.REMOVE_SELECTION:
-      if (state[action.category].map(z => z.id).includes(action.id)) {
-        return {
-          ...state,
-          [action.category]: state[action.category].filter(z => z.id !== action.id)
+
+    case t.REMOVE_GROUP:
+      return {
+        ...state,
+        [action.category]: state[action.category].filter(g => g.groupId !== action.groupId)
+      }
+
+    case t.REMOVE_ZONE_FROM_GROUP:
+      for (let category of Object.keys(state)) {
+        const group = state[category].find(g => g.groupId === action.groupId)
+        if (group) {
+          group.zoneIds.splice(group.zoneIds.indexOf(action.zoneId), 1)
+          return {
+            ...state,
+            [category]: [
+              ...state[category].filter(g => g.groupId !== action.groupId),
+              group
+            ]
+          }
         }
       }
       return state
+
     default:
       return state
   }
@@ -44,5 +90,6 @@ const categorizedZones = (state = initialZones, action) => {
 
 export default combineReducers({
   zoneSelectionMode,
+  editingGroup,
   categorizedZones
 })

@@ -103,7 +103,7 @@ class Charts extends React.Component {
           <VictoryBar
             key={id}
             data={data}
-            style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0, width: this.state.barWidth}}}
+            style={{data: {fill: this.props.groupColors[id], strokeWidth: 0, width: this.state.barWidth}}}
             alignment='start'
           />
         )
@@ -118,7 +118,7 @@ class Charts extends React.Component {
             key={id}
             data={data}
             y={d => d.y * -1}
-            style={{data: {fill: this.props.zoneColors[id], strokeWidth: 0, width: this.state.barWidth}}}
+            style={{data: {fill: this.props.groupColors[id], strokeWidth: 0, width: this.state.barWidth}}}
             alignment='start'
           />
         )
@@ -164,7 +164,7 @@ Charts.propTypes = {
   maxDate: PropTypes.object.isRequired,
   step: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
-  zoneColors: PropTypes.object.isRequired,
+  groupColors: PropTypes.object.isRequired,
   zoomDomain: PropTypes.object.isRequired,
   maxY: PropTypes.number.isRequired,
   setDatetimeZoomDomain: PropTypes.func.isRequired
