@@ -16,8 +16,8 @@ const zoneSelectionMode = (state = null, action) => {
 }
 
 const initialZones = {
-  origins: [{id: 1, color: c.next().value}, {id: 2, color: c.next().value}],
-  destinations: [{id: 3, color: c.next().value}, {id: 4, color: c.next().value}, {id: 5, color: c.next().value}]
+  origins: [],
+  destinations: []
 }
 const categorizedZones = (state = initialZones, action) => {
   switch (action.type) {
