@@ -2,7 +2,7 @@ import moment from 'moment'
 import * as t from './actionTypes'
 
 export const datetimeBrushDomain = (state = {
-  x: [moment('2017-10-21T00:00:00+08:00').toDate(), moment('2017-10-25T00:00:00+08:00').toDate()],
+  x: [moment('2017-10-22T18:00:00+08:00').toDate(), moment('2017-10-23T06:00:00+08:00').toDate()],
   y: [0, 1]
 }, action) => {
   switch (action.type) {

@@ -11,6 +11,8 @@ export function * watchAndUpdateRidership () {
 
     const zoneIds = id ? [id] : yield select(zoneManager.selectors.allZoneIdsSelector)
 
+    if (zoneIds.length === 0) continue
+
     // Get current time window
     const minDate = moment(yield select(minDateSelector))
     const maxDate = moment(yield select(maxDateSelector))

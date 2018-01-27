@@ -1,17 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setDatetimeZoomDomain } from '../actions'
 import { ridershipDataSelector, minDateSelector, maxDateSelector, zoomDomainSelector, stepSelector, maxRidershipRangeSelector } from '../selectors'
 import zoneManager from '../../zone-manager'
 import Charts from '../components/Charts'
-
-const ChartsContainer = props => <Charts {...props} />
-
-ChartsContainer.propTypes = {
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired
-}
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -33,4 +24,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ChartsContainer)
+)(Charts)
