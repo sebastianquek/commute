@@ -45,11 +45,14 @@ function * handleClick ({ features }) {
 }
 
 function * handleHover ({ feature }) {
-  if (feature.layer.id === 'zones') {
-    // Disable highlighting zones if hovered feature has been selected
-    const isSelected = yield select(isHoveredZoneSelectedSelector)
-    if (!isSelected) {
-      yield put(hoverOverZone(feature.properties.OBJECTID))
+  const mode = yield select(zoneManager.selectors.zoneSelectionModeSelector)
+  if (mode !== null) {
+    if (feature.layer.id === 'zones') {
+      // Disable highlighting zones if hovered feature has been selected
+      const isSelected = yield select(isHoveredZoneSelectedSelector)
+      if (!isSelected) {
+        yield put(hoverOverZone(feature.properties.OBJECTID))
+      }
     }
   }
 }

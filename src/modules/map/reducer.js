@@ -42,9 +42,16 @@ function mapStyle (state = defaultMapStyle, action) {
       return newState
 
     case zoneManager.actionTypes.RESET_SELECTION_MODE:
-      return state.update('layers', layers =>
+      newState = state.update('layers', layers =>
         layers.filterNot(l => l === zonesOriginSelectionLayer || l === zonesDestinationSelectionLayer)
       )
+      idx = newState.get('layers').findIndex(item =>
+        item.get('id') === zonesHoverLayer.get('id')
+      )
+      if (idx !== -1) {
+        return newState.updateIn(['layers', idx, 'filter'], filter => filter.delete(2))
+      }
+      return newState
 
     case t.COLOR_SELECTED_GROUPS:
       return action.groups.reduce((newState, g) => {
