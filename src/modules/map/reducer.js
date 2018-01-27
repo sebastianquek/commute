@@ -8,7 +8,7 @@ function mapStyle (state = defaultMapStyle, action) {
   switch (action.type) {
     case t.ADD_ZONE_COMPOSITION:
       return state.setIn(['sources', 'zones'], fromJS({type: 'geojson', data: action.zones}))
-        .update('layers', layers => layers.push(zonesLayer))
+        // .update('layers', layers => layers.push(zonesLayer))
 
     case t.HOVER_OVER_ZONE:
       let idx = state.get('layers').findIndex(item =>

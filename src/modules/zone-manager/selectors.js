@@ -73,3 +73,13 @@ export const groupColorsSelector = createSelector(
     ...destinations.reduce((obj, d) => ({...obj, [d.groupId]: d.color}), {})
   })
 )
+
+export const nextOriginGroupIdSelector = createSelector(
+  originGroupIdsSelector,
+  groupIds => groupIds.length > 0 ? Math.max(...groupIds) + 1 : 0
+)
+
+export const nextDestinationGroupIdSelector = createSelector(
+  destinationGroupIdsSelector,
+  groupIds => groupIds.length > 0 ? Math.max(...groupIds) + 1 : 0
+)

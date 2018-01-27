@@ -18,41 +18,48 @@ export function * updateMapOnLoad () {
 }
 
 function * handleClick ({ features }) {
-  const zone = features.find(f => f.layer.id === 'zones')
+  const zone = features.find(f => f.layer.source === 'zones')
 
   if (zone) {
     const selectionMode = yield select(zoneManager.selectors.zoneSelectionModeSelector)
+    const groups = yield select(zoneManager.selectors.allGroupsSelector)
     const zoneId = zone.properties.OBJECTID
+    const groupOfZone = groups.find(g => g.zoneIds.includes(zoneId)) || -1
     const allGroupIds = yield select(zoneManager.selectors.allGroupIdsSelector)
 
-    const isSelected = yield select(isHoveredZoneSelectedSelector)
-    if (!isSelected) yield put(hoverOverZone(zoneId))
-    const hoveredZone = yield select(hoveredZoneSelector)
+    // const isSelected = yield select(isHoveredZoneSelectedSelector)
+    // if (!isSelected) yield put(hoverOverZone(zoneId))
+    // const hoveredZone = yield select(hoveredZoneSelector)
 
-    if (allGroupIds.includes(zoneId)) {
-      // If existing zone, scroll to zone
-      goToAnchor('' + zoneId, false)
+    if (allGroupIds.includes(groupOfZone.groupId)) {
+      // If existing group, scroll to group
+      goToAnchor('' + groupOfZone.groupId, false)
     } else if (selectionMode) {
-      // If new zone and in a zone selection mode, categorise zone
-      yield put(zoneManager.actions.addGroup(zoneId, c.next().value, selectionMode))
-      yield put(zoneManager.actions.addZoneToGroup(zoneId, zoneId))
-      if (hoveredZone.id === zoneId) yield put(resetLockHoveredZone())
-    } else if (hoveredZone.id === zoneId) {
-      // If the selected zone matches the current hovered zone, toggle lock on hovered zone
-      yield put(toggleLockHoveredZone())
+      // If new group and in a zone selection mode, categorise group and zone
+      let newGroupId = 0
+      if (selectionMode === 'origins') newGroupId = yield select(zoneManager.selectors.nextOriginGroupIdSelector)
+      else if (selectionMode === 'destinations') newGroupId = yield select(zoneManager.selectors.nextDestinationGroupIdSelector)
+
+      yield put(zoneManager.actions.addGroup(newGroupId, c.next().value, selectionMode))
+      yield put(zoneManager.actions.addZoneToGroup(zoneId, newGroupId))
+      // if (hoveredZone.id === zoneId) yield put(resetLockHoveredZone())
     }
+    // } else if (hoveredZone.id === zoneId) {
+    //   //If the selected zone matches the current hovered zone, toggle lock on hovered zone
+    //   yield put(toggleLockHoveredZone())
+    // }
   }
 }
 
 function * handleHover ({ feature }) {
   const mode = yield select(zoneManager.selectors.zoneSelectionModeSelector)
   if (mode !== null) {
-    if (feature.layer.id === 'zones') {
+    if (feature.layer.source === 'zones') {
       // Disable highlighting zones if hovered feature has been selected
-      const isSelected = yield select(isHoveredZoneSelectedSelector)
-      if (!isSelected) {
-        yield put(hoverOverZone(feature.properties.OBJECTID))
-      }
+      // const isSelected = yield select(isHoveredZoneSelectedSelector)
+      // if (!isSelected) {
+      yield put(hoverOverZone(feature.properties.OBJECTID))
+      // }
     }
   }
 }

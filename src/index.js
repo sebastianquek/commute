@@ -57,7 +57,7 @@ injectGlobal`
   }
 `
 
-configureAnchors({offset: -50})
+configureAnchors({offset: -60})
 
 ReactDOM.render(
   <Provider store={store}>
