@@ -19,7 +19,10 @@ const ZoneManagerContainer = ({
           key={group.groupId}
           color={group.color}
           onClick={() => goToAnchor('' + group.groupId, false)}
-          onClickEdit={() => setEditingGroup(group.groupId)}
+          onClickEdit={() => {
+            goToAnchor('' + group.groupId, false)
+            setEditingGroup(group.groupId)
+          }}
           onClickDelete={() => removeGroup(group.groupId, 'origins')}>
           {idx + 1}
         </SelectedZoneButton>
@@ -29,7 +32,10 @@ const ZoneManagerContainer = ({
           key={group.groupId}
           color={group.color}
           onClick={() => goToAnchor('' + group.groupId, false)}
-          onClickEdit={() => setEditingGroup(group.groupId)}
+          onClickEdit={() => {
+            goToAnchor('' + group.groupId, false)
+            setEditingGroup(group.groupId)
+          }}
           onClickDelete={() => removeGroup(group.groupId, 'destinations')}>
           {initialIdx + idx + 1}
         </SelectedZoneButton>
