@@ -3,10 +3,11 @@ import GroupCategory from '../components/GroupCategory'
 import { destinationGroupIdsAndColorsSelector, originGroupIdsSelector } from '../selectors'
 import { setDestinationSelectionMode } from '../actions'
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   groups: destinationGroupIdsAndColorsSelector(state),
   category: 'destinations',
-  initialIdx: originGroupIdsSelector(state).length
+  initialIdx: originGroupIdsSelector(state).length,
+  ...ownProps
 })
 
 const mapDispatchToProps = {

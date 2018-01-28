@@ -8,13 +8,13 @@ import {
 const mapStateToProps = (state, ownProps) => ownProps
 
 const mapDispatchToProps = dispatch => ({
-  onClick: (groupId) => goToAnchor('' + groupId, false),
-  onClickEdit: (groupId) => {
+  onClick: groupId => goToAnchor('' + groupId, false),
+  onClickEdit: groupId => {
     dispatch(setEditingGroupId(groupId))
     dispatch(setEditSelectionMode())
     goToAnchor('' + groupId, false)
   },
-  onClickDelete: () => dispatch(removeGroup())
+  onClickDelete: groupId => dispatch(removeGroup(groupId))
 })
 
 export default connect(
