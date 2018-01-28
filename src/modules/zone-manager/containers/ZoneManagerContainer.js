@@ -21,7 +21,7 @@ const ZoneManagerContainer = (props) => {
             props.setEditSelectionMode()
             goToAnchor('' + group.groupId, false)
           }}
-          onClickDelete={() => props.removeGroup(group.groupId, 'origins')}>
+          onClickDelete={() => props.removeGroup(group.groupId)}>
           {idx + 1}
         </SelectedZoneButton>
       )}
@@ -35,7 +35,7 @@ const ZoneManagerContainer = (props) => {
             props.setEditSelectionMode()
             goToAnchor('' + group.groupId, false)
           }}
-          onClickDelete={() => props.removeGroup(group.groupId, 'destinations')}>
+          onClickDelete={() => props.removeGroup(group.groupId)}>
           {initialIdx + idx + 1}
         </SelectedZoneButton>
       )}

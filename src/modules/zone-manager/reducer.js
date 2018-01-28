@@ -62,10 +62,18 @@ const categorizedZones = (state = initialZones, action) => {
       return state
 
     case t.REMOVE_GROUP:
-      return {
-        ...state,
-        [action.category]: state[action.category].filter(g => g.groupId !== action.groupId)
+      for (let category of Object.keys(state)) {
+        const groups = [...state[category]]
+        const groupIdx = groups.map(g => g.groupId).indexOf(action.groupId)
+        if (groupIdx !== -1) {
+          groups.splice(groupIdx, 1)
+          return {
+            ...state,
+            [category]: groups
+          }
+        }
       }
+      return state
 
     case t.REMOVE_ZONE_FROM_GROUP:
       for (let category of Object.keys(state)) {

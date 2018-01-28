@@ -7,10 +7,9 @@ export const addGroup = (groupId, color, category) => ({
   category
 })
 
-export const removeGroup = (groupId, category) => ({
+export const removeGroup = groupId => ({
   type: t.REMOVE_GROUP,
-  groupId,
-  category
+  groupId
 })
 
 export const addZoneToGroup = (zoneId, groupId) => ({
