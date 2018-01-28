@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { fadeSlideDown } from '../../../utils/animations'
+import ZoneButton from '../../core/components/ZoneButton'
 
 const Wrapper = styled.div`
   padding: 1em 1.4em;
@@ -10,6 +11,7 @@ const Wrapper = styled.div`
   position: fixed;
   left: 120px;
   display: flex;
+  align-items: center;
   animation: ${fadeSlideDown} 0.7s;
   border: 1px solid ${({theme}) => theme.colors.borderSecondary};
   border-top: none;
@@ -27,10 +29,30 @@ const Button = styled.button`
   font-family: inherit;
 `
 
-const SelectionModeFeedback = ({zoneSelectionMode, resetSelectionMode}) => {
+const SelectionModeFeedback = ({zoneSelectionMode, editingGroup, resetSelectionMode}) => {
+  let feedback
+  switch (zoneSelectionMode) {
+    case 'origins':
+      feedback = 'Selecting origin zones'
+      break
+    case 'destinations':
+      feedback = 'Selecting destination zones'
+      break
+    case 'edit':
+      feedback = (
+        <span>
+          <span style={{marginRight: '0.2em'}}>Editing</span>
+          <ZoneButton hover={false} animate={false} color={editingGroup.color}>{editingGroup.groupId}</ZoneButton>
+        </span>
+      )
+      break
+    default:
+      feedback = ''
+  }
+
   return (
     <Wrapper>
-      <Feedback>{zoneSelectionMode === 'origins' ? 'Selecting origin zones' : 'Selecting destination zones'}</Feedback>
+      <Feedback>{feedback}</Feedback>
       <Button onClick={resetSelectionMode}>Done</Button>
     </Wrapper>
   )
@@ -38,6 +60,7 @@ const SelectionModeFeedback = ({zoneSelectionMode, resetSelectionMode}) => {
 
 SelectionModeFeedback.propTypes = {
   zoneSelectionMode: PropTypes.string,
+  editingGroup: PropTypes.object,
   resetSelectionMode: PropTypes.func.isRequired
 }
 

@@ -8,6 +8,8 @@ const zoneSelectionMode = (state = null, action) => {
       return 'origins'
     case t.SET_DESTINATION_SELECTION_MODE:
       return 'destinations'
+    case t.SET_EDIT_SELECTION_MODE:
+      return 'edit'
     case t.RESET_SELECTION_MODE:
       return null
     default:
@@ -15,7 +17,7 @@ const zoneSelectionMode = (state = null, action) => {
   }
 }
 
-const editingGroup = (state = null, action) => {
+const editingGroupId = (state = null, action) => {
   switch (action.type) {
     case t.SET_EDITING_GROUP:
       return action.groupId
@@ -47,15 +49,13 @@ const categorizedZones = (state = initialZones, action) => {
 
     case t.ADD_ZONE_TO_GROUP:
       for (let category of Object.keys(state)) {
-        const group = state[category].find(g => g.groupId === action.groupId)
-        if (group) {
-          group.zoneIds.push(action.zoneId)
+        const groups = [...state[category]]
+        const groupIdx = groups.map(g => g.groupId).indexOf(action.groupId)
+        if (groupIdx !== -1) {
+          groups[groupIdx].zoneIds.push(action.zoneId)
           return {
             ...state,
-            [category]: [
-              ...state[category].filter(g => g.groupId !== action.groupId),
-              group
-            ]
+            [category]: groups
           }
         }
       }
@@ -69,15 +69,13 @@ const categorizedZones = (state = initialZones, action) => {
 
     case t.REMOVE_ZONE_FROM_GROUP:
       for (let category of Object.keys(state)) {
-        const group = state[category].find(g => g.groupId === action.groupId)
-        if (group) {
-          group.zoneIds.splice(group.zoneIds.indexOf(action.zoneId), 1)
+        const groups = [...state[category]]
+        const groupIdx = groups.map(g => g.groupId).indexOf(action.groupId)
+        if (groupIdx !== -1) {
+          groups[groupIdx].zoneIds.splice(groups[groupIdx].zoneIds.indexOf(action.zoneId), 1)
           return {
             ...state,
-            [category]: [
-              ...state[category].filter(g => g.groupId !== action.groupId),
-              group
-            ]
+            [category]: groups
           }
         }
       }
@@ -90,6 +88,6 @@ const categorizedZones = (state = initialZones, action) => {
 
 export default combineReducers({
   zoneSelectionMode,
-  editingGroup,
+  editingGroupId,
   categorizedZones
 })

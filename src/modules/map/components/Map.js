@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import throttle from 'lodash.throttle'
 import MapGL from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import styled from 'styled-components'
@@ -30,6 +31,8 @@ export class Map extends Component {
     this.onLoad = this.onLoad.bind(this)
     this.handleHover = this.handleHover.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.hoverOverFeature = this.hoverOverFeature.bind(this)
+    this.hoverOverFeature = throttle(this.hoverOverFeature, 100)
   }
 
   componentDidMount () {
@@ -59,20 +62,24 @@ export class Map extends Component {
     })
   }
 
+  hoverOverFeature (hoveredFeature) {
+    this.props.hoverOverFeature(hoveredFeature)
+  }
+
   handleHover (event) {
     const {features, srcEvent: {x, y}} = event
     let hoveredFeature = null
     if (features && features[0]) {
       hoveredFeature = features[0]
-      this.props.hoverOverFeature(hoveredFeature)
+      this.hoverOverFeature(hoveredFeature)
     }
     this.setState({hoveredFeature, x, y})
   }
 
   handleClick (event) {
-    const {features} = event
+    const {features, srcEvent: {shiftKey}} = event
     if (features) {
-      this.props.clickFeatures(features)
+      this.props.clickFeatures(features, shiftKey)
     }
   }
 

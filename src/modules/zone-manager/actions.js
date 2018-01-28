@@ -37,7 +37,11 @@ export const setDestinationSelectionMode = () => ({
   type: t.SET_DESTINATION_SELECTION_MODE
 })
 
-export const setEditingGroup = groupId => ({
+export const setEditSelectionMode = () => ({
+  type: t.SET_EDIT_SELECTION_MODE
+})
+
+export const setEditingGroupId = groupId => ({
   type: t.SET_EDITING_GROUP,
   groupId
 })

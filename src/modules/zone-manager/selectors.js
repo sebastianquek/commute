@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 
 export const zoneSelectionModeSelector = state => state.zoneManager.zoneSelectionMode
+export const editingGroupIdSelector = state => state.zoneManager.editingGroupId
 
 export const originGroupsSelector = state => state.zoneManager.categorizedZones.origins
 export const destinationGroupsSelector = state => state.zoneManager.categorizedZones.destinations
@@ -74,12 +75,13 @@ export const groupColorsSelector = createSelector(
   })
 )
 
-export const nextOriginGroupIdSelector = createSelector(
-  originGroupIdsSelector,
+export const nextGroupIdSelector = createSelector(
+  allGroupIdsSelector,
   groupIds => groupIds.length > 0 ? Math.max(...groupIds) + 1 : 0
 )
 
-export const nextDestinationGroupIdSelector = createSelector(
-  destinationGroupIdsSelector,
-  groupIds => groupIds.length > 0 ? Math.max(...groupIds) + 1 : 0
+export const editingGroupSelector = createSelector(
+  editingGroupIdSelector,
+  allGroupsSelector,
+  (groupId, groups) => groups.find(g => g.groupId === groupId)
 )

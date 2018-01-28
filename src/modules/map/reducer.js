@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import * as t from './actionTypes'
 import zoneManager from '../zone-manager'
 import { fromJS } from 'immutable'
-import { defaultMapStyle, zonesLayer, zonesHoverLayer, zonesOriginSelectionLayer, zonesDestinationSelectionLayer, selectedGroupLayer } from './map-style'
+import { defaultMapStyle, zonesLayer, zonesHoverLayer, zonesSelectionLayer, zonesOriginSelectionLayer, zonesDestinationSelectionLayer, selectedGroupLayer } from './map-style'
 
 function mapStyle (state = defaultMapStyle, action) {
   switch (action.type) {
@@ -22,28 +22,34 @@ function mapStyle (state = defaultMapStyle, action) {
       }
 
     case zoneManager.actionTypes.SET_ORIGIN_SELECTION_MODE:
-      let newState = state.update('layers', layers => layers.filterNot(l => l === zonesDestinationSelectionLayer))
-      if (!state.get('layers').contains(zonesOriginSelectionLayer)) {
-        let idx = state.get('layers').findIndex(item =>
-          item.get('id') === zonesHoverLayer.get('id')
-        )
-        newState = state.update('layers', layers => layers.insert(idx - 1, zonesOriginSelectionLayer))
+      idx = state.get('layers').findIndex(layer => layer.get('id') === 'zonesSelection')
+      if (idx !== -1) {
+        return state.setIn(['layers', idx, 'paint', 'fill-outline-color'], 'blue')
+      } else {
+        const layer = zonesSelectionLayer.setIn(['paint', 'fill-outline-color'], 'blue')
+        return state.update('layers', layers => layers.push(layer))
       }
-      return newState
 
     case zoneManager.actionTypes.SET_DESTINATION_SELECTION_MODE:
-      newState = state.update('layers', layers => layers.filterNot(l => l === zonesOriginSelectionLayer))
-      if (!state.get('layers').contains(zonesDestinationSelectionLayer)) {
-        let idx = state.get('layers').findIndex(item =>
-          item.get('id') === zonesHoverLayer.get('id')
-        )
-        newState = state.update('layers', layers => layers.insert(idx - 1, zonesDestinationSelectionLayer))
+      idx = state.get('layers').findIndex(layer => layer.get('id') === 'zonesSelection')
+      if (idx !== -1) {
+        return state.setIn(['layers', idx, 'paint', 'fill-outline-color'], 'orange')
+      } else {
+        const layer = zonesSelectionLayer.setIn(['paint', 'fill-outline-color'], 'orange')
+        return state.update('layers', layers => layers.push(layer))
       }
-      return newState
+
+    case zoneManager.actionTypes.SET_EDIT_SELECTION_MODE:
+      idx = state.get('layers').findIndex(layer => layer.get('id') === 'zonesSelection')
+      if (idx !== -1) {
+        return state.setIn(['layers', idx, 'paint', 'fill-outline-color'], 'black')
+      } else {
+        return state.update('layers', layers => layers.push(zonesSelectionLayer))
+      }
 
     case zoneManager.actionTypes.RESET_SELECTION_MODE:
-      newState = state.update('layers', layers =>
-        layers.filterNot(l => l === zonesOriginSelectionLayer || l === zonesDestinationSelectionLayer)
+      let newState = state.update('layers', layers =>
+        layers.filterNot(layer => layer.get('id') === 'zonesSelection')
       )
       idx = newState.get('layers').findIndex(item =>
         item.get('id') === zonesHoverLayer.get('id')
@@ -77,7 +83,7 @@ function mapStyle (state = defaultMapStyle, action) {
     case zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP:
       idx = state.get('layers').findIndex(item => item.get('id') === '' + action.groupId)
       if (idx !== -1) {
-        return state.updateIn(['layers', idx, 'filter'], filter => filter.filterNot(id => id !== action.zoneId))
+        return state.updateIn(['layers', idx, 'filter'], filter => filter.filterNot(id => id === action.zoneId))
       }
       return state
 

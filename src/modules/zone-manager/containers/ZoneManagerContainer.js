@@ -4,44 +4,43 @@ import { connect } from 'react-redux'
 import { goToAnchor } from 'react-scrollable-anchor'
 import ZoneManager from '../components/ZoneManager'
 import SelectedZoneButton from '../components/SelectedZoneButton'
-import { setOriginSelectionMode, setDestinationSelectionMode, removeGroup, setEditingGroup } from '../actions'
+import { setOriginSelectionMode, setDestinationSelectionMode, removeGroup, setEditingGroupId, setEditSelectionMode } from '../actions'
 import { originGroupsSelector, destinationGroupsSelector } from '../selectors'
 
-const ZoneManagerContainer = ({
-  origins, destinations, setEditingGroup, removeGroup,
-  setOriginSelectionMode, setDestinationSelectionMode
-}) => {
-  const initialIdx = origins.length
+const ZoneManagerContainer = (props) => {
+  const initialIdx = props.origins.length
   return (
     <ZoneManager
-      origins={origins && origins.map((group, idx) =>
+      origins={props.origins && props.origins.map((group, idx) =>
         <SelectedZoneButton
           key={group.groupId}
           color={group.color}
           onClick={() => goToAnchor('' + group.groupId, false)}
           onClickEdit={() => {
+            props.setEditingGroupId(group.groupId)
+            props.setEditSelectionMode()
             goToAnchor('' + group.groupId, false)
-            setEditingGroup(group.groupId)
           }}
-          onClickDelete={() => removeGroup(group.groupId, 'origins')}>
+          onClickDelete={() => props.removeGroup(group.groupId, 'origins')}>
           {idx + 1}
         </SelectedZoneButton>
       )}
-      destinations={destinations && destinations.map((group, idx) =>
+      destinations={props.destinations && props.destinations.map((group, idx) =>
         <SelectedZoneButton
           key={group.groupId}
           color={group.color}
           onClick={() => goToAnchor('' + group.groupId, false)}
           onClickEdit={() => {
+            props.setEditingGroupId(group.groupId)
+            props.setEditSelectionMode()
             goToAnchor('' + group.groupId, false)
-            setEditingGroup(group.groupId)
           }}
-          onClickDelete={() => removeGroup(group.groupId, 'destinations')}>
+          onClickDelete={() => props.removeGroup(group.groupId, 'destinations')}>
           {initialIdx + idx + 1}
         </SelectedZoneButton>
       )}
-      setOriginSelectionMode={setOriginSelectionMode}
-      setDestinationSelectionMode={setDestinationSelectionMode}
+      setOriginSelectionMode={props.setOriginSelectionMode}
+      setDestinationSelectionMode={props.setDestinationSelectionMode}
     />
   )
 }
@@ -49,10 +48,11 @@ const ZoneManagerContainer = ({
 ZoneManagerContainer.propTypes = {
   origins: PropTypes.arrayOf(PropTypes.object),
   destinations: PropTypes.arrayOf(PropTypes.object),
-  setEditingGroup: PropTypes.func,
+  setEditingGroupId: PropTypes.func,
   removeGroup: PropTypes.func,
   setOriginSelectionMode: PropTypes.func,
-  setDestinationSelectionMode: PropTypes.func
+  setDestinationSelectionMode: PropTypes.func,
+  setEditSelectionMode: PropTypes.func
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -64,7 +64,11 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = {
-  setEditingGroup, removeGroup, setOriginSelectionMode, setDestinationSelectionMode
+  setOriginSelectionMode,
+  setDestinationSelectionMode,
+  setEditSelectionMode,
+  setEditingGroupId,
+  removeGroup
 }
 
 export default connect(
