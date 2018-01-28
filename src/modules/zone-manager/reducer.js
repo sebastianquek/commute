@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import * as t from './actionTypes'
 import c from '../../utils/randomColor'
+import cloneDeep from 'lodash.clonedeep'
 
 const zoneSelectionMode = (state = null, action) => {
   switch (action.type) {
@@ -49,7 +50,7 @@ const categorizedZones = (state = initialZones, action) => {
 
     case t.ADD_ZONE_TO_GROUP:
       for (let category of Object.keys(state)) {
-        const groups = [...state[category]]
+        const groups = cloneDeep(state[category])
         const groupIdx = groups.map(g => g.groupId).indexOf(action.groupId)
         if (groupIdx !== -1) {
           groups[groupIdx].zoneIds.push(action.zoneId)
@@ -63,7 +64,7 @@ const categorizedZones = (state = initialZones, action) => {
 
     case t.REMOVE_GROUP:
       for (let category of Object.keys(state)) {
-        const groups = [...state[category]]
+        const groups = cloneDeep(state[category])
         const groupIdx = groups.map(g => g.groupId).indexOf(action.groupId)
         if (groupIdx !== -1) {
           groups.splice(groupIdx, 1)
@@ -77,7 +78,7 @@ const categorizedZones = (state = initialZones, action) => {
 
     case t.REMOVE_ZONE_FROM_GROUP:
       for (let category of Object.keys(state)) {
-        const groups = [...state[category]]
+        const groups = cloneDeep(state[category])
         const groupIdx = groups.map(g => g.groupId).indexOf(action.groupId)
         if (groupIdx !== -1) {
           groups[groupIdx].zoneIds.splice(groups[groupIdx].zoneIds.indexOf(action.zoneId), 1)
