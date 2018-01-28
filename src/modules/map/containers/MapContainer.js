@@ -19,10 +19,7 @@ const MapContainer = (props) => {
       {props.zoneSelectionMode &&
         <SelectionModeFeedback
           zoneSelectionMode={props.zoneSelectionMode}
-          resetSelectionMode={() => {
-            props.resetSelectionMode()
-            props.resetEditingGroup()
-          }}
+          resetSelectionMode={props.resetSelectionMode}
           editingGroup={props.editingGroup}
         />
       }
@@ -47,8 +44,7 @@ const mapDispatchToProps = {
   mapHasLoaded,
   hoverOverFeature,
   clickFeatures,
-  resetSelectionMode: zoneManager.actions.resetSelectionMode,
-  resetEditingGroup: zoneManager.actions.resetEditingGroup
+  resetSelectionMode: zoneManager.actions.resetSelectionMode
 }
 
 export default connect(

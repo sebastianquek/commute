@@ -45,6 +45,7 @@ export const setEditingGroupId = groupId => ({
   groupId
 })
 
-export const resetEditingGroup = () => ({
-  type: t.RESET_EDITING_GROUP
+export const resetEditingGroup = prevGroup => ({
+  type: t.RESET_EDITING_GROUP,
+  prevGroup
 })

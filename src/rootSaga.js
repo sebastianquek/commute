@@ -1,6 +1,7 @@
 import zoneData from './modules/zone-data'
 import datetimeManager from './modules/datetime-manager'
 import map from './modules/map'
+import zoneManager from './modules/zone-manager'
 
 export default function * rootSaga () {
   yield [
@@ -10,6 +11,8 @@ export default function * rootSaga () {
     datetimeManager.sagas.watchAndUpdateRidership(),
     datetimeManager.sagas.getInitialRidership(),
     map.sagas.updateMapOnLoad(),
-    map.sagas.watchForMouseEvents()
+    map.sagas.watchForMouseEvents(),
+    zoneManager.sagas.watchForResetEditGroup(),
+    zoneManager.sagas.watchForZoneSelectionChanges()
   ]
 }
