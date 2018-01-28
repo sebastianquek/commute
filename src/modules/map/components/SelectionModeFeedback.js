@@ -41,6 +41,7 @@ const Meta = styled.div`
     border-radius: 3px;
     box-shadow: 0 1px 0 rgba(12,13,14,0.2), 0 0 0 2px #FFF inset;
     white-space: nowrap;
+    line-height: 1.4;
   }
 `
 
