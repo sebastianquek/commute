@@ -1,4 +1,10 @@
-import { createSelector } from 'reselect'
+import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect'
+import isEqual from 'lodash.isequal'
+
+const createDeepEqualSelector = createSelectorCreator(
+  defaultMemoize,
+  isEqual
+)
 
 export const zoneSelectionModeSelector = state => state.zoneManager.zoneSelectionMode
 export const editingGroupIdSelector = state => state.zoneManager.editingGroupId
@@ -6,26 +12,42 @@ export const editingGroupIdSelector = state => state.zoneManager.editingGroupId
 export const originGroupsSelector = state => state.zoneManager.categorizedZones.origins
 export const destinationGroupsSelector = state => state.zoneManager.categorizedZones.destinations
 
-export const originZoneIdsSelector = createSelector(
+export const originGroupIdsAndColorsSelector = createDeepEqualSelector(
+  originGroupsSelector,
+  groups => groups.reduce((idsAndColors, g) => {
+    const { groupId, color } = g
+    return [...idsAndColors, { groupId, color }]
+  }, [])
+)
+
+export const destinationGroupIdsAndColorsSelector = createDeepEqualSelector(
+  destinationGroupsSelector,
+  groups => groups.reduce((idsAndColors, g) => {
+    const { groupId, color } = g
+    return [...idsAndColors, { groupId, color }]
+  }, [])
+)
+
+export const originZoneIdsSelector = createDeepEqualSelector(
   originGroupsSelector,
   groups => groups.reduce((allZoneIds, g) => {
     return [...allZoneIds, ...g.zoneIds]
   }, [])
 )
 
-export const destinationZoneIdsSelector = createSelector(
+export const destinationZoneIdsSelector = createDeepEqualSelector(
   destinationGroupsSelector,
   groups => groups.reduce((allZoneIds, g) => {
     return [...allZoneIds, ...g.zoneIds]
   }, [])
 )
 
-export const originGroupIdsSelector = createSelector(
+export const originGroupIdsSelector = createDeepEqualSelector(
   originGroupsSelector,
   groups => groups.map(g => g.groupId)
 )
 
-export const destinationGroupIdsSelector = createSelector(
+export const destinationGroupIdsSelector = createDeepEqualSelector(
   destinationGroupsSelector,
   groups => groups.map(g => g.groupId)
 )
@@ -47,15 +69,6 @@ export const allGroupIdsSelector = createSelector(
     ...destinations
   ]
 )
-
-// export const allZonesSelector = createSelector(
-//   originZonesSelector,
-//   destinationsZonesSelector,
-//   (origins, destinations) => [
-//     ...origins,
-//     ...destinations
-//   ]
-// )
 
 export const allZoneIdsSelector = createSelector(
   originZoneIdsSelector,

@@ -1,4 +1,4 @@
-import { select, takeEvery, call, put, take } from 'redux-saga/effects'
+import { select, takeEvery, put, take } from 'redux-saga/effects'
 import { RESET_EDITING_GROUP, SET_ORIGIN_SELECTION_MODE, SET_DESTINATION_SELECTION_MODE, RESET_SELECTION_MODE } from './actionTypes'
 import { resetEditingGroup, removeGroup } from './actions'
 import { editingGroupIdSelector } from './selectors'

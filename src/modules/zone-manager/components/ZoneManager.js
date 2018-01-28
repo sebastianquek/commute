@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import ZoneCategory from './ZoneCategory'
+import OriginsCategoryContainer from '../containers/OriginsCategoryContainer'
+import DestinationsCategoryContainer from '../containers/DestinationsCategoryContainer'
 
 const FixedWrapper = styled.div`
   position: fixed;
@@ -72,23 +72,12 @@ class ZoneManager extends React.Component {
       <FixedWrapper>
         <Border {...this.state}/>
         <ScrollWrapper innerRef={ref => (this.scrollRef = ref)}>
-          <ZoneCategory onClickAdd={this.props.setOriginSelectionMode} category="Origins">
-            {this.props.origins}
-          </ZoneCategory>
-          <ZoneCategory onClickAdd={this.props.setDestinationSelectionMode} category="Destinations">
-            {this.props.destinations}
-          </ZoneCategory>
+          <OriginsCategoryContainer />
+          <DestinationsCategoryContainer />
         </ScrollWrapper>
       </FixedWrapper>
     )
   }
-}
-
-ZoneManager.propTypes = {
-  origins: PropTypes.node,
-  destinations: PropTypes.node,
-  setOriginSelectionMode: PropTypes.func,
-  setDestinationSelectionMode: PropTypes.func
 }
 
 export default ZoneManager

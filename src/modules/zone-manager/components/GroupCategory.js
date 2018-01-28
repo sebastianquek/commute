@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import SelectedGroupButtonContainer from '../containers/SelectedGroupButtonContainer'
 import AddZoneButton from './AddZoneButton'
-import {fadeSlideUp} from '../../../utils/animations'
+import { fadeSlideUp } from '../../../utils/animations'
 
 const Container = styled.div`
   display: flex;
@@ -32,26 +33,35 @@ const Children = styled.div`
   flex-direction: column;
 `
 
-const ZoneCategory = ({
-  category,
-  onClickAdd,
-  children
-}) => {
+const GroupCategory = (props) => {
+  const groupComponents = props.groups.map((group, idx) =>
+    <SelectedGroupButtonContainer
+      key={group.groupId}
+      groupId={group.groupId}
+      color={group.color}>
+      {props.initialIdx + idx + 1}
+    </SelectedGroupButtonContainer>
+  )
   return (
     <Container>
-      <Label>{category}</Label>
+      <Label>{props.category}</Label>
       <Children>
-        {children}
-        <AddZoneButton onClick={onClickAdd} />
+        {groupComponents}
+        <AddZoneButton onClick={props.onClickAdd} />
       </Children>
     </Container>
   )
 }
 
-ZoneCategory.propTypes = {
-  category: PropTypes.string,
-  onClickAdd: PropTypes.func,
-  children: PropTypes.node
+GroupCategory.propTypes = {
+  groups: PropTypes.arrayOf(PropTypes.object).isRequired,
+  category: PropTypes.string.isRequired,
+  initialIdx: PropTypes.number,
+  onClickAdd: PropTypes.func.isRequired
 }
 
-export default ZoneCategory
+GroupCategory.defaultProps = {
+  initialIdx: 0
+}
+
+export default GroupCategory
