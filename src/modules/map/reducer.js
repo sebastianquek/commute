@@ -4,6 +4,26 @@ import zoneManager from '../zone-manager'
 import { fromJS } from 'immutable'
 import { defaultMapStyle, zonesLayer, zonesHoverLayer, zonesSelectionLayer, zonesOriginSelectionLayer, zonesDestinationSelectionLayer, selectedGroupLayer } from './map-style'
 
+function addOrEditSelectionLayer (state, color = 'black') {
+  let idx = state.get('layers').findIndex(layer => layer.get('id') === 'zonesSelection')
+  if (idx !== -1) {
+    return state.setIn(['layers', idx, 'paint', 'fill-outline-color'], color)
+  } else {
+    const layer = zonesSelectionLayer.setIn(['paint', 'fill-outline-color'], color)
+    return insertBeforeHoverLayerIfExists(state, layer)
+  }
+}
+
+function insertBeforeHoverLayerIfExists (state, layer) {
+  let hoverLayerIdx = state.get('layers').findIndex(item =>
+    item.get('id') === zonesHoverLayer.get('id')
+  )
+  if (hoverLayerIdx !== -1) {
+    return state.update('layers', layers => layers.insert(hoverLayerIdx - 1, layer))
+  }
+  return state.update('layers', layers => layers.push(layer))
+}
+
 function mapStyle (state = defaultMapStyle, action) {
   switch (action.type) {
     case t.ADD_ZONE_COMPOSITION:
@@ -22,30 +42,13 @@ function mapStyle (state = defaultMapStyle, action) {
       }
 
     case zoneManager.actionTypes.SET_ORIGIN_SELECTION_MODE:
-      idx = state.get('layers').findIndex(layer => layer.get('id') === 'zonesSelection')
-      if (idx !== -1) {
-        return state.setIn(['layers', idx, 'paint', 'fill-outline-color'], 'blue')
-      } else {
-        const layer = zonesSelectionLayer.setIn(['paint', 'fill-outline-color'], 'blue')
-        return state.update('layers', layers => layers.push(layer))
-      }
+      return addOrEditSelectionLayer(state, 'blue')
 
     case zoneManager.actionTypes.SET_DESTINATION_SELECTION_MODE:
-      idx = state.get('layers').findIndex(layer => layer.get('id') === 'zonesSelection')
-      if (idx !== -1) {
-        return state.setIn(['layers', idx, 'paint', 'fill-outline-color'], 'orange')
-      } else {
-        const layer = zonesSelectionLayer.setIn(['paint', 'fill-outline-color'], 'orange')
-        return state.update('layers', layers => layers.push(layer))
-      }
+      return addOrEditSelectionLayer(state, 'orange')
 
     case zoneManager.actionTypes.SET_EDIT_SELECTION_MODE:
-      idx = state.get('layers').findIndex(layer => layer.get('id') === 'zonesSelection')
-      if (idx !== -1) {
-        return state.setIn(['layers', idx, 'paint', 'fill-outline-color'], 'black')
-      } else {
-        return state.update('layers', layers => layers.push(zonesSelectionLayer))
-      }
+      return addOrEditSelectionLayer(state, 'black')
 
     case zoneManager.actionTypes.RESET_SELECTION_MODE:
       let newState = state.update('layers', layers =>
