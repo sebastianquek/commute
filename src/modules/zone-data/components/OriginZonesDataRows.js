@@ -10,15 +10,19 @@ const OriginZonesDataRows = (props) => {
   if (keys.length > 0) {
     return keys.map((key, idx) => {
       const group = props.zoneCompositions[key]
+      let zoneName = ''
+      if (group.groupData[0] && group.groupData[0].zoneData) {
+        zoneName = group.groupData[0].zoneData['SUBZONE_N']
+      }
       return (
         <ScrollableAnchor key={key} id={'' + key}>
           <ZoneDataRow
-            zoneName={group.zoneData[0] ? group.zoneData[0].SUBZONE_N : ''}
+            zoneName={zoneName}
             zoneNum={idx + 1}
             zoneColor={group.color}>
             <SelectedZoneDataRowContent
-              zoneComposition={group.zoneData}
-              zoneJourneys={props.zoneJourneys[key].zoneData} />
+              zoneComposition={group.groupData}
+              zoneJourneys={props.zoneJourneys[key].groupData} />
           </ZoneDataRow>
         </ScrollableAnchor>
       )

@@ -15,10 +15,10 @@ const mapGroupsToData = (groups, zoneData) => {
   return groups.reduce((data, group) => {
     const { groupId, zoneIds, ...rest } = group
     const groupZoneData = zoneIds.reduce((data, zoneId) => {
-      data.push({zoneId, ...zoneData[zoneId]})
+      data.push({zoneId, zoneData: zoneData[zoneId]})
       return data
     }, [])
-    data[groupId] = {...rest, zoneData: groupZoneData}
+    data[groupId] = {...rest, groupData: groupZoneData}
     return data
   }, {})
 }
