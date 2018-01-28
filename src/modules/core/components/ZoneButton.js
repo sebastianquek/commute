@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
-import { shouldTextBeDark } from '../../../../utils/randomColor'
-import { fadeSlideUpRotated } from '../../../../utils/animations'
+import { shouldTextBeDark } from '../../../utils/randomColor'
+import { fadeSlideUpRotated } from '../../../utils/animations'
 
 const Button = styled.button`
   border: 1px ${({dottedBorder}) => dottedBorder ? 'dashed' : 'solid'} ${({theme}) => theme.colors.borderPrimary};
