@@ -98,3 +98,8 @@ export const editingGroupSelector = createSelector(
   allGroupsSelector,
   (groupId, groups) => groups.find(g => g.groupId === groupId)
 )
+
+export const emptyGroupsIdSelector = createSelector(
+  allGroupsSelector,
+  groups => groups.filter(g => g.zoneIds.length === 0).map(g => g.groupId)
+)

@@ -12,7 +12,6 @@ export default function * rootSaga () {
     datetimeManager.sagas.getInitialRidership(),
     map.sagas.updateMapOnLoad(),
     map.sagas.watchForMouseEvents(),
-    zoneManager.sagas.watchForResetEditGroup(),
     zoneManager.sagas.watchForZoneSelectionChanges()
   ]
 }
