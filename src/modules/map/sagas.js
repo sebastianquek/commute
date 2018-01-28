@@ -21,13 +21,10 @@ function * handleClick ({ features, shiftKey }) {
   const zone = features.find(f => f.layer.source === 'zones')
 
   if (zone) {
-    const groups = yield select(zoneManager.selectors.allGroupsSelector)
     const zoneId = zone.properties.OBJECTID
+    const groups = yield select(zoneManager.selectors.allGroupsSelector)
     const groupOfZone = groups.find(g => g.zoneIds.includes(zoneId)) || -1
     const allGroupIds = yield select(zoneManager.selectors.allGroupIdsSelector)
-
-    const allZoneIds = yield select(zoneManager.selectors.allZoneIdsSelector)
-
     const selectionMode = yield select(zoneManager.selectors.zoneSelectionModeSelector)
 
     // If origin/destination selection mode
@@ -46,38 +43,40 @@ function * handleClick ({ features, shiftKey }) {
       } else {
         let groupId = yield select(zoneManager.selectors.editingGroupIdSelector)
         if (!groupId || !shiftKey) { // create a new group
-          groupId = yield select(zoneManager.selectors.nextGroupIdSelector)
-          yield put(zoneManager.actions.setEditingGroupId(groupId))
-          yield put(zoneManager.actions.addGroup(groupId, c.next().value, selectionMode))
+          yield call(createNewGroup, selectionMode)
         }
-
         const editingGroup = yield select(zoneManager.selectors.editingGroupSelector)
         if (shiftKey) {
-          if (editingGroup.zoneIds.includes(zoneId)) { // remove existing zone
-            yield put(zoneManager.actions.removeZoneFromGroup(zoneId, editingGroup.groupId))
-          } else if (!allZoneIds.includes(zoneId)) { // add to current group if zone has not been added before
-            yield put(zoneManager.actions.addZoneToGroup(zoneId, editingGroup.groupId))
-          } else {
-            yield call(goToAnchor, '' + groupOfZone.groupId, false)
-          }
+          yield call(editGroup, editingGroup, zoneId, groupOfZone.groupId)
         } else {
-          yield put(zoneManager.actions.addZoneToGroup(zoneId, groupId))
+          yield put(zoneManager.actions.addZoneToGroup(zoneId, editingGroup.groupId))
         }
       }
     } else if (selectionMode === 'edit') {
       const editingGroup = yield select(zoneManager.selectors.editingGroupSelector)
-      if (editingGroup.zoneIds.includes(zoneId)) { // remove existing zone
-        yield put(zoneManager.actions.removeZoneFromGroup(zoneId, editingGroup.groupId))
-      } else if (!allZoneIds.includes(zoneId)) { // add to current group if zone has not been added before
-        yield put(zoneManager.actions.addZoneToGroup(zoneId, editingGroup.groupId))
-      } else {
-        yield call(goToAnchor, '' + groupOfZone.groupId, false)
-      }
+      yield call(editGroup, editingGroup, zoneId, groupOfZone.groupId)
     } else {
       if (allGroupIds.includes(groupOfZone.groupId)) {
         yield call(goToAnchor, '' + groupOfZone.groupId, false)
       }
     }
+  }
+}
+
+function * createNewGroup (selectionMode) {
+  const groupId = yield select(zoneManager.selectors.nextGroupIdSelector)
+  yield put(zoneManager.actions.addGroup(groupId, c.next().value, selectionMode))
+  yield put(zoneManager.actions.setEditingGroupId(groupId))
+}
+
+function * editGroup (editingGroup, zoneId, groupIdOfZone) {
+  const allZoneIds = yield select(zoneManager.selectors.allZoneIdsSelector)
+  if (editingGroup.zoneIds.includes(zoneId)) { // remove existing zone
+    yield put(zoneManager.actions.removeZoneFromGroup(zoneId, editingGroup.groupId))
+  } else if (!allZoneIds.includes(zoneId)) { // add to current group if zone has not been added before
+    yield put(zoneManager.actions.addZoneToGroup(zoneId, editingGroup.groupId))
+  } else {
+    yield call(goToAnchor, '' + groupIdOfZone, false)
   }
 }
 
