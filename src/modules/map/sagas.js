@@ -42,7 +42,7 @@ function * handleClick ({ features, shiftKey }) {
         yield call(goToAnchor, '' + groupOfZone.groupId, false)
       } else {
         let groupId = yield select(zoneManager.selectors.editingGroupIdSelector)
-        if (!groupId || !shiftKey) { // create a new group
+        if (groupId === null || !shiftKey) { // create a new group
           yield call(createNewGroup, selectionMode)
         }
         const editingGroup = yield select(zoneManager.selectors.editingGroupSelector)
