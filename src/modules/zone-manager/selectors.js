@@ -99,6 +99,12 @@ export const editingGroupSelector = createSelector(
   (groupId, groups) => groups.find(g => g.groupId === groupId)
 )
 
+export const editingGroupCounterSelector = createSelector(
+  editingGroupIdSelector,
+  allGroupIdsSelector,
+  (groupId, groupIds) => groupIds.indexOf(groupId) + 1
+)
+
 export const emptyGroupsIdSelector = createSelector(
   allGroupsSelector,
   groups => groups.filter(g => g.zoneIds.length === 0).map(g => g.groupId)

@@ -21,6 +21,7 @@ const MapContainer = (props) => {
           zoneSelectionMode={props.zoneSelectionMode}
           resetSelectionMode={props.resetSelectionMode}
           editingGroup={props.editingGroup}
+          editingGroupCounter={props.editingGroupCounter}
         />
       }
     </div>
@@ -36,7 +37,8 @@ const mapStateToProps = state => {
   return {
     mapStyle: mapStyleSelector(state),
     zoneSelectionMode: zoneManager.selectors.zoneSelectionModeSelector(state),
-    editingGroup: zoneManager.selectors.editingGroupSelector(state)
+    editingGroup: zoneManager.selectors.editingGroupSelector(state),
+    editingGroupCounter: zoneManager.selectors.editingGroupCounterSelector(state)
   }
 }
 

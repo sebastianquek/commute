@@ -50,7 +50,7 @@ const Button = styled.button`
   font-family: inherit;
 `
 
-const SelectionModeFeedback = ({zoneSelectionMode, editingGroup, resetSelectionMode}) => {
+const SelectionModeFeedback = ({zoneSelectionMode, editingGroup, editingGroupCounter, resetSelectionMode}) => {
   let feedback
   switch (zoneSelectionMode) {
     case 'origins':
@@ -73,7 +73,7 @@ const SelectionModeFeedback = ({zoneSelectionMode, editingGroup, resetSelectionM
       feedback = (
         <span>
           <span style={{marginRight: '0.2em'}}>Editing</span>
-          <ZoneButton hover={false} animate={false} color={editingGroup.color}>{editingGroup.groupId}</ZoneButton>
+          <ZoneButton hover={false} animate={false} color={editingGroup.color}>{editingGroupCounter}</ZoneButton>
         </span>
       )
       break
@@ -92,6 +92,7 @@ const SelectionModeFeedback = ({zoneSelectionMode, editingGroup, resetSelectionM
 SelectionModeFeedback.propTypes = {
   zoneSelectionMode: PropTypes.string,
   editingGroup: PropTypes.object,
+  editingGroupCounter: PropTypes.number,
   resetSelectionMode: PropTypes.func.isRequired
 }
 
