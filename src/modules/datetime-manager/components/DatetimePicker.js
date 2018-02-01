@@ -71,7 +71,6 @@ class DatetimePicker extends React.Component {
   }
 
   handleDateChange (date, { disabled, selected }) {
-    date.setHours(0)
     if (!disabled) this.props.setStartDatetime(date)
   }
 

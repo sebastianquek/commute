@@ -13,11 +13,23 @@ export const datetimeBrushDomain = (state = {
         y: action.domain.y
       }
     case t.SET_START_DATETIME_BRUSH_DOMAIN:
-      const duration = moment.duration(moment(state.x[1]).diff(moment(state.x[0])))
-      const x1 = moment(action.startDatetime).add(duration)
+      const currentBrushStart = moment(state.x[0])
+      const duration = moment.duration(moment(state.x[1]).diff(currentBrushStart))
+      const x0 = moment(action.startDatetime)
+      x0.hours(currentBrushStart.hours())
+      x0.minutes(currentBrushStart.minutes())
+      x0.seconds(currentBrushStart.seconds())
+      x0.milliseconds(currentBrushStart.milliseconds())
+      
+      // Ensure start of new brush domain is within the bounds
+      if (x0.isSameOrAfter(action.maxDate)) {
+        return state
+      }
+      
+      const x1 = x0.clone().add(duration)
       return {
         ...state,
-        x: [action.startDatetime, x1.isBefore(action.maxDate) ? x1.toDate() : action.maxDate]
+        x: [x0.toDate(), x1.isBefore(action.maxDate) ? x1.toDate() : action.maxDate]
       }
     default:
       return state
