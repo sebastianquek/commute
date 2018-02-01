@@ -5,7 +5,7 @@ import ZoneDataRow from './ZoneDataRow'
 import ZoneFeedback from './ZoneFeedback'
 import SelectedZoneDataRowContent from './SelectedZoneDataRowContent'
 
-const DestinationZonesDataRows = (props) => {
+const SelectedZonesDataRows = (props) => {
   const keys = Object.keys(props.zoneCompositions)
   if (keys.length > 0) {
     return keys.map((key, idx) => {
@@ -30,14 +30,19 @@ const DestinationZonesDataRows = (props) => {
   } else {
     return <ZoneFeedback
       zoneDataContainer={<ZoneDataRow />}
-      feedback='Select a destination zone to see more details' />
+      feedback={`Select a ${props.category} zone to see more details`} />
   }
 }
 
-DestinationZonesDataRows.propTypes = {
+SelectedZonesDataRows.propTypes = {
   zoneCompositions: PropTypes.object,
   zoneJourneys: PropTypes.object,
-  initialIdx: PropTypes.number
+  initialIdx: PropTypes.number,
+  category: PropTypes.string
 }
 
-export default DestinationZonesDataRows
+SelectedZonesDataRows.defaultProps = {
+  initialIdx: 0
+}
+
+export default SelectedZonesDataRows

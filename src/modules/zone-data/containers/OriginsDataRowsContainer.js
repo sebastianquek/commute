@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { originGroupsCompositionDataSelector, originGroupsJourneyDataSelector } from '../selectors'
-import OriginZonesDataRows from '../components/OriginZonesDataRows'
+import SelectedZonesDataRows from '../components/SelectedZonesDataRows'
 import ListSeparator from '../components/ListSeparator'
 
 const Wrapper = styled.div`
@@ -10,11 +10,11 @@ const Wrapper = styled.div`
   flex-direction: column;
 `
 
-const OriginZonesDataRowsContainer = (props) => {
+const OriginsDataRowsContainer = (props) => {
   return (
     <Wrapper>
       <ListSeparator>Origins</ListSeparator>
-      <OriginZonesDataRows {...props} />
+      <SelectedZonesDataRows {...props} category='origin' />
     </Wrapper>
   )
 }
@@ -33,4 +33,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(OriginZonesDataRowsContainer)
+)(OriginsDataRowsContainer)
