@@ -3,7 +3,7 @@ import { select, call, put, take } from 'redux-saga/effects'
 import * as topojson from 'topojson-client'
 import { REQUEST_ZONE_JOURNEYS } from './actionTypes'
 import {
-  requestZoneJourneys, receiveZoneJourneys, requestZoneJourneysError,
+  requestZoneJourneys, receiveZoneJourneys, requestZoneJourneysError, removeAllZoneJourneys,
   requestZoneCompositions, receiveZoneCompositions, requestZoneCompositionsError
 } from './actions'
 import zoneManager from '../zone-manager'
@@ -18,6 +18,7 @@ export function * watchAndUpdateZoneJourneys () {
       REQUEST_ZONE_JOURNEYS,
       zoneManager.actionTypes.ADD_ZONE_TO_GROUP,
       zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP,
+      zoneManager.actionTypes.REMOVE_GROUP,
       datetimeManager.actionTypes.SET_DATETIME_BRUSH_DOMAIN
     ])
 
@@ -37,7 +38,10 @@ export function * watchAndUpdateZoneJourneys () {
     //   }
     // }
 
-    if (originZoneIds.length === 0 && destinationZoneIds.length === 0) continue
+    if (originZoneIds.length === 0 && destinationZoneIds.length === 0) {
+      yield put(removeAllZoneJourneys())
+      continue
+    }
     try {
       const journeys = yield call(fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration)
       yield put(receiveZoneJourneys(journeys))

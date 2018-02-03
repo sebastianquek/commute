@@ -11,6 +11,7 @@ export default function * rootSaga () {
     datetimeManager.sagas.watchAndUpdateRidership(),
     datetimeManager.sagas.getInitialRidership(),
     map.sagas.updateMapOnLoad(),
+    map.sagas.updateJourneys(),
     map.sagas.watchForMouseEvents(),
     zoneManager.sagas.watchForZoneSelectionChanges(),
     zoneManager.sagas.watchForDeletionOfGroups()

@@ -55,6 +55,10 @@ export const zoneJourneyData = (state = {}, action) => {
         // ...state,
         ...newData
       }
+
+    case t.REMOVE_ZONE_JOURNEYS:
+      return {}
+
     default:
       return state
   }

@@ -40,3 +40,25 @@ export const selectedGroupLayer = (groupId, color = '#eee', zoneIds = []) => fro
   },
   filter: ['in', 'OBJECTID', ...zoneIds]
 })
+
+export const journeysLayer = fromJS({
+  id: 'journeys',
+  source: 'journeys',
+  type: 'line',
+  interactive: true,
+  layout: {
+    'line-join': 'round',
+    'line-cap': 'round'
+  },
+  paint: {
+    'line-color': 'blue',
+    'line-width': {
+      'base': 1,
+      'stops': [
+        [10, 1],
+        [16, 6]
+      ]
+    },
+    'line-opacity': 0.2
+  }
+})

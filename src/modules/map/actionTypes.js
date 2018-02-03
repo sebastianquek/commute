@@ -1,5 +1,7 @@
 export const MAP_HAS_LOADED = 'map/HAS_LOADED'
 export const ADD_ZONE_COMPOSITION = 'map/ADD_ZONE_COMPOSITION'
+export const ADD_JOURNEYS = 'map/ADD_JOURNEYS'
+export const REMOVE_JOURNEYS = 'map/REMOVE_JOURNEYS'
 export const HOVER_OVER_ZONE = 'map/HOVER_OVER_ZONE'
 export const HOVER_OVER_FEATURE = 'map/HOVER_OVER_FEATURE'
 export const CLICK_FEATURES = 'map/CLICK_FEATURES'

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import * as t from './actionTypes'
 import zoneManager from '../zone-manager'
 import { fromJS } from 'immutable'
-import { defaultMapStyle, zonesLayer, zonesHoverLayer, zonesSelectionLayer, zonesOriginSelectionLayer, zonesDestinationSelectionLayer, selectedGroupLayer } from './map-style'
+import { defaultMapStyle, zonesHoverLayer, zonesSelectionLayer, selectedGroupLayer, journeysLayer } from './map-style'
 
 function addOrEditSelectionLayer (state, color = 'black') {
   let idx = state.get('layers').findIndex(layer => layer.get('id') === 'zonesSelection')
@@ -30,8 +30,25 @@ function mapStyle (state = defaultMapStyle, action) {
       return state.setIn(['sources', 'zones'], fromJS({type: 'geojson', data: action.zones}))
         // .update('layers', layers => layers.push(zonesLayer))
 
-    case t.HOVER_OVER_ZONE:
+    case t.ADD_JOURNEYS:
+      let newState = state.setIn(['sources', 'journeys'], fromJS({type: 'geojson', data: action.journeys}))
       let idx = state.get('layers').findIndex(item =>
+        item.get('id') === journeysLayer.get('id')
+      )
+      if (idx === -1) { // Journeys layer has not been added
+        newState = newState.update('layers', layers => layers.push(journeysLayer))
+      }
+      idx = newState.get('layers').findIndex(i => i.get('id') === journeysLayer.get('id'))
+      return newState
+
+    case t.REMOVE_JOURNEYS:
+      if (state.getIn(['sources', 'journeys', 'data', 'features']).size === 0) {
+        return state
+      }
+      return state.setIn(['sources', 'journeys', 'data', 'features'], fromJS([]))
+
+    case t.HOVER_OVER_ZONE:
+      idx = state.get('layers').findIndex(item =>
         item.get('id') === zonesHoverLayer.get('id')
       )
       if (idx !== -1) {
@@ -51,7 +68,7 @@ function mapStyle (state = defaultMapStyle, action) {
       return addOrEditSelectionLayer(state, 'black')
 
     case zoneManager.actionTypes.RESET_SELECTION_MODE:
-      let newState = state.update('layers', layers =>
+      newState = state.update('layers', layers =>
         layers.filterNot(layer => layer.get('id') === 'zonesSelection')
       )
       idx = newState.get('layers').findIndex(item =>

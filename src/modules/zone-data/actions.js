@@ -40,3 +40,7 @@ export const requestZoneJourneysError = error => ({
   type: t.REQUEST_ZONE_JOURNEYS_ERROR,
   error
 })
+
+export const removeAllZoneJourneys = () => ({
+  type: t.REMOVE_ZONE_JOURNEYS
+})

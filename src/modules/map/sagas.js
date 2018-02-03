@@ -2,7 +2,7 @@ import { all, call, put, take, select, takeEvery } from 'redux-saga/effects'
 import { goToAnchor } from 'react-scrollable-anchor'
 import zoneData from '../zone-data'
 import { MAP_HAS_LOADED, CLICK_FEATURES, HOVER_OVER_FEATURE } from './actionTypes'
-import { addZoneCompositions, colorSelectedGroups, toggleLockHoveredZone, resetLockHoveredZone, hoverOverZone } from './actions'
+import { addZoneCompositions, addJourneys, removeJourneys, colorSelectedGroups, toggleLockHoveredZone, resetLockHoveredZone, hoverOverZone } from './actions'
 import { hoveredZoneSelector, isHoveredZoneSelectedSelector } from './selectors'
 import zoneManager from '../zone-manager'
 import c from '../../utils/randomColor'
@@ -15,6 +15,25 @@ export function * updateMapOnLoad () {
   yield put(addZoneCompositions(zones))
   const selectedGroups = yield select(zoneManager.selectors.allGroupsSelector)
   yield put(colorSelectedGroups(selectedGroups))
+}
+
+export function * updateJourneys () {
+  const [{ journeys }] = yield all([
+    take(zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS),
+    take(MAP_HAS_LOADED)
+  ])
+  yield put(addJourneys(journeys))
+  while (true) {
+    const action = yield take([
+      zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS,
+      zoneData.actionTypes.REMOVE_ZONE_JOURNEYS
+    ])
+    if (action.type === zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS) {
+      yield put(addJourneys(action.journeys))
+    } else {
+      yield put(removeJourneys())
+    }
+  }
 }
 
 function * handleClick ({ features, shiftKey }) {
