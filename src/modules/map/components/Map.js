@@ -95,14 +95,11 @@ export class Map extends Component {
           onHover={this.handleHover}
           onClick={this.handleClick}
           doubleClickZoom={false}
-          mapboxApiAccessToken={process.env.MAPBOX_TOKEN}>
-
+          mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
+          clickRadius={5}
+        >
           {this.state.hoveredFeature &&
-            <Tooltip x={this.state.x} y={this.state.y}>
-              {this.state.hoveredFeature.properties.REGION_N}<br/>
-              {this.state.hoveredFeature.properties.PLN_AREA_N}<br/>
-              {this.state.hoveredFeature.properties.SUBZONE_N}
-            </Tooltip>
+            <Tooltip x={this.state.x} y={this.state.y} feature={this.state.hoveredFeature}/>
           }
         </MapGL>
       </Wrapper>

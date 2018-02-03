@@ -18,6 +18,7 @@ export default {
     headerLetterSpacing: '0.175em',
     headerSize: '1em',
     subHeaderSize: '0.7em',
+    tooltipSize: '0.88em',
     bodySize: '0.88em',
     chartAxisLabelRemRatio: 0.9,
     chartAxisTicksRemRatio: 0.84,
