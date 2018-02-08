@@ -11,30 +11,32 @@ const Section = styled.div`
 const SelectedZoneDataRowContent = (props) => {
   const data = []
   const chartData = []
+  const keys = []
   props.zoneJourneys.forEach(z => {
     if (z.zoneData) {
       z.zoneData.forEach(d => {
         let { buses, durations, count, journey_exit_zone: exitZone } = d
         buses = buses.map(bus => `${bus.slice(0, -1)}(${bus.slice(-1)})`)
         if (exitZone) {
+          const key = `${z.zoneId}-${exitZone}-${buses}`
+          keys.push({key})
           data.push(
-            <div key={buses + exitZone}>
+            <div key={key}>
               y: {count} people exited in {exitZone}, x: {buses.join('-')}, {durations.join('/')}
             </div>
           )
-          // TODO: Ensure data is 0 when no data for that stack
           for (let i = 0; i < buses.length; i++) {
-            if (!chartData[i]) chartData[i] = []
-            chartData[i].push({
+            if (!chartData[i]) chartData[i] = {}
+            chartData[i][key] = {
               bus: buses[i],
               duration: parseFloat(durations[i])
-            })
+            }
           }
         }
       })
     }
   })
-  console.log(chartData)
+  // console.log(chartData)
   return (
     <div>
       <Subheader>Composition</Subheader>
@@ -44,8 +46,9 @@ const SelectedZoneDataRowContent = (props) => {
       <Subheader>Routes</Subheader>
       <Section>
         {data}
-        {JSON.stringify(props.zoneJourneys)}
-        <RouteChoiceChart data={chartData}/>
+        {chartData.length > 0 &&
+          <RouteChoiceChart keys={keys} data={chartData}/>
+        }
       </Section>
     </div>
   )
