@@ -51,7 +51,7 @@ export const journeysLayer = fromJS({
     'line-cap': 'round'
   },
   paint: {
-    'line-color': 'blue',
+    'line-color': '#4a90e2',
     'line-width': {
       'base': 1,
       'stops': [
@@ -59,6 +59,6 @@ export const journeysLayer = fromJS({
         [16, 6]
       ]
     },
-    'line-opacity': 0.2
+    'line-opacity': 0.4
   }
 })
