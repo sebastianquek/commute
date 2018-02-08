@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { VictoryChart, VictoryTheme, VictoryStack, VictoryBar, VictoryLabel } from 'victory'
+import { VictoryChart, VictoryZoomContainer, VictoryStack, VictoryBar, VictoryLabel } from 'victory'
 
 const barThickness = 20
 const RouteChoiceChart = (props) => {
@@ -10,7 +10,13 @@ const RouteChoiceChart = (props) => {
       height={(props.keys.length + 1) * barThickness + 90}
       horizontal={true}
       domainPadding={{ y: [barThickness, barThickness / 2] }}
-      padding={{ top: 30, bottom: 30, left: 120 }}
+      padding={{ top: 10, right: 20, bottom: 30, left: 120 }}
+      containerComponent={
+        <VictoryZoomContainer
+          zoomDomain={{y: [0, props.keys.length + 1]}}
+          zoomDimension='x'
+        />
+      }
     >
       <VictoryStack colorScale={'blue'}
         style={{ labels: { fill: 'white' } }}

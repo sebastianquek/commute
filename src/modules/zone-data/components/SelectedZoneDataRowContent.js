@@ -45,7 +45,7 @@ const SelectedZoneDataRowContent = (props) => {
       </Section>
       <Subheader>Routes</Subheader>
       <Section>
-        {data}
+        {keys.length}
         {chartData.length > 0 &&
           <RouteChoiceChart keys={keys} data={chartData}/>
         }
