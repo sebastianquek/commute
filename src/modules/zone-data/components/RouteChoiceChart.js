@@ -1,6 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { VictoryChart, VictoryZoomContainer, VictoryStack, VictoryBar, VictoryLabel } from 'victory'
+import moment from 'moment'
+import momentDurationFormatSetup from 'moment-duration-format'
+import { VictoryAxis, VictoryChart, VictoryZoomContainer, VictoryStack, VictoryBar, VictoryLabel } from 'victory'
+
+momentDurationFormatSetup(moment)
 
 const barThickness = 20
 const RouteChoiceChart = (props) => {
@@ -15,6 +19,7 @@ const RouteChoiceChart = (props) => {
         <VictoryZoomContainer
           zoomDomain={{y: [0, props.keys.length + 1]}}
           zoomDimension='x'
+          minimumZoom={{x: 180}}
         />
       }
     >
@@ -36,6 +41,12 @@ const RouteChoiceChart = (props) => {
           )
         })}
       </VictoryStack>
+      <VictoryAxis
+        tickFormat={t => moment.duration(t, 'seconds').format('h[hrs] m[min]', { minValue: 1 })}
+      />
+      <VictoryAxis
+        dependentAxis
+      />
     </VictoryChart>
   )
 }
