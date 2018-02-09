@@ -10,10 +10,12 @@ momentDurationFormatSetup(moment)
 class RouteChoiceChart extends React.Component {
   constructor (props) {
     super(props)
+    this.barThickness = 38
     this.startZoomDomainSeconds = 3600
     this.leftPadding = 120
-    this.rightPadding = 20
+    this.rightPadding = 10
     this.labelYOffset = -16
+    this.labelFontStyles = { fontFamily: `'Source Sans Pro', sans-serif`, fontSize: '15px' }
     this.state = {
       scale: scaleLinear()
         .domain([0, this.startZoomDomainSeconds])
@@ -42,9 +44,9 @@ class RouteChoiceChart extends React.Component {
     const keyArray = this.props.keys.map(({key}) => key)
     return (
       <VictoryChart
-        height={(this.props.keys.length + 1) * this.props.barThickness + 110}
+        height={(this.props.keys.length + 1) * this.barThickness + 110}
         horizontal={true}
-        domainPadding={{ y: [this.props.barThickness, this.props.barThickness / 2] }}
+        domainPadding={{ y: [this.barThickness, this.barThickness / 2] }}
         padding={{ top: 10, right: this.rightPadding, bottom: 50, left: this.leftPadding }}
         containerComponent={
           <VictoryZoomContainer
@@ -56,7 +58,7 @@ class RouteChoiceChart extends React.Component {
         }
       >
         <VictoryStack colorScale={'blue'}
-          style={{ labels: { fill: 'white' } }}
+          style={{ labels: { fill: 'white', ...this.labelFontStyles } }}
           labelComponent={ <VictoryLabel dx={this.labelYOffset} textAnchor='end' /> }
         >
           {this.props.data.map((data, index) => {
@@ -65,7 +67,8 @@ class RouteChoiceChart extends React.Component {
                 key={index}
                 horizontal={true}
                 categories={{ y: keyArray }}
-                data={this.props.keys.map(k => ({...k, width: this.props.barThickness}))}
+                barRatio={0.8}
+                data={this.props.keys.map(k => ({...k, width: this.barThickness}))}
                 y={({key}) => data[key] ? data[key].duration : 0}
                 x={({key}) => key}
                 labels={({key, y}) => {
@@ -89,11 +92,19 @@ class RouteChoiceChart extends React.Component {
           style={{
             axis: {stroke: 'black'},
             grid: {stroke: 'grey', strokeWidth: '1px', opacity: 0.6},
-            ticks: {stroke: 'grey', size: 5}
+            ticks: {stroke: 'grey', size: 5},
+            tickLabels: this.labelFontStyles
           }}
         />
         <VictoryAxis
           dependentAxis
+          tickLabelComponent={<VictoryLabel lineHeight={1.1}/>}
+          tickFormat={b => {
+            let [ originZone, destZone, buses ] = b.split('-')
+            buses = buses.split(',').map(bus => bus.slice(0, -3))
+            return `Zone ${originZone} to ${destZone}\n${buses.join(' ⇢ ')}`
+          }}
+          style={{ tickLabels: this.labelFontStyles }}
         />
       </VictoryChart>
     )
@@ -102,12 +113,7 @@ class RouteChoiceChart extends React.Component {
 
 RouteChoiceChart.propTypes = {
   data: PropTypes.array,
-  keys: PropTypes.array,
-  barThickness: PropTypes.number
-}
-
-RouteChoiceChart.defaultProps = {
-  barThickness: 20
+  keys: PropTypes.array
 }
 
 export default RouteChoiceChart
