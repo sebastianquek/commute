@@ -19,7 +19,7 @@ const SelectedZoneDataRowContent = (props) => {
         buses = buses.map(bus => `${bus.slice(0, -1)}(${bus.slice(-1)})`)
         if (exitZone) {
           const key = `${z.zoneId}-${exitZone}-${buses}`
-          keys.push({key})
+          keys.push({key, count})
           data.push(
             <div key={key}>
               y: {count} people exited in {exitZone}, x: {buses.join('-')}, {durations.join('/')}
@@ -36,7 +36,6 @@ const SelectedZoneDataRowContent = (props) => {
       })
     }
   })
-  // console.log(chartData)
   return (
     <div>
       <Subheader>Composition</Subheader>
@@ -45,7 +44,6 @@ const SelectedZoneDataRowContent = (props) => {
       </Section>
       <Subheader>Routes</Subheader>
       <Section>
-        {keys.length}
         {chartData.length > 0 &&
           <RouteChoiceChart keys={keys} data={chartData}/>
         }
