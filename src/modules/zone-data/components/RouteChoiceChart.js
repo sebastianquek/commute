@@ -5,6 +5,7 @@ import momentDurationFormatSetup from 'moment-duration-format'
 import styled from 'styled-components'
 import { scaleLinear } from 'd3-scale'
 import { VictoryAxis, VictoryChart, VictoryZoomContainer, VictoryStack, VictoryBar, VictoryLabel } from 'victory'
+import theme from '../../../utils/theme'
 
 momentDurationFormatSetup(moment)
 
@@ -15,14 +16,14 @@ const ChartWrapper = styled.div`
 class RouteChoiceChart extends React.Component {
   constructor (props) {
     super(props)
-    this.barThickness = 30
+    this.barThickness = theme.typography.baseSize * theme.typography.chartAxisTicksRemRatio * 2
     this.startZoomDomainSeconds = 3600
-    this.topPadding = 40
-    this.leftPadding = 105
+    this.topPadding = theme.typography.baseSize * theme.typography.chartAxisLabelRemRatio * 2.5
+    this.leftPadding = theme.typography.baseSize * theme.typography.chartAxisTicksRemRatio * 9
     this.rightPadding = 10
     this.labelYOffset = -16
-    this.labelFontStyles = { fontFamily: `'Source Sans Pro', sans-serif`, fontSize: '13px' }
-    this.chartTitleFontStyles = { fontFamily: `'Poppins', sans-serif`, fontSize: '15px', fontWeight: 'bold' }
+    this.labelFontStyles = { fontFamily: `'Source Sans Pro', sans-serif`, fontSize: `${theme.typography.baseSize * theme.typography.chartAxisTicksRemRatio}px` }
+    this.chartTitleFontStyles = { fontFamily: `'Poppins', sans-serif`, fontSize: `${theme.typography.baseSize * theme.typography.chartAxisLabelRemRatio}px`, fontWeight: 'bold' }
     this.state = {
       scale: x => x,
       showSeconds: false,
@@ -87,7 +88,7 @@ class RouteChoiceChart extends React.Component {
             />
           }
         >
-          <VictoryLabel text='Duration of journeys' x={this.leftPadding} y={22} textAnchor='start' style={this.chartTitleFontStyles}/>
+          <VictoryLabel text='Duration of journeys' x={this.leftPadding} y={theme.typography.baseSize * theme.typography.chartAxisLabelRemRatio} textAnchor='start' style={this.chartTitleFontStyles}/>
           <VictoryStack colorScale={'blue'}
             style={{ labels: { fill: 'white', ...this.labelFontStyles } }}
             labelComponent={ <VictoryLabel dx={this.labelYOffset} textAnchor='end' /> }
@@ -151,7 +152,7 @@ class RouteChoiceChart extends React.Component {
             />
           }
         >
-          <VictoryLabel text={'Number of\ncommuters'} x={8} y={14} textAnchor='start' style={this.chartTitleFontStyles}/>
+          <VictoryLabel text={'Number of\ncommuters'} x={8} y={theme.typography.baseSize * theme.typography.chartAxisLabelRemRatio} textAnchor='start' style={this.chartTitleFontStyles}/>
           <VictoryBar
             horizontal={true}
             barRatio={0.8}
