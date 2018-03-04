@@ -39,16 +39,16 @@ export const zoneCompositionData = (state = {}, action) => {
 export const zoneJourneyData = (state = {}, action) => {
   switch (action.type) {
     case t.RECEIVE_ZONE_JOURNEYS:
-      const newData = action.journeys.features.reduce((allData, route) => {
-        const { journey_entry_zone, journey_exit_zone, ...properties } = route.properties // eslint-disable-line
-        if (!allData.hasOwnProperty(journey_entry_zone)) {
-          allData[journey_entry_zone] = []
+      const newData = action.journeys.reduce((allData, route) => {
+        const { origin_zone, destination_zone, ...properties } = route // eslint-disable-line
+        if (!allData.hasOwnProperty(origin_zone)) {
+          allData[origin_zone] = []
         }
-        if (!allData.hasOwnProperty(journey_exit_zone)) {
-          allData[journey_exit_zone] = []
+        if (!allData.hasOwnProperty(destination_zone)) {
+          allData[destination_zone] = []
         }
-        allData[journey_entry_zone].push({...properties, journey_exit_zone})
-        allData[journey_exit_zone].push({...properties, journey_entry_zone})
+        allData[origin_zone].push({...properties, destination_zone})
+        allData[destination_zone].push({...properties, origin_zone})
         return allData
       }, {})
       return {

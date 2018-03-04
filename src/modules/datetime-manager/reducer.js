@@ -1,8 +1,11 @@
 import moment from 'moment'
 import * as t from './actionTypes'
 
+const minDate = moment('2016-07-10T00:00:00+08:00').toDate()
+const maxDate = moment('2016-07-15T23:59:59+08:00').toDate()
+
 export const datetimeBrushDomain = (state = {
-  x: [moment('2017-10-22T18:00:00+08:00').toDate(), moment('2017-10-23T06:00:00+08:00').toDate()],
+  x: [moment('2016-07-13T10:00:00+08:00').toDate(), moment('2016-07-14T06:00:00+08:00').toDate()],
   y: [0, 1]
 }, action) => {
   switch (action.type) {
@@ -20,12 +23,12 @@ export const datetimeBrushDomain = (state = {
       x0.minutes(currentBrushStart.minutes())
       x0.seconds(currentBrushStart.seconds())
       x0.milliseconds(currentBrushStart.milliseconds())
-      
+
       // Ensure start of new brush domain is within the bounds
       if (x0.isSameOrAfter(action.maxDate)) {
         return state
       }
-      
+
       const x1 = x0.clone().add(duration)
       return {
         ...state,
@@ -37,7 +40,7 @@ export const datetimeBrushDomain = (state = {
 }
 
 export const datetimeZoomDomain = (state = {
-  x: [moment('2017-10-21T00:00:00+08:00').toDate(), moment('2017-10-25T00:00:00+08:00').toDate()]
+  x: [minDate, maxDate]
 }, action) => {
   switch (action.type) {
     case t.SET_DATETIME_ZOOM_DOMAIN:
@@ -52,8 +55,8 @@ export const datetimeZoomDomain = (state = {
 }
 
 export const ridershipDomain = (state = {
-  minX: moment('2017-10-21T00:00:00+08:00').toDate(),
-  maxX: moment('2017-10-25T00:00:00+08:00').toDate(),
+  minX: minDate,
+  maxX: maxDate,
   step: 'PT1H'
 }, action) => {
   switch (action.type) {

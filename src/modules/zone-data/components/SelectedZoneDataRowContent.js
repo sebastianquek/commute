@@ -15,20 +15,19 @@ const SelectedZoneDataRowContent = (props) => {
   props.zoneJourneys.forEach(z => {
     if (z.zoneData) {
       z.zoneData.forEach(d => {
-        let { buses, durations, count, journey_exit_zone: exitZone } = d
-        buses = buses.map(bus => `${bus.slice(0, -1)}(${bus.slice(-1)})`)
+        let { transport_services: services, durations, count, destination_zone: exitZone } = d
         if (exitZone) {
-          const key = `${z.zoneId}-${exitZone}-${buses}`
+          const key = `${z.zoneId}-${exitZone}-${services}`
           keys.push({key, count})
           data.push(
             <div key={key}>
-              y: {count} people exited in {exitZone}, x: {buses.join('-')}, {durations.join('/')}
+              y: {count} people exited in {exitZone}, x: {services.join('-')}, {durations.join('/')}
             </div>
           )
-          for (let i = 0; i < buses.length; i++) {
+          for (let i = 0; i < services.length; i++) {
             if (!chartData[i]) chartData[i] = {}
             chartData[i][key] = {
-              bus: buses[i],
+              service: services[i],
               duration: parseFloat(durations[i])
             }
           }

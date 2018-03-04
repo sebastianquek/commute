@@ -53,7 +53,7 @@ export function * getInitialZoneJourneys () {
 }
 
 async function fetchZoneJourneys (originZoneIds, destinationZoneIds, startTime, duration) {
-  let query = `/api/v2/journeys?startTime=${encodeURIComponent(startTime.format())}&duration=${duration.toISOString()}`
+  let query = `/api/v3/journeys?startTime=${encodeURIComponent(startTime.format())}&duration=${duration.toISOString()}`
   if (originZoneIds.length > 0) query += `&origins=${originZoneIds}`
   if (destinationZoneIds.length > 0) query += `&destinations=${destinationZoneIds}`
   const res = await fetch(query)
@@ -62,7 +62,7 @@ async function fetchZoneJourneys (originZoneIds, destinationZoneIds, startTime, 
 }
 
 async function fetchZoneCompositions () {
-  const res = await fetch('/api/v2/zones')
+  const res = await fetch('/api/v3/zones')
   const resJson = await res.json()
   const data = topojson.feature(resJson, resJson.objects.zones)
   return data

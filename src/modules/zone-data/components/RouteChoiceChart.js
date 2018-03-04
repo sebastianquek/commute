@@ -104,7 +104,7 @@ class RouteChoiceChart extends React.Component {
                   x={({key}) => key}
                   labels={({key, y}) => {
                     if (data[key]) {
-                      const bus = data[key].bus
+                      const bus = data[key].service
                       const estimatedWidth = bus.length * 6
                       const barWidth = this.state.scale(y) - this.state.scale(0) + this.labelYOffset
                       return barWidth > estimatedWidth ? bus : ''
@@ -131,9 +131,8 @@ class RouteChoiceChart extends React.Component {
             dependentAxis
             tickLabelComponent={<VictoryLabel lineHeight={1}/>}
             tickFormat={b => {
-              let [ originZone, destZone, buses ] = b.split('-')
-              buses = buses.split(',').map(bus => bus.slice(0, -3))
-              return `Zone ${originZone} to ${destZone}\n${buses.join(' ⇢ ')}`
+              let [ originZone, destZone, services ] = b.split('-')
+              return `Zone ${originZone} to ${destZone}\n${services}`
             }}
             style={{ tickLabels: this.labelFontStyles }}
           />
@@ -141,13 +140,14 @@ class RouteChoiceChart extends React.Component {
         <VictoryChart
           height={(this.props.keys.length + 1) * this.barThickness + 110}
           width={this.state.width / 3}
+          horizontal={true}
           domainPadding={{ y: [this.barThickness, this.barThickness / 2] }}
           padding={{ top: this.topPadding, right: this.rightPadding, bottom: 50, left: 8 }}
           containerComponent={
             <VictoryZoomContainer
               zoomDomain={{y: [0, this.props.keys.length + 1]}}
               zoomDimension='x'
-              minimumZoom={{x: 20}}
+              minimumZoom={{x: 1}}
             />
           }
         >
@@ -156,7 +156,7 @@ class RouteChoiceChart extends React.Component {
             horizontal={true}
             barRatio={0.8}
             data={this.props.keys.map(k => ({...k, width: this.barThickness}))}
-            y={({count}) => count}
+            y={({count}) => Number(count)}
             x={({key}) => key}
             labels={({count}) => count}
             style={{ labels: { fill: 'white', ...this.labelFontStyles } }}
@@ -164,6 +164,7 @@ class RouteChoiceChart extends React.Component {
           />
           <VictoryAxis
             label=''
+            tickFormat={t => t === Math.floor(t) ? t : ''}
             style={{
               axis: {stroke: 'black'},
               grid: {stroke: 'grey', strokeWidth: '1px', opacity: 0.6},
