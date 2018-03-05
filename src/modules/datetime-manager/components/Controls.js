@@ -48,6 +48,21 @@ const Button = styled.button`
   }
 `
 
+const Spinner = styled.div`
+  height: 12px;
+  width: 12px;
+  margin: 2px;
+  animation: rotate 0.8s infinite linear;
+  border: 2px solid white;
+  border-right-color: transparent;
+  border-radius: 50%;
+
+  @keyframes rotate {
+    0%    { transform: rotate(0deg); }
+    100%  { transform: rotate(360deg); }
+  }
+`
+
 class Controls extends React.Component {
   constructor (props) {
     super(props)
@@ -65,7 +80,11 @@ class Controls extends React.Component {
       if (key === this.props.step) {
         selected = true
       }
-      return <Button onClick={() => this.props.setStep(key)} key={key} disabled={selected}>{this.durations[key]}</Button>
+      return (
+        <Button onClick={() => this.props.setStep(key)} key={key} disabled={selected}>
+          {selected && this.props.isFetchingRidershipData ? <Spinner/> : this.durations[key]}
+        </Button>
+      )
     })
 
     return (
@@ -81,6 +100,7 @@ class Controls extends React.Component {
 
 Controls.propTypes = {
   step: PropTypes.string.isRequired,
+  isFetchingRidershipData: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired
 }
 

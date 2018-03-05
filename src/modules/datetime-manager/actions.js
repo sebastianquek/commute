@@ -30,6 +30,10 @@ export const requestRidership = () => ({
   type: t.REQUEST_RIDERSHIP
 })
 
+export const fetchingRidership = () => ({
+  type: t.FETCHING_RIDERSHIP
+})
+
 export const requestRidershipError = error => ({
   type: t.REQUEST_RIDERSHIP_ERROR,
   error

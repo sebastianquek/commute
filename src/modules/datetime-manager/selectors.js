@@ -21,4 +21,5 @@ export const zoomedDateDomainSelector = state => state.datetimeZoomDomain.x
 
 export const ridershipDataSelector = state => state.ridershipData
 
-export const shouldDatetimeSliderUpdate = state => state.shouldDatetimeSliderUpdate
+export const shouldDatetimeSliderUpdate = state => state.datetimeManagerInterfaceFlags.shouldDatetimeSliderUpdate
+export const isFetchingRidershipData = state => state.datetimeManagerInterfaceFlags.isFetchingRidershipData

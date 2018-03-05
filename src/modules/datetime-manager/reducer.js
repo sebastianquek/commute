@@ -72,8 +72,6 @@ export const ridershipDomain = (state = {
 
 export const ridershipData = (state = {}, action) => {
   switch (action.type) {
-    case t.REQUEST_RIDERSHIP:
-      return state
     case t.RECEIVE_RIDERSHIP:
       const departureData = []
       const arrivalData = []
@@ -113,12 +111,31 @@ export const ridershipData = (state = {}, action) => {
   }
 }
 
-export const shouldDatetimeSliderUpdate = (state = false, action) => {
+export const datetimeManagerInterfaceFlags = (state = {
+  shouldDatetimeSliderUpdate: false,
+  isFetchingRidershipData: true
+}, action) => {
   switch (action.type) {
     case t.FORCE_DATETIME_SLIDER_UPDATE:
-      return true
+      return {
+        ...state,
+        shouldDatetimeSliderUpdate: true
+      }
     case t.RESET_FORCE_DATETIME_SLIDER_UPDATE:
-      return false
+      return {
+        ...state,
+        shouldDatetimeSliderUpdate: false
+      }
+    case t.FETCHING_RIDERSHIP:
+      return {
+        ...state,
+        isFetchingRidershipData: true
+      }
+    case t.RECEIVE_RIDERSHIP:
+      return {
+        ...state,
+        isFetchingRidershipData: false
+      }
     default:
       return state
   }

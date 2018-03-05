@@ -14,5 +14,5 @@ export default combineReducers({
   datetimeZoomDomain: datetimeManager.reducer.datetimeZoomDomain,
   ridershipDomain: datetimeManager.reducer.ridershipDomain,
   ridershipData: datetimeManager.reducer.ridershipData,
-  shouldDatetimeSliderUpdate: datetimeManager.reducer.shouldDatetimeSliderUpdate
+  datetimeManagerInterfaceFlags: datetimeManager.reducer.datetimeManagerInterfaceFlags
 })
