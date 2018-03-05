@@ -40,19 +40,28 @@ export const zoneJourneyData = (state = {}, action) => {
   switch (action.type) {
     case t.RECEIVE_ZONE_JOURNEYS:
       const newData = action.journeys.reduce((allData, route) => {
-        const { origin_zone, destination_zone, ...properties } = route // eslint-disable-line
-        if (!allData.hasOwnProperty(origin_zone)) {
-          allData[origin_zone] = []
+        let { origin_zone: originZone, destination_zone: destinationZone, count, percentile, ...properties } = route // eslint-disable-line
+        if (!allData.hasOwnProperty(originZone)) {
+          allData[originZone] = []
         }
-        if (!allData.hasOwnProperty(destination_zone)) {
-          allData[destination_zone] = []
+        if (!allData.hasOwnProperty(destinationZone)) {
+          allData[destinationZone] = []
         }
-        allData[origin_zone].push({...properties, destination_zone})
-        allData[destination_zone].push({...properties, origin_zone})
+        count = parseInt(count, 10)
+        const trips = []
+        for (let i = 0; i < properties.transport_services.length; i++) {
+          trips.push({
+            service: properties.transport_services[i],
+            originId: properties.stop_ids[i][0],
+            destinationId: properties.stop_ids[i][1],
+            duration: properties.durations[i]
+          })
+        }
+        allData[originZone].push({count, percentile, destinationZone, trips})
+        allData[destinationZone].push({count, percentile, originZone, trips})
         return allData
       }, {})
       return {
-        // ...state,
         ...newData
       }
     default:
