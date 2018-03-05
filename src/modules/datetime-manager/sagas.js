@@ -20,7 +20,8 @@ export function * watchAndUpdateRidership () {
 
     try {
       const journeys = yield call(fetchRidership, zoneIds, minDate, duration, interval)
-      yield put(receiveRidership(journeys))
+      const groups = yield select(zoneManager.selectors.allGroupsSelector)
+      yield put(receiveRidership(groups, journeys))
     } catch (err) {
       yield put(requestRidershipError(err))
     }

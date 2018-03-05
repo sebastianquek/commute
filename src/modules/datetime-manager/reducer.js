@@ -75,19 +75,38 @@ export const ridershipData = (state = {}, action) => {
     case t.REQUEST_RIDERSHIP:
       return state
     case t.RECEIVE_RIDERSHIP:
-      const data = action.data.reduce((all, step) => {
-        if (step.counts) {
-          Object.keys(step.counts).forEach(id => {
-            const counts = step.counts[id]
-            if (!all.hasOwnProperty(id)) all[id] = {}
-            all[id][step['start_time']] = counts
+      const departureData = []
+      const arrivalData = []
+      action.data.forEach(step => {
+        const row = { date: moment(step['start_time']) }
+        const departureRow = { ...row }
+        const arrivalRow = { ...row }
+
+        action.groups.forEach(({ groupId, zoneIds }) => {
+          const groupDepartureData = { sum: 0 }
+          const groupArrivalData = { sum: 0 }
+          zoneIds.forEach(zone => {
+            if (step.counts && step.counts['' + zone]) { // zone has arrivals/departures
+              const counts = step.counts['' + zone]
+              groupDepartureData[zone] = counts.departure || 0
+              groupArrivalData[zone] = counts.arrival || 0
+              groupDepartureData.sum += groupDepartureData[zone]
+              groupArrivalData.sum += groupArrivalData[zone]
+            } else {
+              groupDepartureData[zone] = 0
+              groupArrivalData[zone] = 0
+            }
           })
-        }
-        return all
-      }, {})
+          departureRow[groupId] = groupDepartureData
+          arrivalRow[groupId] = groupArrivalData
+        })
+
+        arrivalData.push(arrivalRow)
+        departureData.push(departureRow)
+      })
       return {
-        ...state,
-        ...data
+        departureData,
+        arrivalData
       }
     default:
       return state

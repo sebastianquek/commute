@@ -35,7 +35,8 @@ export const requestRidershipError = error => ({
   error
 })
 
-export const receiveRidership = data => ({
+export const receiveRidership = (groups, data) => ({
   type: t.RECEIVE_RIDERSHIP,
+  groups,
   data
 })
