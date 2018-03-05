@@ -50,8 +50,13 @@ export const zoneJourneyData = (state = {}, action) => {
         count = parseInt(count, 10)
         const trips = []
         for (let i = 0; i < properties.transport_services.length; i++) {
+          let service = properties.transport_services[i]
+          if (service.slice(0, 1) !== '{') { // Bus trip
+            service = `${service.slice(0, -1)}(${service.slice(-1)})`
+          }
+
           trips.push({
-            service: properties.transport_services[i],
+            service,
             originId: properties.stop_ids[i][0],
             destinationId: properties.stop_ids[i][1],
             duration: properties.durations[i]
