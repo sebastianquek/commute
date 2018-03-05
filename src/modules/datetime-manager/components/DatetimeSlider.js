@@ -100,8 +100,15 @@ class DatetimeSlider extends React.Component {
   shouldComponentUpdate (nextProps, nextState) {
     this.departureData = nextProps.data.departureData || []
     this.arrivalData = nextProps.data.arrivalData || []
-    this.drawSlider()
-    return true
+    if (
+      nextProps.shouldUpdate ||
+      !d3.select(this.ref).select('svg').node()
+    ) {
+      this.props = nextProps
+      this.props.resetForceDatetimeSliderUpdate()
+      this.drawSlider()
+    }
+    return false
   }
 
   updateDimensions () {
@@ -114,6 +121,9 @@ class DatetimeSlider extends React.Component {
       return
     }
     d3.select(this.ref).select('svg').remove()
+
+    const setDatetimeBrushDomain = this.props.setDatetimeBrushDomain
+    const setDatetimeZoomDomain = this.props.setDatetimeZoomDomain
 
     const w = this.w
     const h = this.h / 2
@@ -462,7 +472,7 @@ class DatetimeSlider extends React.Component {
         d1[0] = d3.timeHour.floor(d0[0])
         d1[1] = d3.timeHour.offset(d1[0])
       }
-
+      setDatetimeBrushDomain({x: d1})
       brushDomainAxisG.call(brushDomainAxis.tickValues(d1))
       brushDomainBgMask.attr('x', xScale(d1[0]))
       brushDomainBgMask.attr('width', xScale(d1[1]) - xScale(d1[0]))
@@ -620,6 +630,8 @@ class DatetimeSlider extends React.Component {
           .translate(d3.event.transform.x, 0)
           .scale(d3.event.transform.k)
       )
+
+      setDatetimeZoomDomain({x: newScale.domain()})
     }
 
     const k = (xScale.range()[1] - xScale.range()[0]) / (xScale(this.props.zoomDomain.x[1]) - xScale(this.props.zoomDomain.x[0]))

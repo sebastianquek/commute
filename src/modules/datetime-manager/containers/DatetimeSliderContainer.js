@@ -1,8 +1,9 @@
 import { connect } from 'react-redux'
-import { setDatetimeBrushDomain, setDatetimeZoomDomain } from '../actions'
+import { setDatetimeBrushDomain, setDatetimeZoomDomain, resetForceDatetimeSliderUpdate } from '../actions'
 import {
   brushDomainSelector, zoomDomainSelector, minDateSelector,
-  maxDateSelector, stepSelector, ridershipDataSelector
+  maxDateSelector, stepSelector, ridershipDataSelector,
+  shouldDatetimeSliderUpdate
 } from '../selectors'
 import zoneManager from '../../zone-manager'
 import DatetimeSlider from '../components/DatetimeSlider'
@@ -16,13 +17,15 @@ const mapStateToProps = (state, ownProps) => {
     step: stepSelector(state),
     data: ridershipDataSelector(state),
     groupColors: zoneManager.selectors.groupColorsSelector(state),
+    shouldUpdate: shouldDatetimeSliderUpdate(state),
     ...ownProps
   }
 }
 
 const mapDispatchToProps = {
   setDatetimeBrushDomain,
-  setDatetimeZoomDomain
+  setDatetimeZoomDomain,
+  resetForceDatetimeSliderUpdate
 }
 
 export default connect(

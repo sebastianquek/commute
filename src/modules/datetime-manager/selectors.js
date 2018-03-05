@@ -20,3 +20,5 @@ export const brushedDateDomainSelector = state => state.datetimeBrushDomain.x
 export const zoomedDateDomainSelector = state => state.datetimeZoomDomain.x
 
 export const ridershipDataSelector = state => state.ridershipData
+
+export const shouldDatetimeSliderUpdate = state => state.shouldDatetimeSliderUpdate

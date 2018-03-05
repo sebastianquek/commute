@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { select, call, put, take } from 'redux-saga/effects'
-import { requestRidership, requestRidershipError, receiveRidership } from './actions'
+import { requestRidership, requestRidershipError, receiveRidership, forceDatetimeSliderUpdate } from './actions'
 import { REQUEST_RIDERSHIP, SET_STEP } from './actionTypes'
 import { minDateSelector, maxDateSelector, stepSelector } from './selectors'
 import zoneManager from '../zone-manager'
@@ -22,6 +22,7 @@ export function * watchAndUpdateRidership () {
       const journeys = yield call(fetchRidership, zoneIds, minDate, duration, interval)
       const groups = yield select(zoneManager.selectors.allGroupsSelector)
       yield put(receiveRidership(groups, journeys))
+      yield put(forceDatetimeSliderUpdate())
     } catch (err) {
       yield put(requestRidershipError(err))
     }

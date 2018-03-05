@@ -40,3 +40,11 @@ export const receiveRidership = (groups, data) => ({
   groups,
   data
 })
+
+export const forceDatetimeSliderUpdate = () => ({
+  type: t.FORCE_DATETIME_SLIDER_UPDATE
+})
+
+export const resetForceDatetimeSliderUpdate = () => ({
+  type: t.RESET_FORCE_DATETIME_SLIDER_UPDATE
+})

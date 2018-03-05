@@ -112,3 +112,14 @@ export const ridershipData = (state = {}, action) => {
       return state
   }
 }
+
+export const shouldDatetimeSliderUpdate = (state = false, action) => {
+  switch (action.type) {
+    case t.FORCE_DATETIME_SLIDER_UPDATE:
+      return true
+    case t.RESET_FORCE_DATETIME_SLIDER_UPDATE:
+      return false
+    default:
+      return state
+  }
+}
