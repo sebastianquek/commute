@@ -25,7 +25,7 @@ export default {
 
   },
   dimensions: {
-    bottomBarHeight: '24rem',
+    bottomBarHeight: '28rem',
     rightBarWidth: '46rem'
   },
   borderRadius: '0.3em'
