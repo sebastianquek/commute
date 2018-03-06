@@ -17,6 +17,7 @@ const mapStateToProps = (state, ownProps) => {
     step: stepSelector(state),
     data: ridershipDataSelector(state),
     groupColors: zoneManager.selectors.groupColorsSelector(state),
+    zoneIds: zoneManager.selectors.allZoneIdsSelector(state),
     shouldUpdate: shouldDatetimeSliderUpdate(state),
     ...ownProps
   }

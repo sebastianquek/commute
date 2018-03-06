@@ -449,7 +449,7 @@ class RouteChoiceChart extends Component {
         return tickValues
       }
     }
-    return [countDomain, durationDomain]
+    return [countDomain.map(Math.round), durationDomain]
   }
 
   formatDuration (duration) {

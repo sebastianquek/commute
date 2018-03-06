@@ -1,5 +1,9 @@
 import moment from 'moment'
+import get from 'lodash.get'
+import omit from 'lodash.omit'
+import pick from 'lodash.pick'
 import * as t from './actionTypes'
+import zoneManager from '../zone-manager'
 
 const minDate = moment('2016-07-10T00:00:00+08:00').toDate()
 const maxDate = moment('2016-07-15T23:59:59+08:00').toDate()
@@ -70,12 +74,12 @@ export const ridershipDomain = (state = {
   }
 }
 
-export const ridershipData = (state = {}, action) => {
+export const ridershipData = (state = { departureData: [], arrivalData: [] }, action) => {
   switch (action.type) {
     case t.RECEIVE_RIDERSHIP:
       const departureData = []
       const arrivalData = []
-      action.data.forEach(step => {
+      action.data.forEach((step, i) => {
         const row = { date: moment(step['start_time']) }
         const departureRow = { ...row }
         const arrivalRow = { ...row }
@@ -84,10 +88,17 @@ export const ridershipData = (state = {}, action) => {
           const groupDepartureData = { sum: 0 }
           const groupArrivalData = { sum: 0 }
           zoneIds.forEach(zone => {
+            const existingZoneDepartures = get(state.departureData, [i, groupId, zone], 0)
+            const existingZoneArrivals = get(state.arrivalData, [i, groupId, zone], 0)
             if (step.counts && step.counts['' + zone]) { // zone has arrivals/departures
               const counts = step.counts['' + zone]
               groupDepartureData[zone] = counts.departure || 0
               groupArrivalData[zone] = counts.arrival || 0
+              groupDepartureData.sum += groupDepartureData[zone]
+              groupArrivalData.sum += groupArrivalData[zone]
+            } else if (existingZoneDepartures || existingZoneArrivals) {
+              groupDepartureData[zone] = existingZoneDepartures
+              groupArrivalData[zone] = existingZoneArrivals
               groupDepartureData.sum += groupDepartureData[zone]
               groupArrivalData.sum += groupArrivalData[zone]
             } else {
@@ -105,6 +116,25 @@ export const ridershipData = (state = {}, action) => {
       return {
         departureData,
         arrivalData
+      }
+    case zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP:
+      const removeZone = data => data.map(step => {
+        const { [action.groupId]: group, ...groups } = step
+        const { [action.zoneId]: zone, ...zones } = group
+        zones.sum -= zone
+        return {
+          ...groups,
+          [action.groupId]: zones
+        }
+      })
+      return {
+        departureData: removeZone(state.departureData),
+        arrivalData: removeZone(state.arrivalData)
+      }
+    case zoneManager.actionTypes.REMOVE_GROUP:
+      return {
+        departureData: state.departureData.map(step => omit(step, action.groupId)),
+        arrivalData: state.arrivalData.map(step => omit(step, action.groupId))
       }
     default:
       return state

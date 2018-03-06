@@ -1,5 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import isEqual from 'lodash.isequal'
+import throttle from 'lodash.throttle'
 import * as d3 from 'd3'
 import moment from 'moment'
 import textures from 'textures'
@@ -102,6 +105,7 @@ class DatetimeSlider extends React.Component {
     this.arrivalData = nextProps.data.arrivalData || []
     if (
       nextProps.shouldUpdate ||
+      !isEqual(nextProps.zoneIds, this.props.zoneIds) ||
       !d3.select(this.ref).select('svg').node()
     ) {
       this.props = nextProps
@@ -122,8 +126,8 @@ class DatetimeSlider extends React.Component {
     }
     d3.select(this.ref).select('svg').remove()
 
-    const setDatetimeBrushDomain = this.props.setDatetimeBrushDomain
-    const setDatetimeZoomDomain = this.props.setDatetimeZoomDomain
+    const setDatetimeBrushDomain = throttle(this.props.setDatetimeBrushDomain, 500)
+    const setDatetimeZoomDomain = throttle(this.props.setDatetimeZoomDomain, 500)
 
     const w = this.w
     const h = this.h / 2
@@ -675,6 +679,17 @@ class DatetimeSlider extends React.Component {
       </Wrapper>
     )
   }
+}
+
+DatetimeSlider.propTypes = {
+  brushDomain: PropTypes.object.isRequired,
+  zoomDomain: PropTypes.object.isRequired,
+  zoneIds: PropTypes.array.isRequired,
+  groupColors: PropTypes.object.isRequired,
+  isFetchingRidershipData: PropTypes.bool.isRequired,
+  setDatetimeBrushDomain: PropTypes.func.isRequired,
+  setDatetimeZoomDomain: PropTypes.func.isRequired,
+  resetForceDatetimeSliderUpdate: PropTypes.func.isRequired
 }
 
 export default DatetimeSlider
