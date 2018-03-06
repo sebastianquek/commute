@@ -90,7 +90,7 @@ export const groupColorsSelector = createSelector(
 
 export const nextGroupIdSelector = createSelector(
   allGroupIdsSelector,
-  groupIds => groupIds.length > 0 ? Math.max(...groupIds) + 1 : 0
+  groupIds => groupIds.length > 0 ? Math.max(...groupIds) + 1 : 1
 )
 
 export const editingGroupSelector = createSelector(
