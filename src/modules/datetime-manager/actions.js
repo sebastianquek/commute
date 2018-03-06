@@ -39,8 +39,9 @@ export const requestRidershipError = error => ({
   error
 })
 
-export const receiveRidership = (groups, data) => ({
+export const receiveRidership = (clearExistingRidershipData, groups, data) => ({
   type: t.RECEIVE_RIDERSHIP,
+  clearExistingRidershipData,
   groups,
   data
 })

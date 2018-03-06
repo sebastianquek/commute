@@ -96,7 +96,8 @@ export const ridershipData = (state = { departureData: [], arrivalData: [] }, ac
               groupArrivalData[zone] = counts.arrival || 0
               groupDepartureData.sum += groupDepartureData[zone]
               groupArrivalData.sum += groupArrivalData[zone]
-            } else if (existingZoneDepartures || existingZoneArrivals) {
+            } else if (!action.clearExistingRidershipData &&
+              (existingZoneDepartures || existingZoneArrivals)) {
               groupDepartureData[zone] = existingZoneDepartures
               groupArrivalData[zone] = existingZoneArrivals
               groupDepartureData.sum += groupDepartureData[zone]
