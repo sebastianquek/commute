@@ -187,6 +187,7 @@ class RouteChoiceChart extends Component {
       .tickSize(-(h - padding.bottom - padding.top))
       .tickPadding(10)
       .tickValues(countTickValues)
+      .tickFormat(t => Math.trunc(t))
 
     const svg = d3.select(this.ref)
       .insert('svg', ':first-child')
@@ -449,7 +450,7 @@ class RouteChoiceChart extends Component {
         return tickValues
       }
     }
-    return [countDomain.map(Math.round), durationDomain]
+    return [countDomain, durationDomain]
   }
 
   formatDuration (duration) {

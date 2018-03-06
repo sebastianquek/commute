@@ -1,7 +1,6 @@
 import moment from 'moment'
 import get from 'lodash.get'
 import omit from 'lodash.omit'
-import pick from 'lodash.pick'
 import * as t from './actionTypes'
 import zoneManager from '../zone-manager'
 
@@ -9,7 +8,7 @@ const minDate = moment('2016-07-10T00:00:00+08:00').toDate()
 const maxDate = moment('2016-07-15T23:59:59+08:00').toDate()
 
 export const datetimeBrushDomain = (state = {
-  x: [moment('2016-07-13T10:00:00+08:00').toDate(), moment('2016-07-14T06:00:00+08:00').toDate()],
+  x: [moment('2016-07-12T00:00:00+08:00').toDate(), moment('2016-07-12T20:00:00+08:00').toDate()],
   y: [0, 1]
 }, action) => {
   switch (action.type) {
