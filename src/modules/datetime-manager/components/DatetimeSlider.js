@@ -99,6 +99,16 @@ const ChartsWrapper = styled.div`
     letter-spacing: 1px;
     font-weight: 600;
   }
+
+  .values-container--values text {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .values-container--header {
+    text-transform: uppercase;
+    font-weight: 600;
+  }
 `
 
 class DatetimeSlider extends React.Component {
@@ -170,10 +180,11 @@ class DatetimeSlider extends React.Component {
 
     const setDatetimeBrushDomain = throttle(this.props.setDatetimeBrushDomain, 500)
     const setDatetimeZoomDomain = throttle(this.props.setDatetimeZoomDomain, 500)
+    const groupColors = this.props.groupColors
 
     const w = this.w
     const h = this.h / 2
-    const padding = { top: 14, right: 20, bottom: 14, left: 60 }
+    const padding = { top: 14, right: 160, bottom: 14, left: 60 }
 
     const maxRidership = Math.max(this.getMaxStackSum(this.arrivalData), this.getMaxStackSum(this.departureData))
 
@@ -532,6 +543,7 @@ class DatetimeSlider extends React.Component {
     const stack = d3.stack()
       .keys(keys)
       .value((d, key) => d[key].sum)
+      .order(d3.stackOrderReverse)
 
     // Convert data to format understood by d3
     const arrivalSeries = stack(this.arrivalData)
@@ -555,22 +567,100 @@ class DatetimeSlider extends React.Component {
         currentDate = d0
       }
 
-      // const tooltipData = []
-      // for (let zone of departureSeries) {
-      //   const data = zone[currentDateIndex][1] - zone[currentDateIndex][0]
-      //   tooltipData.push({
-      //     key: zone.key,
-      //     dy: yScale(data / 2 + zone[currentDateIndex][0]),
-      //     data,
-      //   })
-      // }
+      const data = []
+      const length = departureSeries.length
+      for (let i = 0; i < length; i++) {
+        const currZoneDepartureData = departureSeries[i][currentDateIndex]
+        const currZoneArrivalData = arrivalSeries[i][currentDateIndex]
+        data.push({
+          key: departureSeries[i].key,
+          numDepartures: currZoneDepartureData[1] - currZoneDepartureData[0],
+          numArrivals: currZoneArrivalData[1] - currZoneArrivalData[0]
+        })
+      }
+
+      updateLegend(data)
 
       tooltipG.call(tooltipAxis.tickValues([currentDate]))
       updateTooltipLineLabel()
     }
 
     function handleHoverOut () {
+      updateLegend([])
       tooltipG.call(tooltipAxis.tickValues([]))
+    }
+
+    function updateLegend (data) {
+      const selectionWithData = ridershipValues
+        .selectAll('g.value-container--row')
+        .data(data, d => d.key)
+
+      // Transition exit nodes
+      selectionWithData.exit()
+        .transition(900)
+        .delay((d, i) => i * 30)
+        .attr('opacity', 0)
+        .attr('transform', 'translate(0, 0)')
+        .remove()
+
+      const valuesG = selectionWithData.enter()
+        .append('g')
+        .attr('class', 'value-container--row')
+
+      // Transition enter nodes
+      valuesG.attr('opacity', 0)
+        .transition(900)
+        .delay((d, i) => i * 30)
+        .attr('opacity', 1)
+        .attr('transform', (d, i) => `translate(0, ${i * 28})`)
+
+      // Add group id nodes
+      const keyGroups = valuesG.append('g')
+        .attr('transform', 'translate(34, 0)')
+
+      keyGroups.append('rect')
+        .attr('class', 'key-rect')
+        .attr('width', 18)
+        .attr('height', 18)
+        .attr('rx', 4)
+        .attr('ry', 4)
+        .attr('stroke', '#4F4F4F')
+        .attr('transform', 'rotate(45)')
+        .attr('y', -12)
+        .attr('x', -12)
+
+      keyGroups.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('class', 'key-value')
+
+      // Add departure value nodes
+      valuesG.append('text')
+        .attr('class', 'departure-value')
+        .attr('x', 60)
+
+      // Add arrival value nodes
+      valuesG.append('text')
+        .attr('class', 'arrival-value')
+        .attr('x', 96)
+
+      // Set key values
+      valuesG.merge(selectionWithData)
+        .select('rect.key-rect')
+        .attr('fill', d => groupColors[d.key])
+
+      valuesG.merge(selectionWithData)
+        .select('text.key-value')
+        .text(d => d.key)
+
+      // Set departure values
+      valuesG.merge(selectionWithData)
+        .select('text.departure-value')
+        .text(d => d.numDepartures)
+
+      // Set arrival values
+      valuesG.merge(selectionWithData)
+        .select('text.arrival-value')
+        .text(d => d.numArrivals)
     }
 
     // Create chart areas
@@ -652,6 +742,30 @@ class DatetimeSlider extends React.Component {
     }
 
     updateTooltipLineLabel()
+
+    const ridershipValuesG = svg.append('g')
+      .attr('class', 'values-container')
+      .attr('transform', `translate(${w - padding.right + 6}, 0)`)
+
+    ridershipValuesG.append('text')
+      .attr('class', 'values-container--header')
+      .text('Departures')
+      .attr('transform', 'rotate(-45)')
+      .attr('text-anchor', 'start')
+      .attr('y', 85)
+      .attr('x', 5)
+
+    ridershipValuesG.append('text')
+      .attr('class', 'values-container--header')
+      .text('Arrivals')
+      .attr('transform', 'rotate(-45)')
+      .attr('text-anchor', 'start')
+      .attr('y', 111)
+      .attr('x', 32)
+
+    const ridershipValues = ridershipValuesG.append('g')
+      .attr('transform', 'translate(0, 84)')
+      .attr('class', 'values-container--values')
 
     function zooming () {
       if (d3.event.sourceEvent && d3.event.sourceEvent.type === 'zoom') return
