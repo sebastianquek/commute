@@ -151,7 +151,7 @@ class RouteChoiceChart extends Component {
   drawCharts (routes) {
     const padding = { top: 50, right: 20, bottom: 60, left: 20 }
     const w = 400
-    const h = routes.length * 50 + padding.top + padding.bottom
+    const h = routes.length * 40 + padding.top + padding.bottom
 
     // Create scale functions
     const xScaleCounts = d3.scaleLinear()

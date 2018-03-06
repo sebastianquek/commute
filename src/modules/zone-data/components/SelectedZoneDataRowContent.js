@@ -9,8 +9,9 @@ const Section = styled.div`
 `
 
 const SelectedZoneDataRowContent = (props) => {
-  // TODO: Ensure all zone data is shown
-  console.log(props.zoneJourneys)
+  const routes = props.zoneJourneys.reduce((routes, z) => {
+    return [...routes, ...(z.zoneData || [])]
+  }, [])
   return (
     <div>
       <Subheader>Composition</Subheader>
@@ -19,8 +20,8 @@ const SelectedZoneDataRowContent = (props) => {
       </Section>
       <Subheader>Routes</Subheader>
       <Section>
-        {props.zoneJourneys[0].zoneData &&
-          <RouteChoiceChart routes={props.zoneJourneys[0].zoneData} />
+        {routes.length > 0 &&
+          <RouteChoiceChart routes={routes} />
         }
       </Section>
     </div>
