@@ -3,7 +3,7 @@ import { setDatetimeBrushDomain, setDatetimeZoomDomain, resetForceDatetimeSlider
 import {
   brushDomainSelector, zoomDomainSelector, minDateSelector,
   maxDateSelector, stepSelector, ridershipDataSelector,
-  shouldDatetimeSliderUpdate
+  shouldDatetimeSliderUpdate, isFetchingRidershipData
 } from '../selectors'
 import zoneManager from '../../zone-manager'
 import DatetimeSlider from '../components/DatetimeSlider'
@@ -19,6 +19,7 @@ const mapStateToProps = (state, ownProps) => {
     groupColors: zoneManager.selectors.groupColorsSelector(state),
     zoneIds: zoneManager.selectors.allZoneIdsSelector(state),
     shouldUpdate: shouldDatetimeSliderUpdate(state),
+    isFetchingRidershipData: isFetchingRidershipData(state),
     ...ownProps
   }
 }

@@ -7,6 +7,7 @@ import * as d3 from 'd3'
 import moment from 'moment'
 import textures from 'textures'
 import Subheader from '../../core/components/Subheader'
+import Spinner from '../../core/components/Spinner'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -14,6 +15,11 @@ const Wrapper = styled.div`
   grid-area: slider;
   display: flex;
   flex-direction: column;
+`
+
+const TopBar = styled.div`
+  display: flex;
+  margin-bottom: 0.4em;
 `
 
 const ChartsWrapper = styled.div`
@@ -92,6 +98,8 @@ class DatetimeSlider extends React.Component {
     this.departureData = []
     this.arrivalData = []
     this.updateDimensions = this.updateDimensions.bind(this)
+    this.hideSpinner = this.hideSpinner.bind(this)
+    this.showSpinner = this.showSpinner.bind(this)
     this.drawSlider = this.drawSlider.bind(this)
   }
 
@@ -112,12 +120,28 @@ class DatetimeSlider extends React.Component {
       this.props.resetForceDatetimeSliderUpdate()
       this.drawSlider()
     }
+
+    if (nextProps.isFetchingRidershipData) {
+      this.showSpinner()
+    } else {
+      this.hideSpinner()
+    }
+
     return false
   }
 
   updateDimensions () {
     this.w = this.ref.getBoundingClientRect().width
     this.h = this.ref.getBoundingClientRect().height
+  }
+
+  hideSpinner () {
+    console.log(d3.select(this.wrapperRef).select('.spinner'))
+    d3.select(this.wrapperRef).select('.spinner').transition(800).style('opacity', 0)
+  }
+
+  showSpinner () {
+    d3.select(this.wrapperRef).select('.spinner').transition(800).style('opacity', 1)
   }
 
   drawSlider () {
@@ -672,8 +696,11 @@ class DatetimeSlider extends React.Component {
 
   render () {
     return (
-      <Wrapper>
-        <Subheader>Ridership</Subheader>
+      <Wrapper innerRef={ref => (this.wrapperRef = ref)}>
+        <TopBar>
+          <Subheader>Ridership</Subheader>
+          <Spinner extraCSS='margin: 0 0 0 1ch;' className='spinner'/>
+        </TopBar>
         <ChartsWrapper innerRef={ref => (this.ref = ref)}>
         </ChartsWrapper>
       </Wrapper>

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import Subheader from '../../core/components/Subheader'
+import Spinner from '../../core/components/Spinner'
 
 const Wrapper = styled.div`
   grid-area: controls;
@@ -48,21 +49,6 @@ const Button = styled.button`
   }
 `
 
-const Spinner = styled.div`
-  height: 12px;
-  width: 12px;
-  margin: 2px;
-  animation: rotate 0.8s infinite linear;
-  border: 2px solid white;
-  border-right-color: transparent;
-  border-radius: 50%;
-
-  @keyframes rotate {
-    0%    { transform: rotate(0deg); }
-    100%  { transform: rotate(360deg); }
-  }
-`
-
 class Controls extends React.Component {
   constructor (props) {
     super(props)
@@ -82,7 +68,7 @@ class Controls extends React.Component {
       }
       return (
         <Button onClick={() => this.props.setStep(key)} key={key} disabled={selected}>
-          {selected && this.props.isFetchingRidershipData ? <Spinner/> : this.durations[key]}
+          {selected && this.props.isFetchingRidershipData ? <Spinner color='white'/> : this.durations[key]}
         </Button>
       )
     })
