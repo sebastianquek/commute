@@ -19,7 +19,18 @@ const Wrapper = styled.div`
 
 const TopBar = styled.div`
   display: flex;
-  margin-bottom: 0.4em;
+  align-items: flex-start;
+  margin-bottom: 0.5em;
+`
+
+const DomainLabel = styled.div`
+  font-family: 'Barlow', sans-serif;
+  flex-grow: 1;
+  letter-spacing: 0.07em;
+  font-weight: 700;
+  font-size: ${({theme}) => theme.typography.headerSize};
+  color: ${({theme}) => theme.colors.textPrimary};
+  text-align: center;
 `
 
 const ChartsWrapper = styled.div`
@@ -100,6 +111,7 @@ class DatetimeSlider extends React.Component {
     this.updateDimensions = this.updateDimensions.bind(this)
     this.hideSpinner = this.hideSpinner.bind(this)
     this.showSpinner = this.showSpinner.bind(this)
+    this.updateDomainLabel = this.updateDomainLabel.bind(this)
     this.drawSlider = this.drawSlider.bind(this)
   }
 
@@ -127,6 +139,7 @@ class DatetimeSlider extends React.Component {
       this.hideSpinner()
     }
 
+    this.updateDomainLabel(nextProps.brushDomain.x)
     return false
   }
 
@@ -136,12 +149,17 @@ class DatetimeSlider extends React.Component {
   }
 
   hideSpinner () {
-    console.log(d3.select(this.wrapperRef).select('.spinner'))
     d3.select(this.wrapperRef).select('.spinner').transition(800).style('opacity', 0)
   }
 
   showSpinner () {
     d3.select(this.wrapperRef).select('.spinner').transition(800).style('opacity', 1)
+  }
+
+  updateDomainLabel (domain) {
+    const text = `${this.formatDomainTime(domain[0])} – ${this.formatDomainTime(domain[1])}
+    (${moment.duration(moment(domain[1]).diff(domain[0])).humanize()})`
+    d3.select(this.wrapperRef).select('.domain-label').html(text)
   }
 
   drawSlider () {
@@ -155,7 +173,7 @@ class DatetimeSlider extends React.Component {
 
     const w = this.w
     const h = this.h / 2
-    const padding = { top: 16, right: 20, bottom: 16, left: 60 }
+    const padding = { top: 14, right: 20, bottom: 14, left: 60 }
 
     const maxRidership = Math.max(this.getMaxStackSum(this.arrivalData), this.getMaxStackSum(this.departureData))
 
@@ -183,6 +201,7 @@ class DatetimeSlider extends React.Component {
       .ticks(5)
       .tickFormat(this.formatAxisTime)
       .tickPadding(padding.bottom / 3)
+      .tickSize(5)
 
     const yAxis = d3.axisLeft()
       .scale(yScale)
@@ -194,6 +213,7 @@ class DatetimeSlider extends React.Component {
       .scale(xScale)
       .ticks(5)
       .tickFormat(t => '')
+      .tickSize(5)
 
     const yAxisInverted = d3.axisLeft()
       .scale(yScaleInverted)
@@ -700,6 +720,7 @@ class DatetimeSlider extends React.Component {
         <TopBar>
           <Subheader>Ridership</Subheader>
           <Spinner extraCSS='margin: 0 0 0 1ch;' className='spinner'/>
+          <DomainLabel className='domain-label' />
         </TopBar>
         <ChartsWrapper innerRef={ref => (this.ref = ref)}>
         </ChartsWrapper>
