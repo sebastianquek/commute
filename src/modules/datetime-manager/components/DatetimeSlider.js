@@ -181,6 +181,7 @@ class DatetimeSlider extends React.Component {
     const setDatetimeBrushDomain = throttle(this.props.setDatetimeBrushDomain, 500)
     const setDatetimeZoomDomain = throttle(this.props.setDatetimeZoomDomain, 500)
     const groupColors = this.props.groupColors
+    const brushDomain = this.props.brushDomain
 
     const w = this.w
     const h = this.h / 2
@@ -531,7 +532,13 @@ class DatetimeSlider extends React.Component {
         d1[0] = d3.timeHour.floor(d0[0])
         d1[1] = d3.timeHour.offset(d1[0])
       }
-      setDatetimeBrushDomain({x: d1})
+      if (
+        !moment(d1[0]).isSame(brushDomain.x[0]) ||
+        !moment(d1[1]).isSame(brushDomain.x[1])
+      ) {
+        setDatetimeBrushDomain({x: d1})
+        brushDomain.x = d1
+      }
       brushDomainAxisG.call(brushDomainAxis.tickValues(d1))
       brushDomainBgMask.attr('x', xScale(d1[0]))
       brushDomainBgMask.attr('width', xScale(d1[1]) - xScale(d1[0]))
