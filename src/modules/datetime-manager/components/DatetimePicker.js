@@ -71,7 +71,10 @@ class DatetimePicker extends React.Component {
   }
 
   handleDateChange (date, { disabled, selected }) {
-    if (!disabled) this.props.setStartDatetime(date)
+    if (!disabled) {
+      this.props.setStartDatetime(date)
+      this.props.forceDatetimeSliderUpdate()
+    }
   }
 
   render () {
@@ -120,7 +123,8 @@ DatetimePicker.propTypes = {
   zoomedDateDomain: PropTypes.array.isRequired,
   minDate: PropTypes.object.isRequired,
   maxDate: PropTypes.object.isRequired,
-  setStartDatetime: PropTypes.func.isRequired
+  setStartDatetime: PropTypes.func.isRequired,
+  forceDatetimeSliderUpdate: PropTypes.func
 }
 
 export default DatetimePicker

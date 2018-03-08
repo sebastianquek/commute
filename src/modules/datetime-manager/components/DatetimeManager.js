@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import DatetimePickerContainer from '../containers/DatetimePickerContainer'
-import DatetimeSlider from '../components/DatetimeSlider'
 import ControlsContainer from '../containers/ControlsContainer'
+import DatetimeSliderContainer from '../containers/DatetimeSliderContainer'
 
 const Wrapper = styled.div`
   height: ${({theme}) => theme.dimensions.bottomBarHeight};
@@ -31,7 +31,7 @@ const DatetimeManager = () => {
     <Wrapper>
       <DatetimePickerContainer />
       <ControlsContainer />
-      <DatetimeSlider />
+      <DatetimeSliderContainer />
     </Wrapper>
   )
 }

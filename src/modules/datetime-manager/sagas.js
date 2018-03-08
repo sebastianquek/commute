@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { select, call, put, take } from 'redux-saga/effects'
-import { requestRidership, requestRidershipError, receiveRidership } from './actions'
+import { requestRidership, fetchingRidership, requestRidershipError, receiveRidership, forceDatetimeSliderUpdate } from './actions'
 import { REQUEST_RIDERSHIP, SET_STEP } from './actionTypes'
 import { minDateSelector, maxDateSelector, stepSelector } from './selectors'
 import zoneManager from '../zone-manager'
@@ -12,6 +12,8 @@ export function * watchAndUpdateRidership () {
     const zoneIds = zoneId ? [zoneId] : yield select(zoneManager.selectors.allZoneIdsSelector)
     if (zoneIds.length === 0) continue
 
+    const clearExistingRidershipData = step !== undefined
+
     // Get current time window
     const minDate = moment(yield select(minDateSelector))
     const maxDate = moment(yield select(maxDateSelector))
@@ -19,8 +21,11 @@ export function * watchAndUpdateRidership () {
     const interval = step || (yield select(stepSelector))
 
     try {
+      yield put(fetchingRidership())
       const journeys = yield call(fetchRidership, zoneIds, minDate, duration, interval)
-      yield put(receiveRidership(journeys))
+      const groups = yield select(zoneManager.selectors.allGroupsSelector)
+      yield put(receiveRidership(clearExistingRidershipData, groups, journeys))
+      yield put(forceDatetimeSliderUpdate())
     } catch (err) {
       yield put(requestRidershipError(err))
     }
@@ -33,7 +38,7 @@ export function * getInitialRidership () {
 }
 
 async function fetchRidership (zoneIds, minDate, duration, step) {
-  const query = `/api/v2/ridership?zones=${zoneIds}&startTime=${encodeURIComponent(minDate.format())}&duration=${duration.toISOString()}&step=${step}`
+  const query = `/api/v3/ridership?zones=${zoneIds}&startTime=${encodeURIComponent(minDate.format())}&duration=${duration.toISOString()}&step=${step}`
   const res = await fetch(query)
   const data = await res.json()
   return data

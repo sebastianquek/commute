@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import Subheader from '../../core/components/Subheader'
+import Spinner from '../../core/components/Spinner'
 
 const Wrapper = styled.div`
   grid-area: controls;
@@ -65,7 +66,11 @@ class Controls extends React.Component {
       if (key === this.props.step) {
         selected = true
       }
-      return <Button onClick={() => this.props.setStep(key)} key={key} disabled={selected}>{this.durations[key]}</Button>
+      return (
+        <Button onClick={() => this.props.setStep(key)} key={key} disabled={selected}>
+          {selected && this.props.isFetchingRidershipData ? <Spinner color='white'/> : this.durations[key]}
+        </Button>
+      )
     })
 
     return (
@@ -81,6 +86,7 @@ class Controls extends React.Component {
 
 Controls.propTypes = {
   step: PropTypes.string.isRequired,
+  isFetchingRidershipData: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired
 }
 

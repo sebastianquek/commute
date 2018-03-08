@@ -30,12 +30,26 @@ export const requestRidership = () => ({
   type: t.REQUEST_RIDERSHIP
 })
 
+export const fetchingRidership = () => ({
+  type: t.FETCHING_RIDERSHIP
+})
+
 export const requestRidershipError = error => ({
   type: t.REQUEST_RIDERSHIP_ERROR,
   error
 })
 
-export const receiveRidership = data => ({
+export const receiveRidership = (clearExistingRidershipData, groups, data) => ({
   type: t.RECEIVE_RIDERSHIP,
+  clearExistingRidershipData,
+  groups,
   data
+})
+
+export const forceDatetimeSliderUpdate = () => ({
+  type: t.FORCE_DATETIME_SLIDER_UPDATE
+})
+
+export const resetForceDatetimeSliderUpdate = () => ({
+  type: t.RESET_FORCE_DATETIME_SLIDER_UPDATE
 })
