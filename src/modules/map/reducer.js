@@ -38,7 +38,6 @@ function mapStyle (state = defaultMapStyle, action) {
       if (idx === -1) { // Journeys layer has not been added
         newState = newState.update('layers', layers => layers.push(journeysLayer))
       }
-      idx = newState.get('layers').findIndex(i => i.get('id') === journeysLayer.get('id'))
       return newState
 
     case t.REMOVE_JOURNEYS:
@@ -86,7 +85,8 @@ function mapStyle (state = defaultMapStyle, action) {
 
     case zoneManager.actionTypes.ADD_GROUP:
       if (state.get('layers').findIndex(layer => layer.get('id') === '' + action.groupId) === -1) {
-        return state.update('layers', layers => layers.push(selectedGroupLayer(action.groupId, action.color)))
+        idx = state.get('layers').findIndex(i => i.get('id') === journeysLayer.get('id'))
+        return state.update('layers', layers => layers.insert(idx - 1, selectedGroupLayer(action.groupId, action.color)))
       }
       return state
 
