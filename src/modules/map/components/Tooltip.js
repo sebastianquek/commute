@@ -37,10 +37,15 @@ const Tooltip = (props) => {
       break
 
     case 'journeys':
-      const buses = JSON.parse(properties.buses)
-        .map(bus => `${bus.slice(0, bus.length - 1)}(${bus.slice(bus.length - 1)})`)
+      const services = JSON.parse(properties.transport_services)
+        .map(service => {
+          if (service[0] === '{') { // Train service
+            return service
+          }
+          return `${service.slice(0, service.length - 1)}(${service.slice(service.length - 1)})`
+        })
         .join(', ')
-      const stops = JSON.parse(properties.stops).join(', ')
+      const stops = JSON.parse(properties.stop_ids).join(', ')
       const durations = JSON.parse(properties.durations)
         .map(d => {
           return moment.duration(d, 'seconds').humanize()
@@ -50,7 +55,7 @@ const Tooltip = (props) => {
 
       desc = (
         <div>
-          Buses: {buses}<br/>
+          Services: {services}<br/>
           Stops: {stops}<br/>
           Durations: {durations}<br/>
           Number of commuters: {count}<br/>
