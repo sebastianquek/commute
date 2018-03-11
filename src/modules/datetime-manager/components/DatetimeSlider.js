@@ -210,7 +210,7 @@ class DatetimeSlider extends React.Component {
     // Define axes
     const xAxis = d3.axisBottom()
       .scale(xScale)
-      .ticks(5)
+      .ticks(8)
       .tickFormat(this.formatAxisTime)
       .tickPadding(padding.bottom / 3)
       .tickSize(5)

@@ -1,8 +1,8 @@
 import moment from 'moment'
 import { select, call, put, take } from 'redux-saga/effects'
-import { requestRidership, fetchingRidership, requestRidershipError, receiveRidership, forceDatetimeSliderUpdate } from './actions'
-import { REQUEST_RIDERSHIP, SET_STEP } from './actionTypes'
-import { minDateSelector, maxDateSelector, stepSelector } from './selectors'
+import { requestRidership, fetchingRidership, requestRidershipError, receiveRidership, forceDatetimeSliderUpdate, setDatetimeZoomDomain } from './actions'
+import { REQUEST_RIDERSHIP, SET_STEP, SET_START_DATETIME_BRUSH_DOMAIN } from './actionTypes'
+import { minDateSelector, maxDateSelector, stepSelector, zoomedDateDomainSelector, brushedDateDomainSelector } from './selectors'
 import zoneManager from '../zone-manager'
 
 export function * watchAndUpdateRidership () {
@@ -29,6 +29,30 @@ export function * watchAndUpdateRidership () {
     } catch (err) {
       yield put(requestRidershipError(err))
     }
+  }
+}
+
+export function * watchAndUpdateDatetimeZoom () {
+  while (true) {
+    yield take(SET_START_DATETIME_BRUSH_DOMAIN)
+    let [ minZoomDate, maxZoomDate ] = yield select(zoomedDateDomainSelector)
+    minZoomDate = moment(minZoomDate)
+    maxZoomDate = moment(maxZoomDate)
+    const zoomDuration = moment.duration(maxZoomDate.diff(minZoomDate))
+
+    let [ minBrushDate, maxBrushDate ] = yield select(brushedDateDomainSelector)
+    minBrushDate = moment(minBrushDate)
+    maxBrushDate = moment(maxBrushDate)
+    const brushDuration = moment.duration(maxBrushDate.diff(minBrushDate))
+
+    const durationBetweenZoomAndBrush = moment.duration(zoomDuration.subtract(brushDuration) / 2)
+    const newZoomDomain = {
+      x: [
+        minBrushDate.clone().subtract(durationBetweenZoomAndBrush).toDate(),
+        maxBrushDate.clone().add(durationBetweenZoomAndBrush).toDate()
+      ]
+    }
+    yield put(setDatetimeZoomDomain(newZoomDomain))
   }
 }
 
