@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import * as t from './actionTypes'
 import zoneManager from '../zone-manager'
 import { fromJS } from 'immutable'
-import { defaultMapStyle, zonesHoverLayer, zonesSelectionLayer, selectedGroupLayer, journeysLayer } from './map-style'
+import { defaultMapStyle, zonesHoverLayer, zonesSelectionLayer, selectedGroupLayer, journeysLayer, flowArrowsLayer } from './map-style'
 
 function addOrEditSelectionLayer (state, color = 'black') {
   let idx = state.get('layers').findIndex(layer => layer.get('id') === 'zonesSelection')
@@ -37,6 +37,7 @@ function mapStyle (state = defaultMapStyle, action) {
       )
       if (idx === -1) { // Journeys layer has not been added
         newState = newState.update('layers', layers => layers.push(journeysLayer))
+          .update('layers', layers => layers.push(flowArrowsLayer))
       }
       return newState
 

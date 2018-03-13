@@ -5,6 +5,7 @@ import MapGL from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import styled from 'styled-components'
 import Tooltip from './Tooltip'
+import arrowImage from '../arrow.png'
 
 const Wrapper = styled.div`
   position: fixed;
@@ -46,6 +47,14 @@ export class Map extends Component {
 
   onLoad () {
     this.props.mapHasLoaded()
+    const map = this.mapRef.getMap()
+    map.loadImage(arrowImage, (err, image) => {
+      if (err) {
+        console.log(err)
+        return
+      }
+      map.addImage('arrow', image)
+    })
   }
 
   onViewportChange (viewport) {

@@ -59,6 +59,21 @@ export const journeysLayer = fromJS({
         [16, 6]
       ]
     },
-    'line-opacity': 0.4
+    'line-opacity': 0.15
+  }
+})
+
+export const flowArrowsLayer = fromJS({
+  'id': 'arrow-layer',
+  'type': 'symbol',
+  'source': 'journeys',
+  'layout': {
+    'symbol-placement': 'line',
+    'symbol-spacing': 200,
+    // 'icon-allow-overlap': true,
+    // 'icon-ignore-placement': true,
+    'icon-image': 'arrow',
+    'icon-size': 0.12,
+    'visibility': 'visible'
   }
 })
