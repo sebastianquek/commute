@@ -1,5 +1,5 @@
 import {fromJS} from 'immutable'
-import MAP_STYLE from './style2.json'
+import MAP_STYLE from './style3.json'
 
 export const defaultMapStyle = fromJS(MAP_STYLE)
 
