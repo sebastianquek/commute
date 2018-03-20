@@ -16,8 +16,8 @@ const ButtonGroup = styled.div`
 
 const Button = styled.button`
   background-color: transparent;
-  border-right: none;
   border: 1px solid ${({theme}) => theme.colors.borderSecondary};
+  border-right: none;
   color: ${({theme}) => theme.colors.textPrimary};
   cursor: pointer;
   font-family: 'Barlow', sans-serif;
