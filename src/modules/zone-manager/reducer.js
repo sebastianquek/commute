@@ -30,7 +30,15 @@ const editingGroupId = (state = null, action) => {
 }
 
 const initialZones = {
-  origins: [{groupId: 1, color: c.next().value, zoneIds: [1, 2]}, {groupId: 2, color: c.next().value, zoneIds: [3, 4, 5]}],
+  origins: [{
+    groupId: 1,
+    color: c.next().value,
+    zoneIds: [1, 2]
+  }, {
+    groupId: 2,
+    color: c.next().value,
+    zoneIds: [3, 4, 5]
+  }],
   destinations: []
 }
 const categorizedZones = (state = initialZones, action) => {

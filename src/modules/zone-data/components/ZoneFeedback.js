@@ -4,17 +4,17 @@ import styled from 'styled-components'
 import {fadeSlideUp} from '../../../utils/animations'
 
 const FeedbackLabel = styled.div`
-  font-size: ${({theme}) => theme.typography.bodySize};
-  color: ${({theme}) => theme.colors.textPrimary};
-  font-style: italic;
-  text-align: center;
-  padding: 0 2.5em;
-  height: 100px;
-  margin: -112px 0 1em 0;
-  display: flex;
   align-items: center;
-  justify-content: center;
   animation: ${fadeSlideUp} 0.7s ease;
+  color: ${({theme}) => theme.colors.textPrimary};
+  display: flex;
+  font-size: ${({theme}) => theme.typography.bodySize};
+  font-style: italic;
+  height: 100px;
+  justify-content: center;
+  margin: -112px 0 1em 0;
+  padding: 0 2.5em;
+  text-align: center;
 `
 
 const FadedZoneDataContainer = styled.div`
@@ -22,6 +22,7 @@ const FadedZoneDataContainer = styled.div`
   pointer-events: none;
 `
 
+// Zone data container without data but with feedback text
 const ZoneFeedback = ({zoneDataContainer, feedback}) => {
   return (
     <React.Fragment>

@@ -5,5 +5,5 @@ import * as sagas from './sagas'
 import * as selectors from './selectors'
 import DatetimeManager from './components/DatetimeManager'
 
-export default {actionTypes, actions, reducer, sagas, selectors}
+export default { actionTypes, actions, reducer, sagas, selectors }
 export { DatetimeManager }

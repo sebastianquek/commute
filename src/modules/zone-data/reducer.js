@@ -40,7 +40,16 @@ export const zoneJourneyData = (state = {}, action) => {
   switch (action.type) {
     case t.RECEIVE_ZONE_JOURNEYS:
       const newData = action.journeys.features.reduce((allData, route) => {
-        let { origin_zone: originZone, destination_zone: destinationZone, count, percentile, ...properties } = route.properties // eslint-disable-line
+        let {
+          origin_zone: originZone,
+          destination_zone: destinationZone,
+          count,
+          percentile,
+          transport_services: services,
+          stop_ids: stopIds,
+          durations
+        } = route.properties
+
         if (!allData.hasOwnProperty(originZone)) {
           allData[originZone] = []
         }
@@ -48,18 +57,20 @@ export const zoneJourneyData = (state = {}, action) => {
           allData[destinationZone] = []
         }
         count = parseInt(count, 10)
+
+        // Create an array of trips for the current route
         const trips = []
-        for (let i = 0; i < properties.transport_services.length; i++) {
-          let service = properties.transport_services[i]
+        for (let i = 0; i < services.length; i++) {
+          let service = services[i]
           if (service.slice(0, 1) !== '{') { // Bus trip
             service = `${service.slice(0, -1)}(${service.slice(-1)})`
           }
 
           trips.push({
             service,
-            originId: properties.stop_ids[i][0],
-            destinationId: properties.stop_ids[i][1],
-            duration: properties.durations[i]
+            originId: stopIds[i][0],
+            destinationId: stopIds[i][1],
+            duration: durations[i]
           })
         }
         allData[originZone].push({count, percentile, destinationZone, trips})

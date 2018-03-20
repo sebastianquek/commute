@@ -6,10 +6,10 @@ import AddZoneButton from './AddZoneButton'
 import { fadeSlideUp } from '../../../utils/animations'
 
 const Container = styled.div`
-  display: flex;
-  position: relative;
-  margin-bottom: 2em;
   animation: ${fadeSlideUp} 0.7s ease;
+  display: flex;
+  margin-bottom: 2em;
+  position: relative;
   
   :last-of-type {
     margin-bottom: 0;
@@ -17,15 +17,15 @@ const Container = styled.div`
 `
 
 const Label = styled.span`
-  text-transform: uppercase;
-  letter-spacing: ${({theme}) => theme.typography.headerLetterSpacing};
-  font-weight: bold;
+  color: ${({theme}) => theme.colors.textSecondary};
   font-size: ${({theme}) => theme.typography.subHeaderSize};
-  transform: rotate(180deg);
-  writing-mode: vertical-rl;
+  font-weight: bold;
+  letter-spacing: ${({theme}) => theme.typography.headerLetterSpacing};
   margin: 0 0.3em 0 0;
   text-align: right;
-  color: ${({theme}) => theme.colors.textSecondary};
+  text-transform: uppercase;
+  transform: rotate(180deg);
+  writing-mode: vertical-rl;
 `
 
 const Children = styled.div`

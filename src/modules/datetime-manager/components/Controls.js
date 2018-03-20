@@ -5,9 +5,9 @@ import Subheader from '../../core/components/Subheader'
 import Spinner from '../../core/components/Spinner'
 
 const Wrapper = styled.div`
-  grid-area: controls;
   display: flex;
   flex-direction: column;
+  grid-area: controls;
 `
 
 const ButtonGroup = styled.div`
@@ -15,20 +15,20 @@ const ButtonGroup = styled.div`
 `
 
 const Button = styled.button`
-  font-family: 'Barlow', sans-serif;
   background-color: transparent;
-  border: 1px solid ${({theme}) => theme.colors.borderSecondary};
   border-right: none;
-  cursor: pointer;
+  border: 1px solid ${({theme}) => theme.colors.borderSecondary};
   color: ${({theme}) => theme.colors.textPrimary};
-  transition: 0.2s all;
-  padding: 0.3em 0.46em;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
   font-size: 0.84em;
+  padding: 0.3em 0.46em;
+  transition: 0.2s all;
 
   ${({disabled}) => disabled && css`
-    color: white;
     background-color: #4a90e2;
     border-color: #4a90e2;
+    color: white;
     cursor: auto;
   `}
 
@@ -52,6 +52,8 @@ const Button = styled.button`
 class Controls extends React.Component {
   constructor (props) {
     super(props)
+
+    // Map ISO 8601 durations to readable text
     this.durations = {
       'PT30M': '30 mins',
       'PT1H': '1 hr',
@@ -62,13 +64,14 @@ class Controls extends React.Component {
 
   render () {
     const buttons = Object.keys(this.durations).map(key => {
-      let selected = false
-      if (key === this.props.step) {
-        selected = true
-      }
+      let isSelected = key === this.props.step
       return (
-        <Button onClick={() => this.props.setStep(key)} key={key} disabled={selected}>
-          {selected && this.props.isFetchingRidershipData ? <Spinner color='white'/> : this.durations[key]}
+        <Button
+          onClick={() => this.props.setStep(key)}
+          key={key}
+          disabled={isSelected}
+        >
+          {isSelected && this.props.isFetchingRidershipData ? <Spinner color='white'/> : this.durations[key]}
         </Button>
       )
     })

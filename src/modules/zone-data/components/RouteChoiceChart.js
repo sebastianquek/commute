@@ -19,16 +19,16 @@ const ChartWrapper = styled.div`
     padding: 0.5rem 0.8rem;
   }
 
-  .visibility-buttons--button {
-    font-family: inherit;
+  .visibility-buttons__button {
     -webkit-appearance: none;
     background-color: transparent;
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
     border-bottom-width: 0;
-    padding: 0.3em 0.6em;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
     cursor: pointer;
+    font-family: inherit;
+    padding: 0.3em 0.6em;
     
     &:first-child {
       border-top-left-radius: 4px;
@@ -36,13 +36,13 @@ const ChartWrapper = styled.div`
     }
     
     &:last-child {
-      border-bottom-width: 1px;
       border-bottom-left-radius: 4px;
       border-bottom-right-radius: 4px;
+      border-bottom-width: 1px;
     }
   }
 
-  .button--icon {
+  .button__icon {
     color: #777;
     margin-right: 0.6em;
   }
@@ -94,10 +94,10 @@ const ChartWrapper = styled.div`
 
   .axis-label {
     fill: #000;
-    font-size: 1.15rem;
-    letter-spacing: 0;
-    font-weight: 700;
     font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0;
   }
 
   .axis .tick line {
@@ -117,9 +117,9 @@ const ChartWrapper = styled.div`
 
   .trip-info text,
   .tooltip-group text {
+    fill: white;
     font-size: 0.8rem;
     font-weight: 600;
-    fill: white;
   }
 
   .tooltip-group .domain {
@@ -334,7 +334,9 @@ class RouteChoiceChart extends Component {
       s.on('mouseover', function (d, i) {
         const transform = d3.select(this.parentNode.parentNode).attr('transform')
         const translate = /translate\((.*)\)/.exec(transform)[1].split(',').map(d => parseFloat(d.trim()))
-        tripInfoG.transition(600).attr('transform', `translate(${padding.left + xScale(d.stackValues[0])}, ${padding.top + translate[1] + yScale.bandwidth()})`)
+        tripInfoG.transition(600).attr('transform',
+          `translate(${padding.left + xScale(d.stackValues[0])}, ${padding.top + translate[1] + yScale.bandwidth()})`
+        )
 
         tripInfoG.append('rect')
           .attr('height', 0)
@@ -474,10 +476,10 @@ class RouteChoiceChart extends Component {
       const showFewerButton = d3.select(this.ref)
         .select('.visibility-buttons')
         .append('button')
-        .attr('class', 'visibility-buttons--button button-fewer')
+        .attr('class', 'visibility-buttons__button button-fewer')
 
       showFewerButton.html(
-        `<span><span class='button--icon'>▲</span>Show fewer routes</span>`
+        `<span><span class='button__icon'>▲</span>Show fewer routes</span>`
       )
 
       showFewerButton.on('click', () => {
@@ -491,12 +493,12 @@ class RouteChoiceChart extends Component {
       const showMoreButton = d3.select(this.ref)
         .select('.visibility-buttons')
         .append('button')
-        .attr('class', 'visibility-buttons--button button-more')
+        .attr('class', 'visibility-buttons__button button-more')
 
       const numRoutesLeft = this.numRoutes - this.numVisibleRoutes
       const numNextRoutes = Math.min(RouteChoiceChart.visibleRoutesIncrement, numRoutesLeft)
       showMoreButton.html(
-        `<span><span class='button--icon'>▼</span>Show ${numNextRoutes} more route${numNextRoutes > 1 ? 's' : ''} (${numRoutesLeft} left)</span>`
+        `<span><span class='button__icon'>▼</span>Show ${numNextRoutes} more route${numNextRoutes > 1 ? 's' : ''} (${numRoutesLeft} left)</span>`
       )
 
       showMoreButton.on('click', () => {

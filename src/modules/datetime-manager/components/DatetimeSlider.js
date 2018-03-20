@@ -10,44 +10,44 @@ import Subheader from '../../core/components/Subheader'
 import Spinner from '../../core/components/Spinner'
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  grid-area: slider;
   display: flex;
   flex-direction: column;
+  grid-area: slider;
+  height: 100%;
+  width: 100%;
 `
 
 const TopBar = styled.div`
-  display: flex;
   align-items: flex-start;
+  display: flex;
   margin-bottom: 0.5em;
 `
 
 const DomainLabel = styled.div`
-  font-family: 'Barlow', sans-serif;
-  flex-grow: 1;
-  letter-spacing: 0.07em;
-  font-weight: 700;
-  font-size: ${({theme}) => theme.typography.headerSize};
   color: ${({theme}) => theme.colors.textPrimary};
+  flex-grow: 1;
+  font-family: 'Barlow', sans-serif;
+  font-size: ${({theme}) => theme.typography.headerSize};
+  font-weight: 700;
+  letter-spacing: 0.07em;
   text-align: center;
 `
 
 const ChartsWrapper = styled.div`
-  position: relative;
   height: 100%;
+  position: relative;
 
   text {
     font-family: 'Barlow', sans-serif;
-    font-weight: 500;
     font-size: 0.85rem;
+    font-weight: 500;
     letter-spacing: 0.07em;
   }
   
   .axis-y {
     .tick line {
-      stroke: #eee;
       pointer-events: none;
+      stroke: #eee;
     }
 
     .tick:first-of-type line {
@@ -61,15 +61,15 @@ const ChartsWrapper = styled.div`
 
   .grid .tick line,
   .brush-domain-axis .tick line {
-    stroke: #eee;
     pointer-events: none;
+    stroke: #eee;
   }
   
   .grid .tick text,
   .tooltip-group .tick text {
     fill: #bbb;
-    font-weight: 600;
     font-size: 1rem;
+    font-weight: 600;
   }
   
   .grid .domain {
@@ -78,8 +78,8 @@ const ChartsWrapper = styled.div`
   
   .brush-domain-axis .tick text {
     fill: #555;
-    font-weight: 600;
     font-size: 1rem;
+    font-weight: 600;
   }
   
   .tooltip-group .tick {
@@ -95,9 +95,9 @@ const ChartsWrapper = styled.div`
   }
   
   .axis-label {
-    text-transform: uppercase;
-    letter-spacing: 1px;
     font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
 
   .values-container--values text {
@@ -106,8 +106,8 @@ const ChartsWrapper = styled.div`
   }
 
   .values-container--header {
-    text-transform: uppercase;
     font-weight: 600;
+    text-transform: uppercase;
   }
 `
 
@@ -167,8 +167,10 @@ class DatetimeSlider extends React.Component {
   }
 
   updateDomainLabel (domain) {
-    const text = `${this.formatDomainTime(domain[0])} – ${this.formatDomainTime(domain[1])}
-    (${moment.duration(moment(domain[1]).diff(domain[0])).humanize()})`
+    const text = `
+      ${this.formatDomainTime(domain[0])} – ${this.formatDomainTime(domain[1])}
+      (${moment.duration(moment(domain[1]).diff(domain[0])).humanize()})
+    `
     d3.select(this.wrapperRef).select('.domain-label').html(text)
   }
 
@@ -176,7 +178,7 @@ class DatetimeSlider extends React.Component {
     if (this.departureData.length === 0 || this.arrivalData.length === 0) {
       return
     }
-    d3.select(this.ref).select('svg').remove()
+    d3.select(this.ref).select('svg').remove() // Redraw SVG
 
     const setDatetimeBrushDomain = throttle(this.props.setDatetimeBrushDomain, 500)
     const setDatetimeZoomDomain = throttle(this.props.setDatetimeZoomDomain, 500)

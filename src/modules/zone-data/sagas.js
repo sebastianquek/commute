@@ -14,7 +14,7 @@ export function * watchAndUpdateZoneJourneys () {
     // Sagas run after reducers, so in this case, the new brush domain will
     // already be updated in the state.
     // https://redux-saga.js.org/docs/api/index.html#selectselector-args
-    const { id, category } = yield take([
+    yield take([
       REQUEST_ZONE_JOURNEYS,
       zoneManager.actionTypes.ADD_ZONE_TO_GROUP,
       zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP,
@@ -30,18 +30,11 @@ export function * watchAndUpdateZoneJourneys () {
     let originZoneIds = yield select(zoneManager.selectors.originZoneIdsSelector)
     let destinationZoneIds = yield select(zoneManager.selectors.destinationZoneIdsSelector)
 
-    // if (originZoneIds.length === 0 || destinationZoneIds.length === 0) {
-    //   // Get specific zone's journeys if there are no zones in the other category
-    //   if (id && category) {
-    //     if (category === 'origins') originZoneIds = [id]
-    //     else if (category === 'destinations') destinationZoneIds = [id]
-    //   }
-    // }
-
     if (originZoneIds.length === 0 && destinationZoneIds.length === 0) {
       yield put(removeAllZoneJourneys())
       continue
     }
+
     try {
       const journeys = yield call(fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration)
       yield put(receiveZoneJourneys(journeys))

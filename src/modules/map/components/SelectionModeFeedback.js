@@ -5,43 +5,43 @@ import { fadeSlideDown } from '../../../utils/animations'
 import ZoneButton from '../../core/components/ZoneButton'
 
 const Wrapper = styled.div`
-  padding: 1em 1.4em;
-  background: white;
-  border-radius: 0 0 ${({theme}) => `${theme.borderRadius} ${theme.borderRadius}`};
-  position: fixed;
-  left: 120px;
-  display: flex;
   align-items: center;
   animation: ${fadeSlideDown} 0.7s;
-  border: 1px solid ${({theme}) => theme.colors.borderSecondary};
+  background: white;
+  border-radius: 0 0 ${({theme}) => `${theme.borderRadius} ${theme.borderRadius}`};
   border-top: none;
+  border: 1px solid ${({theme}) => theme.colors.borderSecondary};
+  display: flex;
+  left: 120px;
+  padding: 1em 1.4em;
+  position: fixed;
 `
 
 const Feedback = styled.span`
   color: ${({theme}) => theme.colors.textPrimary};
-  font-weight: bold;
   font-size: 1.2em;
+  font-weight: bold;
   margin-right: 1em;
 `
 
 const Meta = styled.div`
-  font-weight: 400;
-  font-size: 0.88em;
-  display: flex;
   align-items: center;
+  display: flex;
+  font-size: 0.88em;
+  font-weight: 400;
 
   kbd {
+    background-color: #e1e3e5;
+    border-radius: 3px;
+    border: 1px solid #adb3b9;
+    box-shadow: 0 1px 0 rgba(12,13,14,0.2), 0 0 0 2px #FFF inset;
     display: inline-block;
-    margin: 0.3em 0.4em 0.3em 0.1em;
-    padding: 0.16em 0.6em;
     font-family: Consolas, monospace;
     font-size: 0.86em;
-    background-color: #e1e3e5;
-    border: 1px solid #adb3b9;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 rgba(12,13,14,0.2), 0 0 0 2px #FFF inset;
-    white-space: nowrap;
     line-height: 1.4;
+    margin: 0.3em 0.4em 0.3em 0.1em;
+    padding: 0.16em 0.6em;
+    white-space: nowrap;
   }
 `
 
@@ -50,6 +50,8 @@ const Button = styled.button`
   font-family: inherit;
 `
 
+// Shows the current selection mode and additional helpful information
+// A button is also created to reset the selection mode
 const SelectionModeFeedback = ({zoneSelectionMode, editingGroup, editingGroupCounter, resetSelectionMode}) => {
   let feedback
   switch (zoneSelectionMode) {

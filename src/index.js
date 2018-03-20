@@ -57,6 +57,7 @@ injectGlobal`
   }
 `
 
+// For react-scrollable-anchor; anchors for the zone data
 configureAnchors({offset: -60})
 
 ReactDOM.render(

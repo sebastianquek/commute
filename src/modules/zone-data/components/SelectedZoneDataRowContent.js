@@ -14,10 +14,6 @@ const SelectedZoneDataRowContent = (props) => {
   }, [])
   return (
     <div>
-      <Subheader>Composition</Subheader>
-      <Section>
-        {JSON.stringify(props.zoneComposition)}
-      </Section>
       <Subheader>Routes</Subheader>
       <Section>
         {routes.length > 0 &&

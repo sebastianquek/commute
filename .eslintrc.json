@@ -1,10 +1,10 @@
 {
-    "parser": "babel-eslint",
-    "plugins": [
-        "react"
-    ],
-    "extends": ["standard", "plugin:react/recommended", "plugin:import/errors"],
-    "env": {
-        "browser": true
-    }
+  "parser": "babel-eslint",
+  "plugins": [
+    "react"
+  ],
+  "extends": ["standard", "plugin:react/recommended", "plugin:import/errors"],
+  "env": {
+    "browser": true
+  }
 }

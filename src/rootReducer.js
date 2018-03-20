@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux'
+import { combineReducers } from 'redux'
 import zoneManager from './modules/zone-manager'
 import zoneData from './modules/zone-data'
 import map from './modules/map'

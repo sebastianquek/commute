@@ -2,12 +2,15 @@ import { all, call, put, take, select, takeEvery } from 'redux-saga/effects'
 import { goToAnchor } from 'react-scrollable-anchor'
 import zoneData from '../zone-data'
 import { MAP_HAS_LOADED, CLICK_FEATURES, HOVER_OVER_FEATURE } from './actionTypes'
-import { addZoneCompositions, addJourneys, removeJourneys, colorSelectedGroups, toggleLockHoveredZone, resetLockHoveredZone, hoverOverZone } from './actions'
-import { hoveredZoneSelector, isHoveredZoneSelectedSelector } from './selectors'
+import {
+  addZoneCompositions, addJourneys, removeJourneys, colorSelectedGroups,
+  hoverOverZone
+} from './actions'
 import zoneManager from '../zone-manager'
 import c from '../../utils/randomColor'
 
 export function * updateMapOnLoad () {
+  // Waits for both actions to be called
   const [{ zones }] = yield all([
     take(zoneData.actionTypes.RECEIVE_ZONE_COMPOSITIONS),
     take(MAP_HAS_LOADED)
@@ -18,11 +21,14 @@ export function * updateMapOnLoad () {
 }
 
 export function * updateJourneys () {
+  // Handle first load
   const [{ journeys }] = yield all([
     take(zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS),
     take(MAP_HAS_LOADED)
   ])
   yield put(addJourneys(journeys))
+
+  // Handle subsequent zone journey changes
   while (true) {
     const action = yield take([
       zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS,

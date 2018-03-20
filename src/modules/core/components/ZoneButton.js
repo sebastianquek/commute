@@ -4,17 +4,16 @@ import styled, { css } from 'styled-components'
 import { shouldTextBeDark } from '../../../utils/randomColor'
 import { fadeSlideUpRotated } from '../../../utils/animations'
 
-const Button = styled.button`
+const Button = styled.button` 
+  background-color: ${({color}) => color};
+  border-radius: ${({theme}) => theme.borderRadius};
   border: 1px ${({dottedBorder}) => dottedBorder ? 'dashed' : 'solid'} ${({theme}) => theme.colors.borderPrimary};
+  height: 1.7rem;
   margin: 0.5rem;
   padding: 0;
-  background-color: ${({color}) => color};
   transform: rotate(45deg);
-  height: 1.7rem;
-  width: 1.7rem;
-  border-radius: ${({theme}) => theme.borderRadius};
   transition: 0.2s all;
- 
+  width: 1.7rem;
   z-index: 2;
 
   ${({animate}) => animate && css`
@@ -23,19 +22,19 @@ const Button = styled.button`
   
   ${({hover}) => hover && css`
     :hover {
-      cursor: pointer;
       box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 10px 0;
+      cursor: pointer;
       transform: rotate(45deg) translate(-1px, -1px);
     }
   `}
 
   > span {
-    display: inline-block;
-    transform: rotate(-45deg);
     color: ${({darkText, theme}) => darkText ? theme.colors.textPrimary : theme.colors.textSecondaryAlt};
+    display: inline-block;
     font-family: 'Barlow', sans-serif;
-    font-weight: 600;
     font-size: 1rem;
+    font-weight: 600;
+    transform: rotate(-45deg);
   }
 
   :focus {
@@ -45,7 +44,11 @@ const Button = styled.button`
 
 const ZoneButton = (props) => {
   return (
-    <Button onClick={props.onClick} {...props} darkText={shouldTextBeDark(props.color)}>
+    <Button
+      onClick={props.onClick}
+      {...props}
+      darkText={shouldTextBeDark(props.color)}
+    >
       <span>{props.children}</span>
     </Button>
   )

@@ -9,17 +9,18 @@ const Wrapper = styled.div.attrs({
     left: `${x + 10}px`
   })
 })`
-  position: absolute;
-  padding: 0.6em 0.8em;
-  max-width: 220px;
   background: rgba(0, 0, 0, 0.8);
-  color: white;
   border-radius: ${({theme}) => theme.borderRadius};
-  font-size: ${({theme}) => theme.typography.tooltipSize};
+  color: white;
   font-family: 'Barlow', sans-serif;
+  font-size: ${({theme}) => theme.typography.tooltipSize};
   letter-spacing: 1px;
+  max-width: 220px;
+  padding: 0.6em 0.8em;
+  position: absolute;
 `
 
+// Tooltip for elements on the map
 const Tooltip = (props) => {
   if (!props.x || !props.y) return null
   let { layer: { source }, properties } = props.feature

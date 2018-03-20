@@ -8,7 +8,10 @@ const minDate = moment('2016-07-10T00:00:00+08:00').toDate()
 const maxDate = moment('2016-07-15T23:59:59+08:00').toDate()
 
 export const datetimeBrushDomain = (state = {
-  x: [moment('2016-07-12T00:00:00+08:00').toDate(), moment('2016-07-12T20:00:00+08:00').toDate()],
+  x: [
+    moment('2016-07-12T00:00:00+08:00').toDate(),
+    moment('2016-07-12T20:00:00+08:00').toDate()
+  ],
   y: [0, 1]
 }, action) => {
   switch (action.type) {
@@ -27,7 +30,7 @@ export const datetimeBrushDomain = (state = {
       x0.seconds(currentBrushStart.seconds())
       x0.milliseconds(currentBrushStart.milliseconds())
 
-      // Ensure start of new brush domain is within the bounds
+      // Ensure start of new brush domain is within the max bounds
       if (x0.isSameOrAfter(action.maxDate)) {
         return state
       }
@@ -73,11 +76,30 @@ export const ridershipDomain = (state = {
   }
 }
 
-export const ridershipData = (state = { departureData: [], arrivalData: [] }, action) => {
+export const ridershipData = (state = {
+  departureData: [],
+  arrivalData: []
+}, action) => {
   switch (action.type) {
     case t.RECEIVE_RIDERSHIP:
       const departureData = []
       const arrivalData = []
+
+      // Generate 2 arrays, 1 for departures and 1 for arrivals
+      // Each element of the array is an object with the following shape:
+      //  {
+      //    date: <moment date>,
+      //    <group id 1>: {
+      //      <zone id 1>: <number of arrivals/departures>
+      //      <zone id 2>: <number of arrivals/departures>
+      //      sum: <sum>
+      //    },
+      //    <group id 2>: {
+      //      <zone id 3>: <number of arrivals/departures>
+      //      <zone id 4>: <number of arrivals/departures>
+      //      sum: <sum>
+      //    }
+      //  }
       action.data.forEach((step, i) => {
         const row = { date: moment(step['start_time']) }
         const departureRow = { ...row }
@@ -86,9 +108,11 @@ export const ridershipData = (state = { departureData: [], arrivalData: [] }, ac
         action.groups.forEach(({ groupId, zoneIds }) => {
           const groupDepartureData = { sum: 0 }
           const groupArrivalData = { sum: 0 }
+
           zoneIds.forEach(zone => {
             const existingZoneDepartures = get(state.departureData, [i, groupId, zone], 0)
             const existingZoneArrivals = get(state.arrivalData, [i, groupId, zone], 0)
+
             if (step.counts && step.counts['' + zone]) { // zone has arrivals/departures
               const counts = step.counts['' + zone]
               groupDepartureData[zone] = counts.departure || 0
@@ -106,6 +130,7 @@ export const ridershipData = (state = { departureData: [], arrivalData: [] }, ac
               groupArrivalData[zone] = 0
             }
           })
+
           departureRow[groupId] = groupDepartureData
           arrivalRow[groupId] = groupArrivalData
         })

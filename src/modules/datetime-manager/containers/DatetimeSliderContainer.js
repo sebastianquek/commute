@@ -1,5 +1,8 @@
 import { connect } from 'react-redux'
-import { setDatetimeBrushDomain, setDatetimeZoomDomain, resetForceDatetimeSliderUpdate } from '../actions'
+import {
+  setDatetimeBrushDomain, setDatetimeZoomDomain,
+  resetForceDatetimeSliderUpdate
+} from '../actions'
 import {
   brushDomainSelector, zoomDomainSelector, minDateSelector,
   maxDateSelector, stepSelector, ridershipDataSelector,

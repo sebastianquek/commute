@@ -2,8 +2,13 @@ import { combineReducers } from 'redux'
 import * as t from './actionTypes'
 import zoneManager from '../zone-manager'
 import { fromJS } from 'immutable'
-import { defaultMapStyle, zonesHoverLayer, zonesSelectionLayer, selectedGroupLayer, journeysLayer, flowArrowsLayer } from './map-style'
+import {
+  defaultMapStyle, zonesHoverLayer, zonesSelectionLayer, selectedGroupLayer,
+  journeysLayer, flowArrowsLayer
+} from './map-style'
 
+// Add a selection layer (layer that outlines selectable zones) or
+// edit the current selection layer's color
 function addOrEditSelectionLayer (state, color = 'black') {
   let idx = state.get('layers').findIndex(layer => layer.get('id') === 'zonesSelection')
   if (idx !== -1) {
@@ -14,6 +19,8 @@ function addOrEditSelectionLayer (state, color = 'black') {
   }
 }
 
+// Ensure that the input layer is below the hover layer
+// The hover layer should be the topmost layer to detect mouse events
 function insertBeforeHoverLayerIfExists (state, layer) {
   let hoverLayerIdx = state.get('layers').findIndex(item =>
     item.get('id') === zonesHoverLayer.get('id')
@@ -28,7 +35,6 @@ function mapStyle (state = defaultMapStyle, action) {
   switch (action.type) {
     case t.ADD_ZONE_COMPOSITION:
       return state.setIn(['sources', 'zones'], fromJS({type: 'geojson', data: action.zones}))
-        // .update('layers', layers => layers.push(zonesLayer))
 
     case t.ADD_JOURNEYS:
       let newState = state.setIn(['sources', 'journeys'], fromJS({type: 'geojson', data: action.journeys}))
@@ -81,18 +87,26 @@ function mapStyle (state = defaultMapStyle, action) {
 
     case t.COLOR_SELECTED_GROUPS:
       return action.groups.reduce((newState, g) => {
-        return newState.update('layers', layers => layers.push(selectedGroupLayer(g.groupId, g.color, g.zoneIds)))
+        return newState.update('layers', layers =>
+          layers.push(selectedGroupLayer(g.groupId, g.color, g.zoneIds))
+        )
       }, state)
 
     case zoneManager.actionTypes.ADD_GROUP:
       if (state.get('layers').findIndex(layer => layer.get('id') === '' + action.groupId) === -1) {
         idx = state.get('layers').findIndex(i => i.get('id') === journeysLayer.get('id'))
-        return state.update('layers', layers => layers.insert(idx - 1, selectedGroupLayer(action.groupId, action.color)))
+        return state.update('layers', layers =>
+          layers.insert(idx - 1, selectedGroupLayer(action.groupId, action.color))
+        )
       }
       return state
 
     case zoneManager.actionTypes.REMOVE_GROUP:
-      return state.update('layers', layers => layers.filterNot(l => l.get('id') === '' + action.groupId))
+      return state.update('layers', layers =>
+        layers.filterNot(l =>
+          l.get('id') === '' + action.groupId
+        )
+      )
 
     case zoneManager.actionTypes.ADD_ZONE_TO_GROUP:
       idx = state.get('layers').findIndex(item => item.get('id') === '' + action.groupId)
@@ -104,7 +118,9 @@ function mapStyle (state = defaultMapStyle, action) {
     case zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP:
       idx = state.get('layers').findIndex(item => item.get('id') === '' + action.groupId)
       if (idx !== -1) {
-        return state.updateIn(['layers', idx, 'filter'], filter => filter.filterNot(id => id === action.zoneId))
+        return state.updateIn(['layers', idx, 'filter'], filter =>
+          filter.filterNot(id => id === action.zoneId)
+        )
       }
       return state
 

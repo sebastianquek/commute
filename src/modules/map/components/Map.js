@@ -8,9 +8,9 @@ import Tooltip from './Tooltip'
 import arrowImage from '../arrow.png'
 
 const Wrapper = styled.div`
+  left: 0;
   position: fixed;
   top: 0;
-  left: 0;
 `
 
 export class Map extends Component {

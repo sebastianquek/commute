@@ -1,5 +1,8 @@
 import { select, put, take } from 'redux-saga/effects'
-import { SET_ORIGIN_SELECTION_MODE, SET_DESTINATION_SELECTION_MODE, RESET_SELECTION_MODE, REMOVE_GROUP } from './actionTypes'
+import {
+  SET_ORIGIN_SELECTION_MODE, SET_DESTINATION_SELECTION_MODE,
+  RESET_SELECTION_MODE, REMOVE_GROUP
+} from './actionTypes'
 import { resetEditingGroup, removeGroup, resetSelectionMode } from './actions'
 import { emptyGroupsIdSelector, editingGroupIdSelector } from './selectors'
 
