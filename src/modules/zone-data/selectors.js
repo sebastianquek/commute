@@ -23,6 +23,11 @@ const mapGroupsToData = (groups, zoneData) => {
   }, {})
 }
 
+export const groupsJourneyDataSelector = createSelector(
+  [zoneManager.selectors.allGroupsSelector, zoneJourneyDataSelector],
+  mapGroupsToData
+)
+
 export const originGroupsCompositionDataSelector = createSelector(
   [zoneManager.selectors.originGroupsSelector, zoneCompositionDataSelector],
   mapGroupsToData
