@@ -31,9 +31,11 @@ export const requestZoneJourneys = () => ({
   type: t.REQUEST_ZONE_JOURNEYS
 })
 
-export const receiveZoneJourneys = (geojson) => ({
+export const receiveZoneJourneys = (geojson, originZoneIds, destinationZoneIds) => ({
   type: t.RECEIVE_ZONE_JOURNEYS,
-  journeys: geojson
+  journeys: geojson,
+  originZoneIds,
+  destinationZoneIds
 })
 
 export const requestZoneJourneysError = error => ({

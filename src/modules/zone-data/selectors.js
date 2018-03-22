@@ -28,6 +28,23 @@ export const groupsJourneyDataSelector = createSelector(
   mapGroupsToData
 )
 
+export const zoneNamesSelector = createSelector(
+  zoneCompositionDataSelector,
+  compositionData => {
+    return Object.keys(compositionData)
+      .map(Number)
+      .reduce((zoneNamesMap, id) => {
+        const name = compositionData[id].SUBZONE_N
+          .toLowerCase()
+          .split(' ')
+          .map(c => `${c.substring(0, 1).toUpperCase()}${c.substring(1)}`)
+          .join(' ')
+        zoneNamesMap[id] = name
+        return zoneNamesMap
+      }, {})
+  }
+)
+
 export const originGroupsCompositionDataSelector = createSelector(
   [zoneManager.selectors.originGroupsSelector, zoneCompositionDataSelector],
   mapGroupsToData

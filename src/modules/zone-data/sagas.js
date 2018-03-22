@@ -37,7 +37,7 @@ export function * watchAndUpdateZoneJourneys () {
 
     try {
       const journeys = yield call(fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration)
-      yield put(receiveZoneJourneys(journeys))
+      yield put(receiveZoneJourneys(journeys, originZoneIds, destinationZoneIds))
     } catch (err) {
       yield put(requestZoneJourneysError(err))
     }

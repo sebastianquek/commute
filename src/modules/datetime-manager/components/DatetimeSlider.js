@@ -136,7 +136,7 @@ class DatetimeSlider extends React.Component {
     if (
       nextProps.shouldUpdate ||
       !isEqual(nextProps.zoneIds, this.props.zoneIds) ||
-      !d3.select(this.ref).select('svg').node()
+      d3.select(this.ref).select('svg').empty()
     ) {
       this.props = nextProps
       this.props.resetForceDatetimeSliderUpdate()

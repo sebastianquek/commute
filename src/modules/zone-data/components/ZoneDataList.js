@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import RouteChoiceChartContainer from '../containers/RouteChoiceChartContainer'
+import RouteChoicesContainer from '../containers/RouteChoicesContainer'
 import OriginsDataRowsContainer from '../containers/OriginsDataRowsContainer'
 import DestinationsDataRowsContainer from '../containers/DestinationsDataRowsContainer'
 
@@ -22,7 +22,7 @@ const List = styled.div`
 const ZoneDataList = (props) => {
   return (
     <List>
-      <RouteChoiceChartContainer />
+      <RouteChoicesContainer />
       <OriginsDataRowsContainer />
       <DestinationsDataRowsContainer />
     </List>

@@ -11,15 +11,24 @@ const Wrapper = styled.div`
   border-radius: 2px;
   box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.2);
   font-family: Barlow, sans-serif;
-  position: relative;
+  position: absolute;
   margin: 1.5em 0;
   min-width: 300px;
   color: ${({theme}) => theme.colors.textPrimary};
+  background: white;
+  top: ${({y}) => y}px;
+  left: ${({x}) => x}px;
+  transform: translate(-148px, -6px);
+  transition: all 0.3s;
+  opacity: ${({hidden}) => hidden ? 0 : 1};
+  visibility: ${({hidden}) => hidden ? 'hidden' : 'visible'};
+  z-index: 4;
+  pointer-events: none;
 
   &::before {
     content: '';
     position: absolute;
-    left: calc(50% + 3px);
+    left: calc(50% + 6px);
     top: 0;
     width: 0; 
     height: 0; 
@@ -27,16 +36,16 @@ const Wrapper = styled.div`
     border-color: transparent transparent white white;
     transform-origin: 0 0;
     transform: rotate(135deg);
-    box-shadow: -3px 3px 10px -2px rgba(0, 0, 0, 0.2);
+    box-shadow: -3px 3px 10px -2px rgba(0, 0, 0, 0.3);
   }
 `
 
 const ZoneInfo = styled.div`
   display: grid;
   grid-template-columns: 30px 1fr;
-  grid-column-gap: 5px;
+  grid-column-gap: 10px;
   align-items: center;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
 `
 
 const ZoneName = styled.div`
@@ -64,7 +73,7 @@ const Label = styled.div`
 const ServiceLabel = Label.extend`
   padding-right: 0.5em;
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 600;
 `
 
 const DurationLabel = Label.extend`
@@ -83,31 +92,32 @@ const DurationBar = styled.div`
   }
 `
 
-const JourneyInfoTooltip = ({ data, durationBarsWidth }) => {
+const JourneyInfoTooltip = ({ link, durationBarsWidth, x, y, hidden }) => {
   const scale = d3.scaleLinear()
-    .domain([0, d3.max(data.trips, d => d.duration)])
+    .domain([0, d3.max(link.trips, d => d.duration)])
     .range([0, durationBarsWidth])
 
   let serviceLabels = []
   let durationBars = []
   let durationLabels = []
 
-  data.trips.map(t => ({...t, durationBarWidth: scale(t.duration)}))
+  link.trips.map(t => ({...t, durationBarWidth: scale(t.duration)}))
     .forEach(t => {
-      serviceLabels.push(<ServiceLabel minWidth={t.durationBarWidth} key={t.service}>{t.service}</ServiceLabel>)
+      const service = t.service.split('→').map((s, i) => <div key={s}>{i > 0 ? '⤷ ' : ''}{s}</div>)
+      serviceLabels.push(<ServiceLabel minWidth={t.durationBarWidth} key={t.service}>{service}</ServiceLabel>)
       durationBars.push(<DurationBar width={t.durationBarWidth} key={t.service}/>)
       durationLabels.push(<DurationLabel minWidth={t.durationBarWidth} key={t.service}>{Math.round(t.duration / 60)}mins</DurationLabel>)
     })
 
   return (
-    <Wrapper>
+    <Wrapper x={x} y={y} hidden={hidden} className='tooltip'>
       <ZoneInfo>
-        <ZoneIcon><ZoneButton hover={false}>{data.source.zone}</ZoneButton></ZoneIcon>
-        <ZoneName>Tiong Bahru</ZoneName>
+        <ZoneIcon><ZoneButton hover={false} color={link.sourceColor}>{link.originZone}</ZoneButton></ZoneIcon>
+        <ZoneName>{link.originZoneName}</ZoneName>
         <Arrow>↓</Arrow>
-        <div><strong>{data.count}</strong> commuters took <strong>{Math.round(data.totalDuration / 60)}</strong> mins on the average</div>
-        <ZoneIcon><ZoneButton hover={false}>{data.target.zone}</ZoneButton></ZoneIcon>
-        <ZoneName>Harbourfront</ZoneName>
+        <div><strong>{link.count}</strong> commuters took <strong>{Math.round(link.totalDuration / 60)}</strong> mins on the average</div>
+        <ZoneIcon><ZoneButton hover={false} color={link.targetColor}>{link.destinationZone}</ZoneButton></ZoneIcon>
+        <ZoneName>{link.destinationZoneName}</ZoneName>
       </ZoneInfo>
       <div>
         <TimelineContainer>{serviceLabels}</TimelineContainer>
@@ -119,54 +129,14 @@ const JourneyInfoTooltip = ({ data, durationBarsWidth }) => {
 }
 
 JourneyInfoTooltip.propTypes = {
-  data: PropTypes.object,
-  durationBarsWidth: PropTypes.number
+  link: PropTypes.object,
+  durationBarsWidth: PropTypes.number,
+  x: PropTypes.number,
+  y: PropTypes.number,
+  hidden: PropTypes.bool
 }
 
 JourneyInfoTooltip.defaultProps = {
-  data: {
-    'count': 24,
-    'stop_ids': [
-      [
-        '12',
-        '8'
-      ]
-    ],
-    'totalDuration': 665,
-    'durations': [
-      665.0416666666666
-    ],
-    'percentile': 0.997835497835498,
-    'source': {
-      'zone': 5,
-      'numLinks': 29,
-      'index': 2,
-      'x': 334.35231900133914,
-      'y': 264.18505047582204,
-      'vy': 0.6875630505581317,
-      'vx': -2.0709095004463953
-    },
-    'target': {
-      'zone': 63,
-      'numLinks': 2,
-      'index': 8,
-      'x': 225.96987531328605,
-      'y': 323.4847288141466,
-      'vy': 0.9417040607688327,
-      'vx': -2.026455898317618
-    },
-    'transport_services': [
-      '{EW,NS}'
-    ],
-    'direction': 0,
-    'linkNum': 1,
-    'index': 23,
-    'trips': [
-      { service: '123', originId: '1', destinationId: '2', duration: 1200 },
-      { service: '4566666666', originId: '1', destinationId: '2', duration: 480 },
-      { service: '{CC,EW,NE}', originId: '115', destinationId: '114', duration: 1800 }
-    ]
-  },
   durationBarsWidth: 200
 }
 

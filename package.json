@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@blueprintjs/core": "^2.0.0-rc.4",
     "d3": "^4.13.0",
     "img-loader": "^2.0.1",
     "immutable": "^3.8.2",
@@ -23,6 +24,7 @@
     "react-map-gl": "^3.2.0",
     "react-redux": "^5.0.6",
     "react-scrollable-anchor": "^0.5.0",
+    "react-transition-group": "^2.2.1",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",

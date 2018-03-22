@@ -62,8 +62,16 @@ export const zoneJourneyData = (state = {}, action) => {
         const trips = []
         for (let i = 0; i < services.length; i++) {
           let service = services[i]
-          if (service.slice(0, 1) !== '{') { // Bus trip
+          if (service.slice(0, 1).match(/[a-zA-Z]/).length === 0) { // Bus trip
             service = `${service.slice(0, -1)}(${service.slice(-1)})`
+          } else { // MRT trip
+            service = service.split('>')
+              .map(s => s.toLowerCase()
+                .split(' ')
+                .map(c => `${c.substring(0, 1).toUpperCase()}${c.substring(1)}`)
+                .join(' ')
+              )
+              .join('→')
           }
 
           trips.push({
@@ -73,8 +81,14 @@ export const zoneJourneyData = (state = {}, action) => {
             duration: durations[i]
           })
         }
-        allData[originZone].push({count, percentile, destinationZone, trips})
-        allData[destinationZone].push({count, percentile, originZone, trips})
+
+        // Ensure that journeys are not repeated
+        if (action.originZoneIds.includes(originZone)) {
+          allData[originZone].push({count, percentile, destinationZone, trips})
+        } else if (action.destinationZoneIds.includes(destinationZone)) {
+          allData[destinationZone].push({count, percentile, originZone, trips})
+        }
+
         return allData
       }, {})
       return {
