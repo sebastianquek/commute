@@ -4,9 +4,9 @@ import styled, { css } from 'styled-components'
 // Additional CSS can be injected through the extraCSS prop
 export default styled.div`
   animation: rotate 0.8s infinite linear;
-  border-radius: 50%;
-  border-right-color: transparent;
+  border-radius: 50%;  
   border: 2px solid ${({color, theme}) => color || theme.colors.textSecondary};
+  border-right-color: transparent;
   display: inline-block;
   height: 12px;
   margin: 2px;

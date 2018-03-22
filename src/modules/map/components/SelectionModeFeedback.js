@@ -9,8 +9,8 @@ const Wrapper = styled.div`
   animation: ${fadeSlideDown} 0.7s;
   background: white;
   border-radius: 0 0 ${({theme}) => `${theme.borderRadius} ${theme.borderRadius}`};
-  border-top: none;
   border: 1px solid ${({theme}) => theme.colors.borderSecondary};
+  border-top: none;
   display: flex;
   left: 120px;
   padding: 1em 1.4em;

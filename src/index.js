@@ -45,6 +45,7 @@ injectGlobal`
     font-family: 'Poppins', sans-serif;
     -webkit-text-size-adjust: 100%;
     font-size: ${theme.typography.baseSize}px;
+    font-weight: 500;
   }
 
   body {
