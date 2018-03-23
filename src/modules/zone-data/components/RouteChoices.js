@@ -130,12 +130,6 @@ const Controls = styled.div`
 class RouteChoices extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      duration: [60, 600],
-      numCommuters: [0, 100],
-      includesMrt: true,
-      includesBus: true
-    }
     this.handleDurationChange = this.handleDurationChange.bind(this)
     this.handleNumCommutersChange = this.handleNumCommutersChange.bind(this)
     this.handleIncludeMrtToggle = this.handleIncludeMrtToggle.bind(this)
@@ -143,19 +137,19 @@ class RouteChoices extends Component {
   }
 
   handleDurationChange (duration) {
-    this.setState({ duration })
+    this.props.filterDuration(duration)
   }
 
   handleNumCommutersChange (numCommuters) {
-    this.setState({ numCommuters })
+    this.props.filterNumCommuters(numCommuters)
   }
 
   handleIncludeMrtToggle () {
-    this.setState(prevState => ({ includesMrt: !prevState.includesMrt }))
+    this.props.filterModesOfTransport(!this.props.filters.includeMrt, this.props.filters.includeBus)
   }
 
   handleIncludeBusToggle () {
-    this.setState(prevState => ({ includesBus: !prevState.includesBus }))
+    this.props.filterModesOfTransport(this.props.filters.includeMrt, !this.props.filters.includeBus)
   }
 
   render () {
@@ -170,7 +164,7 @@ class RouteChoices extends Component {
             labelStepSize={2 * 60 * 60 / 5}
             labelRenderer={val => `${Math.round(val / 60)}min${Math.round(val / 60) > 1 ? 's' : ''}`}
             onChange={this.handleDurationChange}
-            value={this.state.duration}
+            value={this.props.filters.duration}
           />
           <Subheader>Commuters</Subheader>
           <RangeSlider
@@ -178,11 +172,11 @@ class RouteChoices extends Component {
             max={100}
             labelStepSize={100 / 5}
             onChange={this.handleNumCommutersChange}
-            value={this.state.numCommuters}
+            value={this.props.filters.numCommuters}
           />
           <Subheader>Modes of transport</Subheader>
-          <Checkbox checked={this.state.includesMrt} label="MRT" onChange={this.handleIncludeMrtToggle} />
-          <Checkbox checked={this.state.includesBus} label="Bus" onChange={this.handleIncludeBusToggle} />
+          <Checkbox checked={this.props.filters.includeMrt} label="MRT" onChange={this.handleIncludeMrtToggle} />
+          <Checkbox checked={this.props.filters.includeBus} label="Bus" onChange={this.handleIncludeBusToggle} />
         </Controls>
         <div>
           <RouteChoicesChartManager {...this.props} />
@@ -198,7 +192,11 @@ RouteChoices.propTypes = {
   zoneIdToName: PropTypes.object.isRequired,
   shouldUpdate: PropTypes.bool.isRequired,
   isFetchingZoneJourneyData: PropTypes.bool.isRequired,
-  resetForceRouteChoicesChartUpdate: PropTypes.func.isRequired
+  filters: PropTypes.object.isRequired,
+  resetForceRouteChoicesChartUpdate: PropTypes.func.isRequired,
+  filterNumCommuters: PropTypes.func.isRequired,
+  filterDuration: PropTypes.func.isRequired,
+  filterModesOfTransport: PropTypes.func.isRequired
 }
 
 export default RouteChoices

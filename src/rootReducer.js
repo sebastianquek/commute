@@ -8,7 +8,7 @@ export default combineReducers({
   zoneManager: zoneManager.reducer,
   zoneCompositionData: zoneData.reducer.zoneCompositionData,
   zoneJourneyData: zoneData.reducer.zoneJourneyData,
-  zoneJourneyDataFilters: zoneData.reducer.zoneJourneyDataFilters,
+  routeChoicesFilters: zoneData.reducer.routeChoicesFilters,
   zoneDataInterfaceFlags: zoneData.reducer.zoneDataInterfaceFlags,
   map: map.reducer,
   datetimeBrushDomain: datetimeManager.reducer.datetimeBrushDomain,

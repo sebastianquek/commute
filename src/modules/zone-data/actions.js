@@ -1,10 +1,19 @@
 import * as t from './actionTypes'
 
-export const filterNumCommuters = (id, min, max) => ({
+export const filterNumCommuters = domain => ({
   type: t.FILTER_NUM_COMMUTERS,
-  id,
-  min,
-  max
+  domain
+})
+
+export const filterDuration = domain => ({
+  type: t.FILTER_DURATION,
+  domain
+})
+
+export const filterModesOfTransport = (mrt, bus) => ({
+  type: t.FILTER_MODES_OF_TRANSPORT,
+  mrt,
+  bus
 })
 
 export const hoverRouteChoice = (zoneId, routeId) => ({

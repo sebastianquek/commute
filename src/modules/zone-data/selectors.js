@@ -4,7 +4,7 @@ import map from '../map'
 
 const zoneCompositionDataSelector = state => state.zoneCompositionData
 const zoneJourneyDataSelector = state => state.zoneJourneyData
-// const zoneJourneyDataFiltersSelector = state => state.zoneJourneyDataFilters
+export const routeChoicesFiltersSelector = state => state.routeChoicesFilters
 
 export const hoveredZoneCompositionDataSelector = createSelector(
   [map.selectors.hoveredZoneSelector, zoneCompositionDataSelector],

@@ -1,23 +1,27 @@
 import * as t from './actionTypes'
 
-export const zoneJourneyDataFilters = (state = {}, action) => {
+export const routeChoicesFilters = (state = {
+  numCommuters: [0, 100],
+  duration: [0, 60 * 60], // 1hr
+  includeMrt: true,
+  includeBus: true
+}, action) => {
   switch (action.type) {
     case t.FILTER_NUM_COMMUTERS:
-      let newZoneDataFilter
-      if (state.hasOwnProperty(action.id)) {
-        newZoneDataFilter = {
-          ...state[action.id],
-          numCommuters: {min: action.min, max: action.max}
-        }
-      } else {
-        newZoneDataFilter = {
-          numCommuters: {min: action.min, max: action.max}
-        }
-      }
-
       return {
         ...state,
-        [action.id]: newZoneDataFilter
+        numCommuters: action.domain
+      }
+    case t.FILTER_DURATION:
+      return {
+        ...state,
+        duration: action.domain
+      }
+    case t.FILTER_MODES_OF_TRANSPORT:
+      return {
+        ...state,
+        includeMrt: action.mrt,
+        includeBus: action.bus
       }
     default:
       return state

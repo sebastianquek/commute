@@ -1,5 +1,6 @@
 import moment from 'moment'
-import { select, call, put, take } from 'redux-saga/effects'
+import { delay } from 'redux-saga'
+import { select, call, put, take, takeLatest, cancelled } from 'redux-saga/effects'
 import * as topojson from 'topojson-client'
 import { REQUEST_ZONE_JOURNEYS } from './actionTypes'
 import {
@@ -10,41 +11,44 @@ import {
 import zoneManager from '../zone-manager'
 import datetimeManager from '../datetime-manager'
 
-export function * watchAndUpdateZoneJourneys () {
-  while (true) {
-    // Sagas run after reducers, so in this case, the new brush domain will
-    // already be updated in the state.
-    // https://redux-saga.js.org/docs/api/index.html#selectselector-args
-    yield take([
-      REQUEST_ZONE_JOURNEYS,
-      zoneManager.actionTypes.ADD_ZONE_TO_GROUP,
-      zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP,
-      zoneManager.actionTypes.REMOVE_GROUP,
-      datetimeManager.actionTypes.SET_DATETIME_BRUSH_DOMAIN
-    ])
+export function * getDataAndFetchZoneJourneys () {
+  // Sagas run after reducers, so in this case, the new brush domain will
+  // already be updated in the state.
+  // https://redux-saga.js.org/docs/api/index.html#selectselector-args
 
-    // Get current brushed time window
-    const dateDomain = yield select(datetimeManager.selectors.brushedDateDomainSelector)
-    const startTime = moment(dateDomain[0])
-    const duration = moment.duration(moment(dateDomain[1]).diff(startTime))
+  yield call(delay, 1000) // Debounce the fetching of API calls
 
-    let originZoneIds = yield select(zoneManager.selectors.originZoneIdsSelector)
-    let destinationZoneIds = yield select(zoneManager.selectors.destinationZoneIdsSelector)
+  // Get current brushed time window
+  const dateDomain = yield select(datetimeManager.selectors.brushedDateDomainSelector)
+  const startTime = moment(dateDomain[0])
+  const duration = moment.duration(moment(dateDomain[1]).diff(startTime))
 
-    if (originZoneIds.length === 0 && destinationZoneIds.length === 0) {
-      yield put(removeAllZoneJourneys())
-      continue
-    }
+  let originZoneIds = yield select(zoneManager.selectors.originZoneIdsSelector)
+  let destinationZoneIds = yield select(zoneManager.selectors.destinationZoneIdsSelector)
 
-    try {
-      yield put(fetchingZoneJourneys())
-      const journeys = yield call(fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration)
-      yield put(receiveZoneJourneys(journeys, originZoneIds, destinationZoneIds))
-      yield put(forceRouteChoicesChartUpdate())
-    } catch (err) {
-      yield put(requestZoneJourneysError(err))
-    }
+  if (originZoneIds.length === 0 && destinationZoneIds.length === 0) {
+    yield put(removeAllZoneJourneys())
+    return
   }
+
+  try {
+    yield put(fetchingZoneJourneys())
+    const journeys = yield call(fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration)
+    yield put(receiveZoneJourneys(journeys, originZoneIds, destinationZoneIds))
+    yield put(forceRouteChoicesChartUpdate())
+  } catch (err) {
+    yield put(requestZoneJourneysError(err))
+  }
+}
+
+export function * watchAndUpdateZoneJourneys () {
+  yield takeLatest([
+    REQUEST_ZONE_JOURNEYS,
+    zoneManager.actionTypes.ADD_ZONE_TO_GROUP,
+    zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP,
+    zoneManager.actionTypes.REMOVE_GROUP,
+    datetimeManager.actionTypes.SET_DATETIME_BRUSH_DOMAIN
+  ], getDataAndFetchZoneJourneys)
 }
 
 // Called once on initialisation of the app
