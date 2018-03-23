@@ -40,10 +40,19 @@ const Tooltip = (props) => {
     case 'journeys':
       const services = JSON.parse(properties.transport_services)
         .map(service => {
-          if (service[0] === '{') { // Train service
-            return service
+          const match = service.slice(0, 1).match(/[a-zA-Z]/)
+          if (!match) { // Bus trip
+            service = `${service.slice(0, -1)} (${service.slice(-1)})`
+          } else { // MRT trip
+            service = service.split('>')
+              .map(s => s.toLowerCase()
+                .split(' ')
+                .map(c => `${c.substring(0, 1).toUpperCase()}${c.substring(1)}`)
+                .join(' ')
+              )
+              .join('→')
           }
-          return `${service.slice(0, service.length - 1)}(${service.slice(service.length - 1)})`
+          return service
         })
         .join(', ')
       const stops = JSON.parse(properties.stop_ids).join(', ')
