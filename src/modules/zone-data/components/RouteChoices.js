@@ -145,11 +145,21 @@ class RouteChoices extends Component {
   }
 
   handleIncludeMrtToggle () {
-    this.props.filterModesOfTransport(!this.props.filters.includeMrt, this.props.filters.includeBus)
+    // Ensure that either MRT or Bus is always included
+    if (this.props.filters.includeMrt && !this.props.filters.includeBus) {
+      this.props.filterModesOfTransport(!this.props.filters.includeMrt, !this.props.filters.includeBus)
+    } else {
+      this.props.filterModesOfTransport(!this.props.filters.includeMrt, this.props.filters.includeBus)
+    }
   }
 
   handleIncludeBusToggle () {
-    this.props.filterModesOfTransport(this.props.filters.includeMrt, !this.props.filters.includeBus)
+    // Ensure that either MRT or Bus is always included
+    if (!this.props.filters.includeMrt && this.props.filters.includeBus) {
+      this.props.filterModesOfTransport(!this.props.filters.includeMrt, !this.props.filters.includeBus)
+    } else {
+      this.props.filterModesOfTransport(this.props.filters.includeMrt, !this.props.filters.includeBus)
+    }
   }
 
   render () {
