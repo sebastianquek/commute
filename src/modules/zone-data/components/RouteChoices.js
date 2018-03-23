@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { RangeSlider, Checkbox } from '@blueprintjs/core'
-import RouteChoiceChartManager from './RouteChoiceChartManager'
+import RouteChoicesChartManager from './RouteChoicesChartManager'
+import Subheader from '../../core/components/Subheader'
 
 const Wrapper = styled.div`
-  padding: 0.8rem 1.7rem 0.9rem 1.5rem;
+  padding: 0.4rem 1.7rem 0 1.5rem;
+  font-family: Barlow, sans-serif;
 `
 
 const Controls = styled.div`
@@ -16,6 +18,7 @@ const Controls = styled.div`
     position: relative;
     outline: none;
     cursor: default;
+    margin-bottom: 0.6em;
     user-select: none; }
     .pt-slider:hover {
       cursor: pointer; }
@@ -93,7 +96,7 @@ const Controls = styled.div`
     .pt-slider-handle .pt-slider-label {
       margin-left: 8px;
       border-radius: 3px;
-      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 2px 4px rgba(16, 22, 26, 0.2), 0 8px 24px rgba(16, 22, 26, 0.2);
+      // box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 2px 4px rgba(16, 22, 26, 0.2), 0 8px 24px rgba(16, 22, 26, 0.2);
       background: #394b59;
       color: #f5f8fa; }
       .pt-disabled .pt-slider-handle .pt-slider-label {
@@ -123,6 +126,7 @@ const Controls = styled.div`
   .pt-range-slider .pt-slider-progress {
     border-radius: 0; }
 `
+
 class RouteChoices extends Component {
   constructor (props) {
     super(props)
@@ -158,7 +162,7 @@ class RouteChoices extends Component {
     return (
       <Wrapper>
         <Controls>
-          <span>Duration</span>
+          <Subheader>Duration</Subheader>
           <RangeSlider
             min={0}
             max={2 * 60 * 60} // 2 hours
@@ -168,7 +172,7 @@ class RouteChoices extends Component {
             onChange={this.handleDurationChange}
             value={this.state.duration}
           />
-          <span>Commuters</span>
+          <Subheader>Commuters</Subheader>
           <RangeSlider
             min={0}
             max={100}
@@ -176,12 +180,12 @@ class RouteChoices extends Component {
             onChange={this.handleNumCommutersChange}
             value={this.state.numCommuters}
           />
-          <span>Modes of transport</span>
+          <Subheader>Modes of transport</Subheader>
           <Checkbox checked={this.state.includesMrt} label="MRT" onChange={this.handleIncludeMrtToggle} />
           <Checkbox checked={this.state.includesBus} label="Bus" onChange={this.handleIncludeBusToggle} />
         </Controls>
         <div>
-          <RouteChoiceChartManager {...this.props} />
+          <RouteChoicesChartManager {...this.props} />
         </div>
       </Wrapper>
     )
@@ -191,7 +195,10 @@ class RouteChoices extends Component {
 RouteChoices.propTypes = {
   routes: PropTypes.object.isRequired,
   zoneIdToGroupColor: PropTypes.object.isRequired,
-  zoneIdToName: PropTypes.object.isRequired
+  zoneIdToName: PropTypes.object.isRequired,
+  shouldUpdate: PropTypes.bool.isRequired,
+  isFetchingZoneJourneyData: PropTypes.bool.isRequired,
+  resetForceRouteChoicesChartUpdate: PropTypes.func.isRequired
 }
 
 export default RouteChoices

@@ -31,6 +31,10 @@ export const requestZoneJourneys = () => ({
   type: t.REQUEST_ZONE_JOURNEYS
 })
 
+export const fetchingZoneJourneys = () => ({
+  type: t.FETCHING_ZONE_JOURNEYS
+})
+
 export const receiveZoneJourneys = (geojson, originZoneIds, destinationZoneIds) => ({
   type: t.RECEIVE_ZONE_JOURNEYS,
   journeys: geojson,
@@ -45,4 +49,12 @@ export const requestZoneJourneysError = error => ({
 
 export const removeAllZoneJourneys = () => ({
   type: t.REMOVE_ZONE_JOURNEYS
+})
+
+export const forceRouteChoicesChartUpdate = () => ({
+  type: t.FORCE_ROUTE_CHOICES_CHART_UPDATE
+})
+
+export const resetForceRouteChoicesChartUpdate = () => ({
+  type: t.RESET_FORCE_ROUTE_CHOICES_CHART_UPDATE
 })

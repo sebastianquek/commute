@@ -36,7 +36,7 @@ const Chart = styled.div`
   }
 `
 
-class RouteChoiceChart extends Component {
+class RouteChoicesChart extends Component {
   constructor (props) {
     super(props)
     this.w = 0
@@ -50,14 +50,13 @@ class RouteChoiceChart extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    if (this.links.length === 0) {
-      // Remove intra-group links
-      this.links = nextProps.links.filter(link => link.source !== link.target)
-      this.nodes = nextProps.nodes
-      this.linksMetadata = nextProps.linksMetadata
-      this.setTooltipInfo = nextProps.setTooltipInfo
+    if (nextProps.shouldUpdate) {
       this.removeChart()
-      this.drawChart(this.links, this.nodes, this.linksMetadata, this.w, this.h)
+      this.drawChart(
+        nextProps.links, nextProps.nodes, nextProps.linksMetadata,
+        nextProps.setTooltipInfo, this.w, this.h
+      )
+      this.props.resetForceRouteChoicesChartUpdate()
     }
     return false
   }
@@ -66,9 +65,7 @@ class RouteChoiceChart extends Component {
     d3.select(this.ref).select('svg').remove()
   }
 
-  drawChart (links, nodes, linksMetadata, w, h) {
-    const that = this // Allow for accessing object variables when this has been replaced (e.g mousemove)
-
+  drawChart (links, nodes, linksMetadata, setTooltipInfo, w, h) {
     const svg = d3.select(this.ref)
       .append('svg')
       .attr('width', w)
@@ -106,10 +103,10 @@ class RouteChoiceChart extends Component {
         const data = d3.select(this).data()[0]
         const path = d3.select(this).select('path').node()
         const { x, y } = path.getPointAtLength(0.5 * path.getTotalLength())
-        that.setTooltipInfo(data, x, y)
+        setTooltipInfo(data, x, y)
       })
       .on('mouseout', function () {
-        that.setTooltipInfo()
+        setTooltipInfo()
       })
       .append('path')
       .attr('stroke-width', d => linkWidthScale(d.count))
@@ -176,7 +173,7 @@ class RouteChoiceChart extends Component {
       // Scale for link widths
       linkWidthScale: d3.scaleLinear()
         .domain([d3.min(links, d => d.count), d3.max(links, d => d.count)])
-        .range([4, 24]),
+        .range([6, 24]),
 
       // Scale for stroke opacity
       linkOpacityScale: d3.scaleLinear()
@@ -266,11 +263,13 @@ class RouteChoiceChart extends Component {
   }
 }
 
-RouteChoiceChart.propTypes = {
+RouteChoicesChart.propTypes = {
   links: PropTypes.array,
   nodes: PropTypes.array,
   linksMetadata: PropTypes.object,
-  setTooltipInfo: PropTypes.func
+  setTooltipInfo: PropTypes.func,
+  shouldUpdate: PropTypes.bool.isRequired,
+  resetForceRouteChoicesChartUpdate: PropTypes.func.isRequired
 }
 
-export default RouteChoiceChart
+export default RouteChoicesChart

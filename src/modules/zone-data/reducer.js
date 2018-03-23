@@ -62,8 +62,9 @@ export const zoneJourneyData = (state = {}, action) => {
         const trips = []
         for (let i = 0; i < services.length; i++) {
           let service = services[i]
-          if (service.slice(0, 1).match(/[a-zA-Z]/).length === 0) { // Bus trip
-            service = `${service.slice(0, -1)}(${service.slice(-1)})`
+          const match = service.slice(0, 1).match(/[a-zA-Z]/)
+          if (!match) { // Bus trip
+            service = `${service.slice(0, -1)} (${service.slice(-1)})`
           } else { // MRT trip
             service = service.split('>')
               .map(s => s.toLowerCase()
@@ -98,6 +99,36 @@ export const zoneJourneyData = (state = {}, action) => {
     case t.REMOVE_ZONE_JOURNEYS:
       return {}
 
+    default:
+      return state
+  }
+}
+
+export const zoneDataInterfaceFlags = (state = {
+  shouldRouteChoicesChartUpdate: false,
+  isFetchingZoneJourneyData: true
+}, action) => {
+  switch (action.type) {
+    case t.FORCE_ROUTE_CHOICES_CHART_UPDATE:
+      return {
+        ...state,
+        shouldRouteChoicesChartUpdate: true
+      }
+    case t.RESET_FORCE_ROUTE_CHOICES_CHART_UPDATE:
+      return {
+        ...state,
+        shouldRouteChoicesChartUpdate: false
+      }
+    case t.FETCHING_ZONE_JOURNEYS:
+      return {
+        ...state,
+        isFetchingZoneJourneyData: true
+      }
+    case t.RECEIVE_ZONE_JOURNEYS:
+      return {
+        ...state,
+        isFetchingZoneJourneyData: false
+      }
     default:
       return state
   }

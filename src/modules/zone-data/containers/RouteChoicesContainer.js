@@ -1,7 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { groupsJourneyDataSelector, zoneNamesSelector } from '../selectors'
+import { resetForceRouteChoicesChartUpdate } from '../actions'
+import {
+  groupsJourneyDataSelector, zoneNamesSelector,
+  isFetchingZoneJourneyData, shouldRouteChoicesChartUpdate
+} from '../selectors'
 import zoneManager from '../../zone-manager'
 import ListSeparator from '../components/ListSeparator'
 import RouteChoices from '../components/RouteChoices'
@@ -25,11 +29,14 @@ const mapStateToProps = (state, ownProps) => {
     routes: groupsJourneyDataSelector(state),
     zoneIdToGroupColor: zoneManager.selectors.zoneIdsAndGroupColorsSelector(state),
     zoneIdToName: zoneNamesSelector(state),
+    isFetchingZoneJourneyData: isFetchingZoneJourneyData(state),
+    shouldUpdate: shouldRouteChoicesChartUpdate(state),
     ...ownProps
   }
 }
 
 const mapDispatchToProps = {
+  resetForceRouteChoicesChartUpdate
 }
 
 export default connect(

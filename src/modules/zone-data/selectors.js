@@ -64,3 +64,9 @@ export const destinationGroupsJourneyDataSelector = createSelector(
   [zoneManager.selectors.destinationGroupsSelector, zoneJourneyDataSelector],
   mapGroupsToData
 )
+
+export const shouldRouteChoicesChartUpdate = state =>
+  state.zoneDataInterfaceFlags.shouldRouteChoicesChartUpdate
+
+export const isFetchingZoneJourneyData = state =>
+  state.zoneDataInterfaceFlags.isFetchingZoneJourneyData

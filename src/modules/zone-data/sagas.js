@@ -4,7 +4,8 @@ import * as topojson from 'topojson-client'
 import { REQUEST_ZONE_JOURNEYS } from './actionTypes'
 import {
   requestZoneJourneys, receiveZoneJourneys, requestZoneJourneysError, removeAllZoneJourneys,
-  requestZoneCompositions, receiveZoneCompositions, requestZoneCompositionsError
+  requestZoneCompositions, receiveZoneCompositions, requestZoneCompositionsError,
+  fetchingZoneJourneys, forceRouteChoicesChartUpdate
 } from './actions'
 import zoneManager from '../zone-manager'
 import datetimeManager from '../datetime-manager'
@@ -36,8 +37,10 @@ export function * watchAndUpdateZoneJourneys () {
     }
 
     try {
+      yield put(fetchingZoneJourneys())
       const journeys = yield call(fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration)
       yield put(receiveZoneJourneys(journeys, originZoneIds, destinationZoneIds))
+      yield put(forceRouteChoicesChartUpdate())
     } catch (err) {
       yield put(requestZoneJourneysError(err))
     }
