@@ -86,7 +86,7 @@ class RouteChoicesChart extends Component {
       )
       .force('charge',
         d3.forceManyBody()
-          .strength(-300)
+          .strength(-60)
       )
       .force('center',
         d3.forceCenter(w / 2, h / 2)
@@ -188,7 +188,7 @@ class RouteChoicesChart extends Component {
       // Scale for node size
       nodeSizeScale: d3.scaleLinear()
         .domain([d3.min(nodes, d => d.numLinks), d3.max(nodes, d => d.numLinks)])
-        .range([0.8, 3])
+        .range([nodes.length > 3 ? 0.8 : 1.5, nodes.length > 3 ? 3 : 1.5])
     }
   }
 

@@ -1,13 +1,17 @@
 import moment from 'moment'
 import { delay } from 'redux-saga'
-import { select, call, put, take, takeLatest, cancelled } from 'redux-saga/effects'
+import { select, call, put, takeLatest } from 'redux-saga/effects'
 import * as topojson from 'topojson-client'
-import { REQUEST_ZONE_JOURNEYS } from './actionTypes'
+import {
+  REQUEST_ZONE_JOURNEYS,
+  FILTER_NUM_COMMUTERS, FILTER_DURATION, FILTER_MODES_OF_TRANSPORT
+} from './actionTypes'
 import {
   requestZoneJourneys, receiveZoneJourneys, requestZoneJourneysError, removeAllZoneJourneys,
   requestZoneCompositions, receiveZoneCompositions, requestZoneCompositionsError,
   fetchingZoneJourneys, forceRouteChoicesChartUpdate
 } from './actions'
+import { routeChoicesFiltersSelector } from './selectors'
 import zoneManager from '../zone-manager'
 import datetimeManager from '../datetime-manager'
 
@@ -18,22 +22,32 @@ export function * getDataAndFetchZoneJourneys () {
 
   yield call(delay, 1000) // Debounce the fetching of API calls
 
+  const originZoneIds = yield select(zoneManager.selectors.originZoneIdsSelector)
+  const destinationZoneIds = yield select(zoneManager.selectors.destinationZoneIdsSelector)
+
+  // Fetch only if there are origin/destination zones
+  if (originZoneIds.length === 0 && destinationZoneIds.length === 0) {
+    yield put(removeAllZoneJourneys())
+    yield put(forceRouteChoicesChartUpdate())
+    return
+  }
+
   // Get current brushed time window
   const dateDomain = yield select(datetimeManager.selectors.brushedDateDomainSelector)
   const startTime = moment(dateDomain[0])
   const duration = moment.duration(moment(dateDomain[1]).diff(startTime))
 
-  let originZoneIds = yield select(zoneManager.selectors.originZoneIdsSelector)
-  let destinationZoneIds = yield select(zoneManager.selectors.destinationZoneIdsSelector)
-
-  if (originZoneIds.length === 0 && destinationZoneIds.length === 0) {
-    yield put(removeAllZoneJourneys())
-    return
-  }
+  // Get filters
+  const { duration: routeDuration, numCommuters, includeMrt, includeBus } = yield select(routeChoicesFiltersSelector)
+  const minCommuters = numCommuters[0]
+  const minRouteDuration = routeDuration[0]
 
   try {
     yield put(fetchingZoneJourneys())
-    const journeys = yield call(fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration)
+    const journeys = yield call(
+      fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration,
+      minCommuters, minRouteDuration, includeMrt, includeBus
+    )
     yield put(receiveZoneJourneys(journeys, originZoneIds, destinationZoneIds))
     yield put(forceRouteChoicesChartUpdate())
   } catch (err) {
@@ -56,10 +70,17 @@ export function * getInitialZoneJourneys () {
   yield put(requestZoneJourneys())
 }
 
-async function fetchZoneJourneys (originZoneIds, destinationZoneIds, startTime, duration) {
+async function fetchZoneJourneys (
+  originZoneIds, destinationZoneIds, startTime, duration,
+  minCommuters, minRouteDuration, includeMrt, includeBus
+) {
   let query = `/api/v3/journeys?startTime=${encodeURIComponent(startTime.format())}&duration=${duration.toISOString()}`
   if (originZoneIds.length > 0) query += `&origins=${originZoneIds}`
   if (destinationZoneIds.length > 0) query += `&destinations=${destinationZoneIds}`
+  // Add filters
+  query += `&minCommuters=${minCommuters}&minRouteDuration=${minRouteDuration}`
+  if (includeMrt) query += '&includeMrt'
+  if (includeBus) query += '&includeBus'
   const res = await fetch(query)
   const resJson = await res.json()
   return resJson

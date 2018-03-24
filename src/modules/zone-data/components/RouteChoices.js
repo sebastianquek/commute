@@ -138,10 +138,22 @@ class RouteChoices extends Component {
 
   handleDurationChange (duration) {
     this.props.filterDuration(duration)
+    // Check if we have gone outside the bounds provided by the data
+    if (duration[0] < this.props.filters.dataDurationBounds[0]) {
+      this.props.requestZoneJourneys()
+    } else {
+      this.props.forceRouteChoicesChartUpdate()
+    }
   }
 
   handleNumCommutersChange (numCommuters) {
     this.props.filterNumCommuters(numCommuters)
+    // Check if we have gone outside the bounds provided by the data
+    if (numCommuters[0] < this.props.filters.dataNumCommutersBounds[0]) {
+      this.props.requestZoneJourneys()
+    } else {
+      this.props.forceRouteChoicesChartUpdate()
+    }
   }
 
   handleIncludeMrtToggle () {
@@ -151,6 +163,7 @@ class RouteChoices extends Component {
     } else {
       this.props.filterModesOfTransport(!this.props.filters.includeMrt, this.props.filters.includeBus)
     }
+    this.props.requestZoneJourneys()
   }
 
   handleIncludeBusToggle () {
@@ -160,27 +173,35 @@ class RouteChoices extends Component {
     } else {
       this.props.filterModesOfTransport(this.props.filters.includeMrt, !this.props.filters.includeBus)
     }
+    this.props.requestZoneJourneys()
   }
 
   render () {
+    // Max duration bound
+    const maxDuration = this.props.filters.dataDurationBounds[1]
+
+    // Max number of commuters
+    const maxNumCommuters = this.props.filters.dataNumCommutersBounds[1]
+
     return (
       <Wrapper>
         <Controls>
           <Subheader>Duration</Subheader>
           <RangeSlider
             min={0}
-            max={2 * 60 * 60} // 2 hours
+            max={maxDuration}
             stepSize={60} // 1 minute
-            labelStepSize={2 * 60 * 60 / 5}
+            labelStepSize={Math.max(60, Math.floor(maxDuration / 5))}
             labelRenderer={val => `${Math.round(val / 60)}min${Math.round(val / 60) > 1 ? 's' : ''}`}
             onChange={this.handleDurationChange}
             value={this.props.filters.duration}
           />
           <Subheader>Commuters</Subheader>
           <RangeSlider
-            min={0}
-            max={100}
-            labelStepSize={100 / 5}
+            min={1}
+            max={Math.max(2, maxNumCommuters)}
+            stepSize={1}
+            labelStepSize={Math.max(1, Math.floor(maxNumCommuters / 5))}
             onChange={this.handleNumCommutersChange}
             value={this.props.filters.numCommuters}
           />
@@ -203,10 +224,12 @@ RouteChoices.propTypes = {
   shouldUpdate: PropTypes.bool.isRequired,
   isFetchingZoneJourneyData: PropTypes.bool.isRequired,
   filters: PropTypes.object.isRequired,
+  forceRouteChoicesChartUpdate: PropTypes.func.isRequired,
   resetForceRouteChoicesChartUpdate: PropTypes.func.isRequired,
   filterNumCommuters: PropTypes.func.isRequired,
   filterDuration: PropTypes.func.isRequired,
-  filterModesOfTransport: PropTypes.func.isRequired
+  filterModesOfTransport: PropTypes.func.isRequired,
+  requestZoneJourneys: PropTypes.func.isRequired
 }
 
 export default RouteChoices

@@ -2,8 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import {
-  resetForceRouteChoicesChartUpdate, filterNumCommuters, filterDuration,
-  filterModesOfTransport
+  forceRouteChoicesChartUpdate, resetForceRouteChoicesChartUpdate,
+  filterNumCommuters, filterDuration,
+  filterModesOfTransport, requestZoneJourneys
 } from '../actions'
 import {
   groupsJourneyDataSelector, zoneNamesSelector,
@@ -41,10 +42,12 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = {
+  forceRouteChoicesChartUpdate,
   resetForceRouteChoicesChartUpdate,
   filterNumCommuters,
   filterDuration,
-  filterModesOfTransport
+  filterModesOfTransport,
+  requestZoneJourneys
 }
 
 export default connect(

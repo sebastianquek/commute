@@ -64,6 +64,7 @@ const ZoneIcon = styled.div`
 const TimelineContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: flex-end;
 `
 
 const Label = styled.div`
@@ -115,7 +116,7 @@ const JourneyInfoTooltip = ({ link, durationBarsWidth, x, y, hidden }) => {
         <ZoneIcon><ZoneButton hover={false} color={link.sourceColor}>{link.originZone}</ZoneButton></ZoneIcon>
         <ZoneName>{link.originZoneName}</ZoneName>
         <Arrow>↓</Arrow>
-        <div><strong>{link.count}</strong> commuters took <strong>{Math.round(link.totalDuration / 60)}</strong> mins on the average</div>
+        <div><strong>{link.count}</strong> commuter{link.count > 1 ? 's' : ''} took <strong>{Math.round(link.totalDuration / 60)}</strong> mins on the average</div>
         <ZoneIcon><ZoneButton hover={false} color={link.targetColor}>{link.destinationZone}</ZoneButton></ZoneIcon>
         <ZoneName>{link.destinationZoneName}</ZoneName>
       </ZoneInfo>

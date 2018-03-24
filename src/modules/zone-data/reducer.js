@@ -1,8 +1,10 @@
 import * as t from './actionTypes'
 
 export const routeChoicesFilters = (state = {
-  numCommuters: [0, 100],
-  duration: [0, 60 * 60], // 1hr
+  dataNumCommutersBounds: [1, 100], // Extent based on current route choices data
+  dataDurationBounds: [25 * 60, 60 * 60], // Data is updated when selected filter is outside these bounds
+  numCommuters: [1, 100],
+  duration: [25 * 60, 60 * 60], // 1hr
   includeMrt: true,
   includeBus: true
 }, action) => {
@@ -22,6 +24,40 @@ export const routeChoicesFilters = (state = {
         ...state,
         includeMrt: action.mrt,
         includeBus: action.bus
+      }
+    case t.RECEIVE_ZONE_JOURNEYS:
+      let dataNumCommutersBounds = []
+      let dataDurationBounds = []
+      if (action.journeys.features.length === 0) {
+        return state
+      }
+
+      for (let route of action.journeys.features) {
+        const { count, durations } = route.properties
+        const totalDuration = durations.reduce((s, d) => s + d, 0)
+        if (dataNumCommutersBounds.length === 0) {
+          dataNumCommutersBounds = [count, count]
+          dataDurationBounds = [totalDuration, totalDuration]
+          continue
+        }
+        if (count < dataNumCommutersBounds[0]) dataNumCommutersBounds[0] = count
+        if (count > dataNumCommutersBounds[1]) dataNumCommutersBounds[1] = count
+        if (totalDuration < dataDurationBounds[0]) dataDurationBounds[0] = totalDuration
+        if (totalDuration > dataDurationBounds[1]) dataDurationBounds[1] = totalDuration
+      }
+
+      return {
+        ...state,
+        numCommuters: [
+          Math.max(state.numCommuters[0], dataNumCommutersBounds[0]),
+          Math.min(state.numCommuters[1], dataNumCommutersBounds[1])
+        ],
+        duration: [
+          Math.max(state.duration[0], dataDurationBounds[0]),
+          Math.min(state.duration[1], dataDurationBounds[1])
+        ],
+        dataNumCommutersBounds,
+        dataDurationBounds
       }
     default:
       return state
@@ -47,11 +83,10 @@ export const zoneJourneyData = (state = {}, action) => {
         let {
           origin_zone: originZone,
           destination_zone: destinationZone,
-          count,
-          percentile,
           transport_services: services,
           stop_ids: stopIds,
-          durations
+          durations,
+          ...rest
         } = route.properties
 
         if (!allData.hasOwnProperty(originZone)) {
@@ -60,7 +95,6 @@ export const zoneJourneyData = (state = {}, action) => {
         if (!allData.hasOwnProperty(destinationZone)) {
           allData[destinationZone] = []
         }
-        count = parseInt(count, 10)
 
         // Create an array of trips for the current route
         const trips = []
@@ -89,9 +123,9 @@ export const zoneJourneyData = (state = {}, action) => {
 
         // Ensure that journeys are not repeated
         if (action.originZoneIds.includes(originZone)) {
-          allData[originZone].push({count, percentile, destinationZone, trips})
+          allData[originZone].push({...rest, destinationZone, trips})
         } else if (action.destinationZoneIds.includes(destinationZone)) {
-          allData[destinationZone].push({count, percentile, originZone, trips})
+          allData[destinationZone].push({...rest, originZone, trips})
         }
 
         return allData
@@ -129,6 +163,7 @@ export const zoneDataInterfaceFlags = (state = {
         isFetchingZoneJourneyData: true
       }
     case t.RECEIVE_ZONE_JOURNEYS:
+    case t.REMOVE_ZONE_JOURNEYS: // Ensure loading indicator hides on removal
       return {
         ...state,
         isFetchingZoneJourneyData: false

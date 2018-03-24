@@ -15,11 +15,20 @@ const BottomLeftSpinner = Spinner.extend`
   bottom: 0;
 `
 
+const MaxNumLinksFeedback = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  text-align: right;
+`
+
 // Contains the chart and tooltip
 class RouteChoicesChartManager extends Component {
   constructor (props) {
     super(props)
     this.state = {}
+    this.maxNumLinks = 50
+    this.numHiddenLinks = 0
     this.setTooltipInfo = this.setTooltipInfo.bind(this)
   }
 
@@ -28,6 +37,11 @@ class RouteChoicesChartManager extends Component {
     this.nodes = {}
     this.links = []
     this.linksMetadata = {}
+
+    const {
+      duration: [minDuration, maxDuration],
+      numCommuters: [minCommuters, maxCommuters]
+    } = nextProps.filters
 
     if (!nextProps.shouldUpdate) {
       this.nodes = []
@@ -41,23 +55,25 @@ class RouteChoicesChartManager extends Component {
         .forEach(zoneId => (this.zoneIdToGroupId[zoneId] = Number(groupId)))
     })
 
-    // Populate links and nodes
+    // Populate links
     Object.keys(nextProps.routes).forEach(groupId => {
       const { groupData } = nextProps.routes[groupId]
       groupData.forEach(({ zoneId, zoneData }) => {
         zoneData && zoneData.forEach(route => {
-          const { originZone, destinationZone, trips, ...rest } = route
+          const { originZone, destinationZone, count, ...rest } = route
           const link = {
             ...rest,
-            trips,
-            totalDuration: trips.reduce((sum, d) => d.duration + sum, 0),
+            count,
             originZone: originZone || zoneId,
             destinationZone: destinationZone || zoneId,
             source: originZone ? (this.zoneIdToGroupId[originZone] || originZone) : Number(groupId),
             target: destinationZone ? (this.zoneIdToGroupId[destinationZone] || destinationZone) : Number(groupId)
           }
-
-          if (link.source !== link.target) {
+          if (
+            link.source !== link.target &&
+            minDuration <= link.totalDuration && link.totalDuration <= maxDuration &&
+            minCommuters <= link.count && link.count <= maxCommuters
+          ) {
             link.sourceColor = nextProps.zoneIdToGroupColor[link.originZone] || '#ddd'
             link.targetColor = nextProps.zoneIdToGroupColor[link.destinationZone] || '#ddd'
 
@@ -70,6 +86,13 @@ class RouteChoicesChartManager extends Component {
         })
       })
     })
+
+    if (this.links.length > this.maxNumLinks) {
+      this.numHiddenLinks = this.links.length - this.maxNumLinks
+      this.links = this.links.slice(0, this.maxNumLinks)
+    } else {
+      this.numHiddenLinks = 0
+    }
 
     this.links.forEach(link => {
       const key = link.source < link.target ? `${link.source}-${link.target}` : `${link.target}-${link.source}`
@@ -130,6 +153,7 @@ class RouteChoicesChartManager extends Component {
   render () {
     return (
       <Wrapper>
+        { this.numHiddenLinks > 0 && <MaxNumLinksFeedback>Showing {this.maxNumLinks} links ({this.numHiddenLinks} links are hidden)</MaxNumLinksFeedback> }
         { this.props.isFetchingZoneJourneyData && <BottomLeftSpinner /> }
         <RouteChoicesChart
           links={this.links}
@@ -159,6 +183,7 @@ RouteChoicesChartManager.propTypes = {
   zoneIdToName: PropTypes.object.isRequired,
   shouldUpdate: PropTypes.bool.isRequired,
   isFetchingZoneJourneyData: PropTypes.bool.isRequired,
+  filters: PropTypes.object.isRequired,
   resetForceRouteChoicesChartUpdate: PropTypes.func.isRequired
 }
 
