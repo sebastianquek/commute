@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   top: ${({y}) => y}px;
   left: ${({x}) => x}px;
   transform: translate(-148px, -6px);
-  transition: all 0.3s;
+  transition: all 0.15s;
   opacity: ${({hidden}) => hidden ? 0 : 1};
   visibility: ${({hidden}) => hidden ? 'hidden' : 'visible'};
   z-index: 4;
@@ -75,6 +75,10 @@ const ServiceLabel = Label.extend`
   padding-right: 0.5em;
   font-size: 1.2rem;
   font-weight: 600;
+
+  :not(:last-child) {
+    margin-right: 3px;
+  }
 `
 
 const DurationLabel = Label.extend`
@@ -85,11 +89,13 @@ const DurationLabel = Label.extend`
 
 const DurationBar = styled.div`
   width: ${({width}) => width}px;
-  height: 16px;
-  border: 1px solid black;
+  background-color: ${({color}) => color};
+  height: 8px;
+  border-radius: 5px;
+  margin: 2px 0;
 
   :not(:last-child) {
-    border-right: none;
+    margin-right: 3px;
   }
 `
 
@@ -104,9 +110,11 @@ const RouteInfoTooltip = ({ link, durationBarsWidth, x, y, hidden, maxDuration }
 
   link.trips.map(t => ({...t, durationBarWidth: scale(t.duration)}))
     .forEach(t => {
+      const match = t.service.slice(0, 1).match(/[a-zA-Z]/)
+      const color = match ? '#6B97E7' : '#62D090'
       const service = t.service.split('→').map((s, i) => <div key={s}>{i > 0 ? '⤷ ' : ''}{s}</div>)
       serviceLabels.push(<ServiceLabel minWidth={t.durationBarWidth} key={t.service}>{service}</ServiceLabel>)
-      durationBars.push(<DurationBar width={t.durationBarWidth} key={t.service}/>)
+      durationBars.push(<DurationBar width={t.durationBarWidth} color={color} key={t.service}/>)
       durationLabels.push(<DurationLabel minWidth={t.durationBarWidth} key={t.service}>{Math.round(t.duration / 60)}mins</DurationLabel>)
     })
 
