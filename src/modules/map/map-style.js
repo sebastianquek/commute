@@ -55,11 +55,11 @@ export const journeysLayer = fromJS({
     'line-width': {
       'base': 1,
       'stops': [
-        [10, 1],
-        [16, 6]
+        [10, 2],
+        [16, 8]
       ]
     },
-    'line-opacity': 0.15
+    'line-opacity': 0.3
   }
 })
 
@@ -73,7 +73,13 @@ export const flowArrowsLayer = fromJS({
     // 'icon-allow-overlap': true,
     // 'icon-ignore-placement': true,
     'icon-image': 'arrow',
-    'icon-size': 0.12,
+    'icon-size': {
+      'base': 1,
+      'stops': [
+        [10, 0.08],
+        [16, 0.2]
+      ]
+    },
     'visibility': 'visible'
   }
 })
