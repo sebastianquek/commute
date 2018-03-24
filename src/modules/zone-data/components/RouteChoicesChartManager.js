@@ -43,6 +43,8 @@ class RouteChoicesChartManager extends Component {
       numCommuters: [minCommuters, maxCommuters]
     } = nextProps.filters
 
+    this.maxDuration = maxDuration
+
     if (!nextProps.shouldUpdate) {
       this.nodes = []
       return
@@ -172,6 +174,7 @@ class RouteChoicesChartManager extends Component {
             x={this.state.x}
             y={this.state.y}
             hidden={this.state.isTooltipHidden}
+            maxDuration={this.maxDuration}
           />
         }
       </Wrapper>

@@ -93,9 +93,9 @@ const DurationBar = styled.div`
   }
 `
 
-const RouteInfoTooltip = ({ link, durationBarsWidth, x, y, hidden }) => {
+const RouteInfoTooltip = ({ link, durationBarsWidth, x, y, hidden, maxDuration }) => {
   const scale = d3.scaleLinear()
-    .domain([0, d3.max(link.trips, d => d.duration)])
+    .domain([0, maxDuration])
     .range([0, durationBarsWidth])
 
   let serviceLabels = []
@@ -130,15 +130,16 @@ const RouteInfoTooltip = ({ link, durationBarsWidth, x, y, hidden }) => {
 }
 
 RouteInfoTooltip.propTypes = {
-  link: PropTypes.object,
+  link: PropTypes.object.isRequired,
   durationBarsWidth: PropTypes.number,
   x: PropTypes.number,
   y: PropTypes.number,
-  hidden: PropTypes.bool
+  hidden: PropTypes.bool,
+  maxDuration: PropTypes.number.isRequired
 }
 
 RouteInfoTooltip.defaultProps = {
-  durationBarsWidth: 200
+  durationBarsWidth: 260
 }
 
 export default RouteInfoTooltip

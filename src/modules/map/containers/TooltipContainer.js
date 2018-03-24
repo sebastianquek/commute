@@ -12,6 +12,7 @@ const TooltipContainer = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    maxDuration: zoneData.selectors.routeChoicesFilterMaxDuration(state),
     zoneIdToGroupColor: id => {
       const colorsMap = zoneManager.selectors.zoneIdsAndGroupColorsSelector(state)
       if (colorsMap.hasOwnProperty(id)) return colorsMap[id]

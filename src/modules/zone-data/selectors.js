@@ -10,6 +10,11 @@ export const filteredRouteIds = createSelector(
   filters => filters.filteredRouteIds
 )
 
+export const routeChoicesFilterMaxDuration = createSelector(
+  routeChoicesFiltersSelector,
+  filters => filters.duration[1]
+)
+
 export const hoveredZoneCompositionDataSelector = createSelector(
   [map.selectors.hoveredZoneSelector, zoneCompositionDataSelector],
   (hoveredZone, zoneData) => zoneData[hoveredZone.id]

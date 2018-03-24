@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import moment from 'moment'
 import RouteInfoTooltip from '../../core/components/RouteInfoTooltip'
 
 const Wrapper = styled.div.attrs({
@@ -51,6 +50,7 @@ const Tooltip = (props) => {
       desc = (
         <RouteInfoTooltip
           link={properties}
+          maxDuration={props.maxDuration}
         />
       )
       break
@@ -66,6 +66,7 @@ Tooltip.propTypes = {
   feature: PropTypes.object,
   x: PropTypes.number,
   y: PropTypes.number,
+  maxDuration: PropTypes.number.isRequired,
   zoneIdToGroupColor: PropTypes.func,
   zoneIdToName: PropTypes.object
 }
