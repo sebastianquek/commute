@@ -6,6 +6,7 @@ import {
   addZoneCompositions, addJourneys, removeJourneys, colorSelectedGroups,
   hoverOverZone, setFilteredRouteIds
 } from './actions'
+import linkingCoordinator from '../linking-coordinator'
 import zoneManager from '../zone-manager'
 import c from '../../utils/randomColor'
 
@@ -124,6 +125,10 @@ function * handleHover ({ feature }) {
       yield put(hoverOverZone(feature.properties.OBJECTID))
       // }
     }
+  } else if (feature.layer.source === 'journeys') {
+    yield put(linkingCoordinator.actions.setHoveredRouteId(feature.properties.id))
+  } else {
+    yield put(linkingCoordinator.actions.clearHoveredRouteId())
   }
 }
 

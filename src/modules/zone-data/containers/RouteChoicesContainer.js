@@ -14,6 +14,7 @@ import {
 import zoneManager from '../../zone-manager'
 import ListSeparator from '../components/ListSeparator'
 import RouteChoices from '../components/RouteChoices'
+import linkingCoordinator from '../../linking-coordinator'
 
 const Wrapper = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const mapStateToProps = (state, ownProps) => {
     isFetchingZoneJourneyData: isFetchingZoneJourneyData(state),
     shouldUpdate: shouldRouteChoicesChartUpdate(state),
     filters: routeChoicesFiltersSelector(state),
+    hoveredRouteId: linkingCoordinator.selectors.hoveredRouteIdSelector(state),
     ...ownProps
   }
 }
@@ -48,7 +50,9 @@ const mapDispatchToProps = {
   filterDuration,
   filterModesOfTransport,
   requestZoneJourneys,
-  setFilteredRouteIds
+  setFilteredRouteIds,
+  setHoveredRouteId: linkingCoordinator.actions.setHoveredRouteId,
+  clearHoveredRouteId: linkingCoordinator.actions.clearHoveredRouteId
 }
 
 export default connect(

@@ -224,13 +224,16 @@ RouteChoices.propTypes = {
   shouldUpdate: PropTypes.bool.isRequired,
   isFetchingZoneJourneyData: PropTypes.bool.isRequired,
   filters: PropTypes.object.isRequired,
+  hoveredRouteId: PropTypes.number,
   forceRouteChoicesChartUpdate: PropTypes.func.isRequired,
   resetForceRouteChoicesChartUpdate: PropTypes.func.isRequired,
   filterNumCommuters: PropTypes.func.isRequired,
   filterDuration: PropTypes.func.isRequired,
   filterModesOfTransport: PropTypes.func.isRequired,
   requestZoneJourneys: PropTypes.func.isRequired,
-  setFilteredRouteIds: PropTypes.func.isRequired
+  setFilteredRouteIds: PropTypes.func.isRequired,
+  setHoveredRouteId: PropTypes.func.isRequired,
+  clearHoveredRouteId: PropTypes.func.isRequired
 }
 
 export default RouteChoices

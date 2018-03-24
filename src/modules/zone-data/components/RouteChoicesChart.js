@@ -41,7 +41,7 @@ class RouteChoicesChart extends Component {
     super(props)
     this.w = 0
     this.h = 0
-    this.links = []
+    this.previousHoveredRouteId = -1
   }
 
   componentDidMount () {
@@ -51,14 +51,31 @@ class RouteChoicesChart extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     if (nextProps.shouldUpdate) {
+      this.props = nextProps
       this.removeChart()
       this.drawChart(
-        nextProps.links, nextProps.nodes, nextProps.linksMetadata,
-        nextProps.setTooltipInfo, this.w, this.h
+        this.props.links, this.props.nodes, this.props.linksMetadata,
+        this.props.setTooltipInfo, this.w, this.h
       )
       this.props.resetForceRouteChoicesChartUpdate()
     }
+
+    this.highlightHoveredRoute(nextProps.hoveredRouteId)
+
     return false
+  }
+
+  highlightHoveredRoute (hoveredRouteId) {
+    if (hoveredRouteId !== -1 && hoveredRouteId !== this.previousHoveredRouteId) {
+      d3.select(`#link${hoveredRouteId} path`)
+        .style('stroke', '#326299')
+      this.previousHoveredRouteId = hoveredRouteId
+    } else if (this.previousHoveredRouteId !== -1) {
+      const targetLink = this.props.links.filter(e => e.id === this.previousHoveredRouteId)[0]
+      d3.select(`#link${this.previousHoveredRouteId} path`)
+        .style('stroke', `url(#S${targetLink.source.group}-T${targetLink.target.group})`)
+      this.previousHoveredRouteId = -1
+    }
   }
 
   removeChart () {
@@ -96,9 +113,10 @@ class RouteChoicesChart extends Component {
     const linkElements = svg.append('g')
       .attr('class', 'links')
       .selectAll('path')
-      .data(links)
+      .data(links, d => d.id)
       .enter()
       .append('g')
+      .attr('id', d => `link${d.id}`)
       .on('mouseover', function () {
         const data = d3.select(this).data()[0]
         const path = d3.select(this).select('path').node()
@@ -269,6 +287,7 @@ RouteChoicesChart.propTypes = {
   linksMetadata: PropTypes.object,
   setTooltipInfo: PropTypes.func,
   shouldUpdate: PropTypes.bool.isRequired,
+  hoveredRouteId: PropTypes.number,
   resetForceRouteChoicesChartUpdate: PropTypes.func.isRequired
 }
 

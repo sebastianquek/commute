@@ -3,6 +3,7 @@ import zoneManager from './modules/zone-manager'
 import zoneData from './modules/zone-data'
 import map from './modules/map'
 import datetimeManager from './modules/datetime-manager'
+import linkingCoordinator from './modules/linking-coordinator'
 
 export default combineReducers({
   zoneManager: zoneManager.reducer,
@@ -15,5 +16,6 @@ export default combineReducers({
   datetimeZoomDomain: datetimeManager.reducer.datetimeZoomDomain,
   ridershipDomain: datetimeManager.reducer.ridershipDomain,
   ridershipData: datetimeManager.reducer.ridershipData,
-  datetimeManagerInterfaceFlags: datetimeManager.reducer.datetimeManagerInterfaceFlags
+  datetimeManagerInterfaceFlags: datetimeManager.reducer.datetimeManagerInterfaceFlags,
+  hoveredRouteId: linkingCoordinator.reducer.hoveredRouteId
 })

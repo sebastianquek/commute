@@ -1,0 +1,2 @@
+export const SET_HOVERED_ROUTE_ID = 'linking/SET_HOVERED_ROUTE_ID'
+export const CLEAR_HOVERED_ROUTE_ID = 'linking/CLEAR_HOVERED_ROUTE_ID'

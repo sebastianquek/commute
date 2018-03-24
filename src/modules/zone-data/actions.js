@@ -21,12 +21,6 @@ export const setFilteredRouteIds = filteredRouteIds => ({
   filteredRouteIds
 })
 
-export const hoverRouteChoice = (zoneId, routeId) => ({
-  type: t.HOVER_ROUTE_CHOICE,
-  id: zoneId,
-  routeId
-})
-
 export const requestZoneCompositions = () => ({
   type: t.REQUEST_ZONE_COMPOSITIONS
 })

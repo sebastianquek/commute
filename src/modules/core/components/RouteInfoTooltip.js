@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   margin: 1.5em 0;
   min-width: 300px;
   color: ${({theme}) => theme.colors.textPrimary};
-  background: white;
+  background: rgba(255, 255, 255, 0.8);
   top: ${({y}) => y}px;
   left: ${({x}) => x}px;
   transform: translate(-148px, -6px);

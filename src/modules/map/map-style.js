@@ -63,6 +63,29 @@ export const journeysLayer = fromJS({
   }
 })
 
+export const journeysHoverLayer = fromJS({
+  id: 'journeysHover',
+  source: 'journeys',
+  type: 'line',
+  interactive: true,
+  layout: {
+    'line-join': 'round',
+    'line-cap': 'round'
+  },
+  paint: {
+    'line-color': '#326299',
+    'line-width': {
+      'base': 0.1,
+      'stops': [
+        [10, 2],
+        [16, 8]
+      ]
+    },
+    'line-opacity': 1
+  },
+  filter: ['in', 'id', '']
+})
+
 export const flowArrowsLayer = fromJS({
   'id': 'arrow-layer',
   'type': 'symbol',

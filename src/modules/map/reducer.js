@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux'
 import * as t from './actionTypes'
+import linkingCoordinator from '../linking-coordinator'
 import zoneManager from '../zone-manager'
 import { fromJS } from 'immutable'
 import {
   defaultMapStyle, zonesHoverLayer, zonesSelectionLayer, selectedGroupLayer,
-  journeysLayer, flowArrowsLayer
+  journeysLayer, journeysHoverLayer, flowArrowsLayer
 } from './map-style'
 
 // Add a selection layer (layer that outlines selectable zones) or
@@ -130,6 +131,46 @@ function mapStyle (state = defaultMapStyle, action) {
         return state.updateIn(['layers', idx, 'filter'], filter =>
           filter.filterNot(id => id === action.zoneId)
         )
+      }
+      return state
+
+    case linkingCoordinator.actionTypes.SET_HOVERED_ROUTE_ID:
+      let hoverLayerIdx = state.get('layers').findIndex(item =>
+        item.get('id') === journeysHoverLayer.get('id')
+      )
+      let journeysLayerIdx = state.get('layers').findIndex(item =>
+        item.get('id') === journeysLayer.get('id')
+      )
+
+      if (journeysLayerIdx !== -1) {
+        // Add/update journeys hover layer
+        if (hoverLayerIdx === -1) { // Journeys hover layer has not been added
+          const layer = journeysHoverLayer.update('filter', f => f.set(2, action.routeId))
+          newState = state.update('layers', layers => layers.insert(journeysLayerIdx + 1, layer))
+        } else {
+          newState = state.updateIn(['layers', hoverLayerIdx, 'filter'], f => f.set(2, action.routeId))
+        }
+        // Make flows thinner
+        newState = newState.setIn(['layers', journeysLayerIdx, 'paint', 'line-width', 'base'], 6)
+        return newState
+      }
+      return state
+
+    case linkingCoordinator.actionTypes.CLEAR_HOVERED_ROUTE_ID:
+      hoverLayerIdx = state.get('layers').findIndex(item =>
+        item.get('id') === journeysHoverLayer.get('id')
+      )
+      journeysLayerIdx = state.get('layers').findIndex(item =>
+        item.get('id') === journeysLayer.get('id')
+      )
+
+      if (journeysLayerIdx !== -1) {
+        // Go back to default flow thickness
+        newState = state.setIn(['layers', journeysLayerIdx, 'paint', 'line-width', 'base'], 1)
+        if (hoverLayerIdx !== -1) {
+          newState = newState.updateIn(['layers', hoverLayerIdx, 'filter'], f => f.delete(2))
+        }
+        return newState
       }
       return state
 

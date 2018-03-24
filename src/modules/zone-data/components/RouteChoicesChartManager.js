@@ -33,11 +33,6 @@ class RouteChoicesChartManager extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    this.zoneIdToGroupId = {}
-    this.nodes = {}
-    this.links = []
-    this.linksMetadata = {}
-
     const {
       duration: [minDuration, maxDuration],
       numCommuters: [minCommuters, maxCommuters]
@@ -48,6 +43,11 @@ class RouteChoicesChartManager extends Component {
     if (!nextProps.shouldUpdate) {
       this.nodes = []
       return
+    } else {
+      this.zoneIdToGroupId = {}
+      this.nodes = {}
+      this.links = []
+      this.linksMetadata = {}
     }
 
     // Populate mapping of zone id to group id
@@ -147,10 +147,12 @@ class RouteChoicesChartManager extends Component {
   setTooltipInfo (link, x, y) {
     if (!link) {
       this.setState({isTooltipHidden: true})
+      this.props.clearHoveredRouteId()
     } else {
       this.setState({
         link, x, y, isTooltipHidden: false
       })
+      this.props.setHoveredRouteId(link.id)
     }
   }
 
@@ -166,6 +168,7 @@ class RouteChoicesChartManager extends Component {
           setTooltipInfo={this.setTooltipInfo}
           shouldUpdate={this.props.shouldUpdate}
           resetForceRouteChoicesChartUpdate={this.props.resetForceRouteChoicesChartUpdate}
+          hoveredRouteId={this.props.hoveredRouteId}
         />
         {
           this.state.link &&
@@ -189,8 +192,11 @@ RouteChoicesChartManager.propTypes = {
   shouldUpdate: PropTypes.bool.isRequired,
   isFetchingZoneJourneyData: PropTypes.bool.isRequired,
   filters: PropTypes.object.isRequired,
+  hoveredRouteId: PropTypes.number,
   resetForceRouteChoicesChartUpdate: PropTypes.func.isRequired,
-  setFilteredRouteIds: PropTypes.func.isRequired
+  setFilteredRouteIds: PropTypes.func.isRequired,
+  setHoveredRouteId: PropTypes.func.isRequired,
+  clearHoveredRouteId: PropTypes.func.isRequired
 }
 
 export default RouteChoicesChartManager
