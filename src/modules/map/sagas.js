@@ -4,7 +4,7 @@ import zoneData from '../zone-data'
 import { MAP_HAS_LOADED, CLICK_FEATURES, HOVER_OVER_FEATURE } from './actionTypes'
 import {
   addZoneCompositions, addJourneys, removeJourneys, colorSelectedGroups,
-  hoverOverZone
+  hoverOverZone, setFilteredRouteIds
 } from './actions'
 import zoneManager from '../zone-manager'
 import c from '../../utils/randomColor'
@@ -22,22 +22,31 @@ export function * updateMapOnLoad () {
 
 export function * updateJourneys () {
   // Handle first load
-  const [{ journeys }] = yield all([
+  const [{ journeys }, { filteredRouteIds }] = yield all([
     take(zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS),
+    take(zoneData.actionTypes.SET_FILTERED_ROUTE_IDS),
     take(MAP_HAS_LOADED)
   ])
   yield put(addJourneys(journeys))
+  yield put(setFilteredRouteIds(filteredRouteIds))
 
   // Handle subsequent zone journey changes
   while (true) {
     const action = yield take([
       zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS,
+      zoneData.actionTypes.SET_FILTERED_ROUTE_IDS,
       zoneData.actionTypes.REMOVE_ZONE_JOURNEYS
     ])
-    if (action.type === zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS) {
-      yield put(addJourneys(action.journeys))
-    } else {
-      yield put(removeJourneys())
+    switch (action.type) {
+      case zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS:
+        yield put(addJourneys(action.journeys))
+        break
+      case zoneData.actionTypes.SET_FILTERED_ROUTE_IDS:
+        yield put(setFilteredRouteIds(action.filteredRouteIds))
+        break
+      case zoneData.actionTypes.REMOVE_ZONE_JOURNEYS:
+        yield put(removeJourneys())
+        break
     }
   }
 }

@@ -229,7 +229,8 @@ RouteChoices.propTypes = {
   filterNumCommuters: PropTypes.func.isRequired,
   filterDuration: PropTypes.func.isRequired,
   filterModesOfTransport: PropTypes.func.isRequired,
-  requestZoneJourneys: PropTypes.func.isRequired
+  requestZoneJourneys: PropTypes.func.isRequired,
+  setFilteredRouteIds: PropTypes.func.isRequired
 }
 
 export default RouteChoices

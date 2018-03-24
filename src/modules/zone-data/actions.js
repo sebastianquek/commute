@@ -16,6 +16,11 @@ export const filterModesOfTransport = (mrt, bus) => ({
   bus
 })
 
+export const setFilteredRouteIds = filteredRouteIds => ({
+  type: t.SET_FILTERED_ROUTE_IDS,
+  filteredRouteIds
+})
+
 export const hoverRouteChoice = (zoneId, routeId) => ({
   type: t.HOVER_ROUTE_CHOICE,
   id: zoneId,

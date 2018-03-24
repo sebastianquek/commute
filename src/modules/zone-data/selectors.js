@@ -5,6 +5,10 @@ import map from '../map'
 const zoneCompositionDataSelector = state => state.zoneCompositionData
 const zoneJourneyDataSelector = state => state.zoneJourneyData
 export const routeChoicesFiltersSelector = state => state.routeChoicesFilters
+export const filteredRouteIds = createSelector(
+  routeChoicesFiltersSelector,
+  filters => filters.filteredRouteIds
+)
 
 export const hoveredZoneCompositionDataSelector = createSelector(
   [map.selectors.hoveredZoneSelector, zoneCompositionDataSelector],

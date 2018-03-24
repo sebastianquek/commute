@@ -47,6 +47,15 @@ function mapStyle (state = defaultMapStyle, action) {
       }
       return newState
 
+    case t.SET_FILTERED_ROUTE_IDS:
+      idx = state.get('layers').findIndex(item => item.get('id') === journeysLayer.get('id'))
+      let arrowLayerIdx = state.get('layers').findIndex(item => item.get('id') === flowArrowsLayer.get('id'))
+      if (idx !== -1) {
+        return state.setIn(['layers', idx, 'filter'], ['in', 'id', ...action.filteredRouteIds])
+          .setIn(['layers', arrowLayerIdx, 'filter'], ['in', 'id', ...action.filteredRouteIds])
+      }
+      return state
+
     case t.REMOVE_JOURNEYS:
       if (state.getIn(['sources', 'journeys', 'data', 'features']).size === 0) {
         return state

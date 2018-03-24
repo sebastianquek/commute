@@ -3,8 +3,7 @@ import { delay } from 'redux-saga'
 import { select, call, put, takeLatest } from 'redux-saga/effects'
 import * as topojson from 'topojson-client'
 import {
-  REQUEST_ZONE_JOURNEYS,
-  FILTER_NUM_COMMUTERS, FILTER_DURATION, FILTER_MODES_OF_TRANSPORT
+  REQUEST_ZONE_JOURNEYS
 } from './actionTypes'
 import {
   requestZoneJourneys, receiveZoneJourneys, requestZoneJourneysError, removeAllZoneJourneys,
@@ -15,7 +14,7 @@ import { routeChoicesFiltersSelector } from './selectors'
 import zoneManager from '../zone-manager'
 import datetimeManager from '../datetime-manager'
 
-export function * getDataAndFetchZoneJourneys () {
+function * getDataAndFetchZoneJourneys () {
   // Sagas run after reducers, so in this case, the new brush domain will
   // already be updated in the state.
   // https://redux-saga.js.org/docs/api/index.html#selectselector-args

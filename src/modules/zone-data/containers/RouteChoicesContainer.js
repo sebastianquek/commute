@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import {
   forceRouteChoicesChartUpdate, resetForceRouteChoicesChartUpdate,
-  filterNumCommuters, filterDuration,
-  filterModesOfTransport, requestZoneJourneys
+  filterNumCommuters, filterDuration, filterModesOfTransport,
+  requestZoneJourneys, setFilteredRouteIds
 } from '../actions'
 import {
   groupsJourneyDataSelector, zoneNamesSelector,
@@ -47,7 +47,8 @@ const mapDispatchToProps = {
   filterNumCommuters,
   filterDuration,
   filterModesOfTransport,
-  requestZoneJourneys
+  requestZoneJourneys,
+  setFilteredRouteIds
 }
 
 export default connect(

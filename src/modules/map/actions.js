@@ -14,6 +14,11 @@ export const addJourneys = geojson => ({
   journeys: geojson
 })
 
+export const setFilteredRouteIds = filteredRouteIds => ({
+  type: t.SET_FILTERED_ROUTE_IDS,
+  filteredRouteIds
+})
+
 export const removeJourneys = () => ({
   type: t.REMOVE_JOURNEYS
 })

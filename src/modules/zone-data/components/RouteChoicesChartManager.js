@@ -136,6 +136,8 @@ class RouteChoicesChartManager extends Component {
       link.target = this.nodes[link.target]
     })
 
+    this.props.setFilteredRouteIds(this.links.map(e => e.id))
+
     // Convert nodes object to array
     this.nodes = Object.values(this.nodes)
   }
@@ -184,7 +186,8 @@ RouteChoicesChartManager.propTypes = {
   shouldUpdate: PropTypes.bool.isRequired,
   isFetchingZoneJourneyData: PropTypes.bool.isRequired,
   filters: PropTypes.object.isRequired,
-  resetForceRouteChoicesChartUpdate: PropTypes.func.isRequired
+  resetForceRouteChoicesChartUpdate: PropTypes.func.isRequired,
+  setFilteredRouteIds: PropTypes.func.isRequired
 }
 
 export default RouteChoicesChartManager

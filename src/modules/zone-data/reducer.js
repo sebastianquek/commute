@@ -6,7 +6,8 @@ export const routeChoicesFilters = (state = {
   numCommuters: [1, 100],
   duration: [25 * 60, 60 * 60], // 1hr
   includeMrt: true,
-  includeBus: true
+  includeBus: true,
+  filteredRouteIds: []
 }, action) => {
   switch (action.type) {
     case t.FILTER_NUM_COMMUTERS:
@@ -59,6 +60,13 @@ export const routeChoicesFilters = (state = {
         dataNumCommutersBounds,
         dataDurationBounds
       }
+
+    case t.SET_FILTERED_ROUTE_IDS:
+      return {
+        ...state,
+        filteredRouteIds: action.filteredRouteIds
+      }
+
     default:
       return state
   }
