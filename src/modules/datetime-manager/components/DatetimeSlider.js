@@ -576,6 +576,7 @@ class DatetimeSlider extends React.Component {
     const departureSeries = stack(this.departureData)
 
     function handleHover () {
+      if (maxRidership === 0) return // no data to hover over
       const mouseX = d3.mouse(this)[0]
       const mouseDate = xScale.invert(mouseX)
       const bisectDate = d3.bisector(d => d.data.date).left
