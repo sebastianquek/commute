@@ -4,7 +4,7 @@ import throttle from 'lodash.throttle'
 import MapGL from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import styled from 'styled-components'
-import Tooltip from './Tooltip'
+import TooltipContainer from '../containers/TooltipContainer'
 import arrowImage from '../arrow.png'
 
 const Wrapper = styled.div`
@@ -108,7 +108,7 @@ export class Map extends Component {
           clickRadius={5}
         >
           {this.state.hoveredFeature &&
-            <Tooltip x={this.state.x} y={this.state.y} feature={this.state.hoveredFeature}/>
+            <TooltipContainer x={this.state.x} y={this.state.y} feature={this.state.hoveredFeature}/>
           }
         </MapGL>
       </Wrapper>

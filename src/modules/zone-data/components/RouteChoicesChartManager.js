@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import RouteChoicesChart from './RouteChoicesChart'
-import JourneyInfoTooltip from './JourneyInfoTooltip'
+import RouteInfoTooltip from '../../core/components/RouteInfoTooltip'
 import Spinner from '../../core/components/Spinner'
 
 const Wrapper = styled.div`
@@ -167,7 +167,7 @@ class RouteChoicesChartManager extends Component {
         />
         {
           this.state.link &&
-          <JourneyInfoTooltip
+          <RouteInfoTooltip
             link={this.state.link}
             x={this.state.x}
             y={this.state.y}

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import * as d3 from 'd3'
-import ZoneButton from '../../core/components/ZoneButton'
+import ZoneButton from './ZoneButton'
 
 const Wrapper = styled.div`
   display: flex;
@@ -93,7 +93,7 @@ const DurationBar = styled.div`
   }
 `
 
-const JourneyInfoTooltip = ({ link, durationBarsWidth, x, y, hidden }) => {
+const RouteInfoTooltip = ({ link, durationBarsWidth, x, y, hidden }) => {
   const scale = d3.scaleLinear()
     .domain([0, d3.max(link.trips, d => d.duration)])
     .range([0, durationBarsWidth])
@@ -113,11 +113,11 @@ const JourneyInfoTooltip = ({ link, durationBarsWidth, x, y, hidden }) => {
   return (
     <Wrapper x={x} y={y} hidden={hidden} className='tooltip'>
       <ZoneInfo>
-        <ZoneIcon><ZoneButton hover={false} color={link.sourceColor}>{link.originZone}</ZoneButton></ZoneIcon>
+        <ZoneIcon><ZoneButton animate={false} hover={false} color={link.sourceColor}>{link.originZone}</ZoneButton></ZoneIcon>
         <ZoneName>{link.originZoneName}</ZoneName>
         <Arrow>↓</Arrow>
         <div><strong>{link.count}</strong> commuter{link.count > 1 ? 's' : ''} took <strong>{Math.round(link.totalDuration / 60)}</strong> mins on the average</div>
-        <ZoneIcon><ZoneButton hover={false} color={link.targetColor}>{link.destinationZone}</ZoneButton></ZoneIcon>
+        <ZoneIcon><ZoneButton animate={false} hover={false} color={link.targetColor}>{link.destinationZone}</ZoneButton></ZoneIcon>
         <ZoneName>{link.destinationZoneName}</ZoneName>
       </ZoneInfo>
       <div>
@@ -129,7 +129,7 @@ const JourneyInfoTooltip = ({ link, durationBarsWidth, x, y, hidden }) => {
   )
 }
 
-JourneyInfoTooltip.propTypes = {
+RouteInfoTooltip.propTypes = {
   link: PropTypes.object,
   durationBarsWidth: PropTypes.number,
   x: PropTypes.number,
@@ -137,8 +137,8 @@ JourneyInfoTooltip.propTypes = {
   hidden: PropTypes.bool
 }
 
-JourneyInfoTooltip.defaultProps = {
+RouteInfoTooltip.defaultProps = {
   durationBarsWidth: 200
 }
 
-export default JourneyInfoTooltip
+export default RouteInfoTooltip

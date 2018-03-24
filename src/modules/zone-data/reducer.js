@@ -34,8 +34,7 @@ export const routeChoicesFilters = (state = {
       }
 
       for (let route of action.journeys.features) {
-        const { count, durations } = route.properties
-        const totalDuration = durations.reduce((s, d) => s + d, 0)
+        const { count, totalDuration } = route.properties
         if (dataNumCommutersBounds.length === 0) {
           dataNumCommutersBounds = [count, count]
           dataDurationBounds = [totalDuration, totalDuration]
@@ -89,11 +88,8 @@ export const zoneJourneyData = (state = {}, action) => {
     case t.RECEIVE_ZONE_JOURNEYS:
       const newData = action.journeys.features.reduce((allData, route) => {
         let {
-          origin_zone: originZone,
-          destination_zone: destinationZone,
-          transport_services: services,
-          stop_ids: stopIds,
-          durations,
+          originZone,
+          destinationZone,
           ...rest
         } = route.properties
 
@@ -104,36 +100,11 @@ export const zoneJourneyData = (state = {}, action) => {
           allData[destinationZone] = []
         }
 
-        // Create an array of trips for the current route
-        const trips = []
-        for (let i = 0; i < services.length; i++) {
-          let service = services[i]
-          const match = service.slice(0, 1).match(/[a-zA-Z]/)
-          if (!match) { // Bus trip
-            service = `${service.slice(0, -1)} (${service.slice(-1)})`
-          } else { // MRT trip
-            service = service.split('>')
-              .map(s => s.toLowerCase()
-                .split(' ')
-                .map(c => `${c.substring(0, 1).toUpperCase()}${c.substring(1)}`)
-                .join(' ')
-              )
-              .join('→')
-          }
-
-          trips.push({
-            service,
-            originId: stopIds[i][0],
-            destinationId: stopIds[i][1],
-            duration: durations[i]
-          })
-        }
-
         // Ensure that journeys are not repeated
         if (action.originZoneIds.includes(originZone)) {
-          allData[originZone].push({...rest, destinationZone, trips})
+          allData[originZone].push({...rest, destinationZone})
         } else if (action.destinationZoneIds.includes(destinationZone)) {
-          allData[destinationZone].push({...rest, originZone, trips})
+          allData[destinationZone].push({...rest, originZone})
         }
 
         return allData

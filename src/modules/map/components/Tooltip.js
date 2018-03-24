@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import moment from 'moment'
+import RouteInfoTooltip from '../../core/components/RouteInfoTooltip'
 
 const Wrapper = styled.div.attrs({
   style: ({x, y}) => ({
@@ -9,14 +10,14 @@ const Wrapper = styled.div.attrs({
     left: `${x + 10}px`
   })
 })`
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: ${({theme}) => theme.borderRadius};
-  color: white;
-  font-family: 'Barlow', sans-serif;
-  font-size: ${({theme}) => theme.typography.tooltipSize};
-  letter-spacing: 1px;
-  max-width: 220px;
-  padding: 0.6em 0.8em;
+  // background: rgba(0, 0, 0, 0.8);
+  // border-radius: ${({theme}) => theme.borderRadius};
+  // color: white;
+  // font-family: 'Barlow', sans-serif;
+  // font-size: ${({theme}) => theme.typography.tooltipSize};
+  // letter-spacing: 1px;
+  // max-width: 220px;
+  // padding: 0.6em 0.8em;
   position: absolute;
 `
 
@@ -38,38 +39,19 @@ const Tooltip = (props) => {
       break
 
     case 'journeys':
-      const services = JSON.parse(properties.transport_services)
-        .map(service => {
-          const match = service.slice(0, 1).match(/[a-zA-Z]/)
-          if (!match) { // Bus trip
-            service = `${service.slice(0, -1)} (${service.slice(-1)})`
-          } else { // MRT trip
-            service = service.split('>')
-              .map(s => s.toLowerCase()
-                .split(' ')
-                .map(c => `${c.substring(0, 1).toUpperCase()}${c.substring(1)}`)
-                .join(' ')
-              )
-              .join('→')
-          }
-          return service
-        })
-        .join(', ')
-      const stops = JSON.parse(properties.stop_ids).join(', ')
-      const durations = JSON.parse(properties.durations)
-        .map(d => {
-          return moment.duration(d, 'seconds').humanize()
-        })
-        .join(', ')
-      const count = JSON.parse(properties.count)
-
+      try {
+        properties.trips = JSON.parse(properties.trips)
+      } catch (e) {
+        // No parsing was needed
+      }
+      properties.originZoneName = props.zoneIdToName[properties.originZone]
+      properties.destinationZoneName = props.zoneIdToName[properties.destinationZone]
+      properties.sourceColor = props.zoneIdToGroupColor(properties.originZone)
+      properties.targetColor = props.zoneIdToGroupColor(properties.destinationZone)
       desc = (
-        <div>
-          Services: {services}<br/>
-          Stops: {stops}<br/>
-          Durations: {durations}<br/>
-          Number of commuters: {count}<br/>
-        </div>
+        <RouteInfoTooltip
+          link={properties}
+        />
       )
       break
 
@@ -77,12 +59,15 @@ const Tooltip = (props) => {
       break
   }
   if (desc) return <Wrapper {...props}>{desc}</Wrapper>
+  return null
 }
 
 Tooltip.propTypes = {
   feature: PropTypes.object,
   x: PropTypes.number,
-  y: PropTypes.number
+  y: PropTypes.number,
+  zoneIdToGroupColor: PropTypes.func,
+  zoneIdToName: PropTypes.object
 }
 
 export default Tooltip

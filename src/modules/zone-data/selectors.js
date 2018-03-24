@@ -3,7 +3,7 @@ import zoneManager from '../zone-manager'
 import map from '../map'
 
 const zoneCompositionDataSelector = state => state.zoneCompositionData
-const zoneJourneyDataSelector = state => state.zoneJourneyData
+export const zoneJourneyDataSelector = state => state.zoneJourneyData
 export const routeChoicesFiltersSelector = state => state.routeChoicesFilters
 export const filteredRouteIds = createSelector(
   routeChoicesFiltersSelector,
