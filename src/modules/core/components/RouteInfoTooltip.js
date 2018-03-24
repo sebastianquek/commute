@@ -111,7 +111,7 @@ const RouteInfoTooltip = ({ link, durationBarsWidth, x, y, hidden, maxDuration }
   link.trips.map(t => ({...t, durationBarWidth: scale(t.duration)}))
     .forEach(t => {
       const match = t.service.slice(0, 1).match(/[a-zA-Z]/)
-      const color = match ? '#6B97E7' : '#62D090'
+      const color = match ? '#F98C73' : '#62D090'
       const service = t.service.split('→').map((s, i) => <div key={s}>{i > 0 ? '⤷ ' : ''}{s}</div>)
       serviceLabels.push(<ServiceLabel minWidth={t.durationBarWidth} key={t.service}>{service}</ServiceLabel>)
       durationBars.push(<DurationBar width={t.durationBarWidth} color={color} key={t.service}/>)
