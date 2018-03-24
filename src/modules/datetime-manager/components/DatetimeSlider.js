@@ -136,6 +136,7 @@ class DatetimeSlider extends React.Component {
     if (
       nextProps.shouldUpdate ||
       !isEqual(nextProps.zoneIds, this.props.zoneIds) ||
+      nextProps.chartFormat !== this.props.chartFormat ||
       d3.select(this.ref).select('svg').empty()
     ) {
       this.props = nextProps
@@ -189,7 +190,16 @@ class DatetimeSlider extends React.Component {
     const h = this.h / 2
     const padding = { top: 14, right: 160, bottom: 14, left: 60 }
 
-    const maxRidership = Math.max(this.getMaxStackSum(this.arrivalData), this.getMaxStackSum(this.departureData))
+    let maxRidership
+    switch (this.props.chartFormat) {
+      case 'stack':
+        maxRidership = Math.max(this.getMaxStackSum(this.arrivalData), this.getMaxStackSum(this.departureData))
+        break
+      case 'line':
+      default:
+        maxRidership = Math.max(this.getMaxValue(this.arrivalData), this.getMaxValue(this.departureData))
+        break
+    }
 
     // Create scale functions
     const xScale = d3.scaleTime()
@@ -244,15 +254,22 @@ class DatetimeSlider extends React.Component {
       )
       .on('zoom', zooming)
 
+    // Define line generators
+    const line = d3.line()
+      .x(d => xScale(d.data.date))
+      .y(d => yScale(d[1] - d[0]))
+
+    const lineInverted = d3.line()
+      .x(d => xScale(d.data.date))
+      .y(d => yScaleInverted(d[1] - d[0]))
+
     // Define area generators
     const area = d3.area()
-      .curve(d3.curveMonotoneX)
       .x(d => xScale(d.data.date))
       .y0(d => yScale(d[0]))
       .y1(d => yScale(d[1]))
 
     const areaInverted = d3.area()
-      .curve(d3.curveMonotoneX)
       .x(d => xScale(d.data.date))
       .y0(d => yScaleInverted(d[0]))
       .y1(d => yScaleInverted(d[1]))
@@ -672,22 +689,55 @@ class DatetimeSlider extends React.Component {
         .text(d => d.numArrivals)
     }
 
-    // Create chart areas
-    arrivalChartG.selectAll('path')
-      .data(arrivalSeries)
-      .enter()
-      .append('path')
-      .attr('class', 'area')
-      .attr('d', areaInverted)
-      .attr('fill', (d, i) => this.props.groupColors[d.key])
+    switch (this.props.chartFormat) {
+      case 'stack': // Create chart areas
+        arrivalChartG.selectAll('path')
+          .data(arrivalSeries)
+          .enter()
+          .append('path')
+          .attr('class', 'area')
+          .attr('d', areaInverted)
+          .attr('fill', (d, i) => this.props.groupColors[d.key])
+          .attr('stroke-width', 2)
+          .attr('vector-effect', 'non-scaling-stroke')
 
-    departureChartG.selectAll('path')
-      .data(departureSeries)
-      .enter()
-      .append('path')
-      .attr('class', 'area')
-      .attr('d', area)
-      .attr('fill', (d, i) => this.props.groupColors[d.key])
+        departureChartG.selectAll('path')
+          .data(departureSeries)
+          .enter()
+          .append('path')
+          .attr('class', 'area')
+          .attr('d', area)
+          .attr('fill', (d, i) => this.props.groupColors[d.key])
+          .attr('stroke-width', 2)
+          .attr('vector-effect', 'non-scaling-stroke')
+
+        break
+
+      case 'line': // Create chart lines
+      default:
+        arrivalChartG.selectAll('path')
+          .data(arrivalSeries)
+          .enter()
+          .append('path')
+          .attr('class', 'area')
+          .attr('d', lineInverted)
+          .attr('stroke', (d, i) => this.props.groupColors[d.key])
+          .attr('stroke-width', 3)
+          .attr('vector-effect', 'non-scaling-stroke')
+          .attr('fill', 'none')
+
+        departureChartG.selectAll('path')
+          .data(departureSeries)
+          .enter()
+          .append('path')
+          .attr('class', 'area')
+          .attr('d', line)
+          .attr('stroke', (d, i) => this.props.groupColors[d.key])
+          .attr('stroke-width', 3)
+          .attr('vector-effect', 'non-scaling-stroke')
+          .attr('fill', 'none')
+        break
+    }
 
     // Create invisible chart hover detector
     arrivalChartG.append('rect')
@@ -822,6 +872,14 @@ class DatetimeSlider extends React.Component {
     }, 0)
   }
 
+  getMaxValue (data) {
+    return data.reduce((maxVal, step) => {
+      const { date, ...rest } = step
+      const max = d3.max(Object.values(rest), x => x.sum)
+      return max > maxVal ? max : maxVal
+    }, 0)
+  }
+
   formatAxisTime (time) {
     const t = moment(time)
     return (t.hour() === 0 && t.minute() === 0) ? null : t.format('h.mm a')
@@ -858,9 +916,14 @@ DatetimeSlider.propTypes = {
   zoneIds: PropTypes.array.isRequired,
   groupColors: PropTypes.object.isRequired,
   isFetchingRidershipData: PropTypes.bool.isRequired,
+  chartFormat: PropTypes.string.isRequired,
   setDatetimeBrushDomain: PropTypes.func.isRequired,
   setDatetimeZoomDomain: PropTypes.func.isRequired,
   resetForceDatetimeSliderUpdate: PropTypes.func.isRequired
+}
+
+DatetimeSlider.defaultProps = {
+  chartFormat: 'line'
 }
 
 export default DatetimeSlider
