@@ -6,7 +6,6 @@ import styled from 'styled-components'
 const PlusSign = styled.span`
   align-items: center;
   display: flex;
-  display: inline-block;
   justify-content: center;
   margin: 0.2rem;
   
