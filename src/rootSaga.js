@@ -10,7 +10,9 @@ export default function * rootSaga () {
     zoneData.sagas.getZoneCompositions(),
     datetimeManager.sagas.watchAndUpdateRidership(),
     datetimeManager.sagas.getInitialRidership(),
+    datetimeManager.sagas.watchAndUpdateDatetimeZoom(),
     map.sagas.updateMapOnLoad(),
+    map.sagas.updateJourneys(),
     map.sagas.watchForMouseEvents(),
     zoneManager.sagas.watchForZoneSelectionChanges(),
     zoneManager.sagas.watchForDeletionOfGroups()

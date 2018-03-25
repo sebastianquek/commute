@@ -33,14 +33,12 @@ MapContainer.propTypes = {
   ...SelectionModeFeedback.propTypes
 }
 
-const mapStateToProps = state => {
-  return {
-    mapStyle: mapStyleSelector(state),
-    zoneSelectionMode: zoneManager.selectors.zoneSelectionModeSelector(state),
-    editingGroup: zoneManager.selectors.editingGroupSelector(state),
-    editingGroupCounter: zoneManager.selectors.editingGroupCounterSelector(state)
-  }
-}
+const mapStateToProps = state => ({
+  mapStyle: mapStyleSelector(state),
+  zoneSelectionMode: zoneManager.selectors.zoneSelectionModeSelector(state),
+  editingGroup: zoneManager.selectors.editingGroupSelector(state),
+  editingGroupCounter: zoneManager.selectors.editingGroupCounterSelector(state)
+})
 
 const mapDispatchToProps = {
   mapHasLoaded,

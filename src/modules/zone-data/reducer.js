@@ -1,24 +1,71 @@
 import * as t from './actionTypes'
 
-export const zoneJourneyDataFilters = (state = {}, action) => {
+export const routeChoicesFilters = (state = {
+  dataNumCommutersBounds: [1, 100], // Extent based on current route choices data
+  dataDurationBounds: [25 * 60, 60 * 60], // Data is updated when selected filter is outside these bounds
+  numCommuters: [1, 100],
+  duration: [25 * 60, 60 * 60], // 1hr
+  includeMrt: true,
+  includeBus: true,
+  filteredRouteIds: []
+}, action) => {
   switch (action.type) {
     case t.FILTER_NUM_COMMUTERS:
-      let newZoneDataFilter
-      if (state.hasOwnProperty(action.id)) {
-        newZoneDataFilter = {
-          ...state[action.id],
-          numCommuters: {min: action.min, max: action.max}
+      return {
+        ...state,
+        numCommuters: action.domain
+      }
+    case t.FILTER_DURATION:
+      return {
+        ...state,
+        duration: action.domain
+      }
+    case t.FILTER_MODES_OF_TRANSPORT:
+      return {
+        ...state,
+        includeMrt: action.mrt,
+        includeBus: action.bus
+      }
+    case t.RECEIVE_ZONE_JOURNEYS:
+      let dataNumCommutersBounds = []
+      let dataDurationBounds = []
+      if (action.journeys.features.length === 0) {
+        return state
+      }
+
+      for (let route of action.journeys.features) {
+        const { count, totalDuration } = route.properties
+        if (dataNumCommutersBounds.length === 0) {
+          dataNumCommutersBounds = [count, count]
+          dataDurationBounds = [totalDuration, totalDuration]
+          continue
         }
-      } else {
-        newZoneDataFilter = {
-          numCommuters: {min: action.min, max: action.max}
-        }
+        if (count < dataNumCommutersBounds[0]) dataNumCommutersBounds[0] = count
+        if (count > dataNumCommutersBounds[1]) dataNumCommutersBounds[1] = count
+        if (totalDuration < dataDurationBounds[0]) dataDurationBounds[0] = totalDuration
+        if (totalDuration > dataDurationBounds[1]) dataDurationBounds[1] = totalDuration
       }
 
       return {
         ...state,
-        [action.id]: newZoneDataFilter
+        numCommuters: [
+          Math.max(state.numCommuters[0], dataNumCommutersBounds[0]),
+          Math.min(state.numCommuters[1], dataNumCommutersBounds[1])
+        ],
+        duration: [
+          Math.max(state.duration[0], dataDurationBounds[0]),
+          Math.min(state.duration[1], dataDurationBounds[1])
+        ],
+        dataNumCommutersBounds,
+        dataDurationBounds
       }
+
+    case t.SET_FILTERED_ROUTE_IDS:
+      return {
+        ...state,
+        filteredRouteIds: action.filteredRouteIds
+      }
+
     default:
       return state
   }
@@ -40,20 +87,65 @@ export const zoneJourneyData = (state = {}, action) => {
   switch (action.type) {
     case t.RECEIVE_ZONE_JOURNEYS:
       const newData = action.journeys.features.reduce((allData, route) => {
-        const { journey_entry_zone, journey_exit_zone, ...properties } = route.properties // eslint-disable-line
-        if (!allData.hasOwnProperty(journey_entry_zone)) {
-          allData[journey_entry_zone] = []
+        let {
+          originZone,
+          destinationZone,
+          ...rest
+        } = route.properties
+
+        if (!allData.hasOwnProperty(originZone)) {
+          allData[originZone] = []
         }
-        if (!allData.hasOwnProperty(journey_exit_zone)) {
-          allData[journey_exit_zone] = []
+        if (!allData.hasOwnProperty(destinationZone)) {
+          allData[destinationZone] = []
         }
-        allData[journey_entry_zone].push({...properties, journey_exit_zone})
-        allData[journey_exit_zone].push({...properties, journey_entry_zone})
+
+        // Ensure that journeys are not repeated
+        if (action.originZoneIds.includes(originZone)) {
+          allData[originZone].push({...rest, destinationZone})
+        } else if (action.destinationZoneIds.includes(destinationZone)) {
+          allData[destinationZone].push({...rest, originZone})
+        }
+
         return allData
       }, {})
       return {
-        // ...state,
         ...newData
+      }
+
+    case t.REMOVE_ZONE_JOURNEYS:
+      return {}
+
+    default:
+      return state
+  }
+}
+
+export const zoneDataInterfaceFlags = (state = {
+  shouldRouteChoicesChartUpdate: false,
+  isFetchingZoneJourneyData: true
+}, action) => {
+  switch (action.type) {
+    case t.FORCE_ROUTE_CHOICES_CHART_UPDATE:
+      return {
+        ...state,
+        shouldRouteChoicesChartUpdate: true
+      }
+    case t.RESET_FORCE_ROUTE_CHOICES_CHART_UPDATE:
+      return {
+        ...state,
+        shouldRouteChoicesChartUpdate: false
+      }
+    case t.FETCHING_ZONE_JOURNEYS:
+      return {
+        ...state,
+        isFetchingZoneJourneyData: true
+      }
+    case t.RECEIVE_ZONE_JOURNEYS:
+    case t.REMOVE_ZONE_JOURNEYS: // Ensure loading indicator hides on removal
+      return {
+        ...state,
+        isFetchingZoneJourneyData: false
       }
     default:
       return state

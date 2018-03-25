@@ -40,9 +40,9 @@ const Wrapper = styled.div`
   }
 
   .DayPicker-Weekday, .DayPicker-Day {
-    padding: 0.3em 0.46em;
-    font-size: 0.84em;
     font-family: 'Barlow', sans-serif;
+    font-size: 0.84em;
+    padding: 0.3em 0.46em;
   }
 
   .DayPicker-Weekday {
@@ -71,7 +71,10 @@ class DatetimePicker extends React.Component {
   }
 
   handleDateChange (date, { disabled, selected }) {
-    if (!disabled) this.props.setStartDatetime(date)
+    if (!disabled) {
+      this.props.setStartDatetime(date)
+      this.props.forceDatetimeSliderUpdate()
+    }
   }
 
   render () {
@@ -120,7 +123,8 @@ DatetimePicker.propTypes = {
   zoomedDateDomain: PropTypes.array.isRequired,
   minDate: PropTypes.object.isRequired,
   maxDate: PropTypes.object.isRequired,
-  setStartDatetime: PropTypes.func.isRequired
+  setStartDatetime: PropTypes.func.isRequired,
+  forceDatetimeSliderUpdate: PropTypes.func
 }
 
 export default DatetimePicker

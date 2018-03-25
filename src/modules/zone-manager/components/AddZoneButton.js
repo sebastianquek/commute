@@ -4,11 +4,11 @@ import ZoneButton from '../../core/components/ZoneButton'
 import styled from 'styled-components'
 
 const PlusSign = styled.span`
-  display: inline-block;
-  margin: 0.2rem;
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: center;
+  margin: 0.2rem;
+  
   path {
     fill: ${({theme}) => theme.colors.textPrimary};
   }

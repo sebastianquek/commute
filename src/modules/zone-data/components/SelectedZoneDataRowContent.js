@@ -8,15 +8,13 @@ const Section = styled.div`
 `
 
 const SelectedZoneDataRowContent = (props) => {
+  // const routes = props.zoneJourneys.reduce((routes, z) => {
+  //   return [...routes, ...(z.zoneData || [])]
+  // }, [])
   return (
     <div>
       <Subheader>Composition</Subheader>
       <Section>
-        {JSON.stringify(props.zoneComposition)}
-      </Section>
-      <Subheader>Routes</Subheader>
-      <Section>
-        {JSON.stringify(props.zoneJourneys)}
       </Section>
     </div>
   )

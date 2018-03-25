@@ -3,7 +3,7 @@ export default {
     textPrimary: '#4F4F4F',
     textSecondary: '#8C8C8C',
     textSecondaryAlt: 'white',
-    textWarning: '#f9857c',
+    textWarning: '#F9857C',
     borderPrimary: '#4F4F4F',
     borderSecondary: '#B2B2B2',
     iconPrimary: '#4F4F4F',
@@ -18,6 +18,7 @@ export default {
     headerLetterSpacing: '0.175em',
     headerSize: '1em',
     subHeaderSize: '0.7em',
+    tooltipSize: '0.88em',
     bodySize: '0.88em',
     chartAxisLabelRemRatio: 0.9,
     chartAxisTicksRemRatio: 0.84,
@@ -25,8 +26,8 @@ export default {
 
   },
   dimensions: {
-    bottomBarHeight: '24rem',
-    rightBarWidth: '34rem'
+    bottomBarHeight: '28rem',
+    rightBarWidth: '46rem'
   },
   borderRadius: '0.3em'
 }

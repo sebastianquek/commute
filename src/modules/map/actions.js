@@ -9,6 +9,20 @@ export const addZoneCompositions = (geojson) => ({
   zones: geojson
 })
 
+export const addJourneys = geojson => ({
+  type: t.ADD_JOURNEYS,
+  journeys: geojson
+})
+
+export const setFilteredRouteIds = filteredRouteIds => ({
+  type: t.SET_FILTERED_ROUTE_IDS,
+  filteredRouteIds
+})
+
+export const removeJourneys = () => ({
+  type: t.REMOVE_JOURNEYS
+})
+
 export const hoverOverFeature = feature => ({
   type: t.HOVER_OVER_FEATURE,
   feature

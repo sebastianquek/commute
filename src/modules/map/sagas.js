@@ -2,12 +2,16 @@ import { all, call, put, take, select, takeEvery } from 'redux-saga/effects'
 import { goToAnchor } from 'react-scrollable-anchor'
 import zoneData from '../zone-data'
 import { MAP_HAS_LOADED, CLICK_FEATURES, HOVER_OVER_FEATURE } from './actionTypes'
-import { addZoneCompositions, colorSelectedGroups, toggleLockHoveredZone, resetLockHoveredZone, hoverOverZone } from './actions'
-import { hoveredZoneSelector, isHoveredZoneSelectedSelector } from './selectors'
+import {
+  addZoneCompositions, addJourneys, removeJourneys, colorSelectedGroups,
+  hoverOverZone, setFilteredRouteIds
+} from './actions'
+import linkingCoordinator from '../linking-coordinator'
 import zoneManager from '../zone-manager'
 import c from '../../utils/randomColor'
 
 export function * updateMapOnLoad () {
+  // Waits for both actions to be called
   const [{ zones }] = yield all([
     take(zoneData.actionTypes.RECEIVE_ZONE_COMPOSITIONS),
     take(MAP_HAS_LOADED)
@@ -15,6 +19,37 @@ export function * updateMapOnLoad () {
   yield put(addZoneCompositions(zones))
   const selectedGroups = yield select(zoneManager.selectors.allGroupsSelector)
   yield put(colorSelectedGroups(selectedGroups))
+}
+
+export function * updateJourneys () {
+  // Handle first load
+  const [{ journeys }, { filteredRouteIds }] = yield all([
+    take(zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS),
+    take(zoneData.actionTypes.SET_FILTERED_ROUTE_IDS),
+    take(MAP_HAS_LOADED)
+  ])
+  yield put(addJourneys(journeys))
+  yield put(setFilteredRouteIds(filteredRouteIds))
+
+  // Handle subsequent zone journey changes
+  while (true) {
+    const action = yield take([
+      zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS,
+      zoneData.actionTypes.SET_FILTERED_ROUTE_IDS,
+      zoneData.actionTypes.REMOVE_ZONE_JOURNEYS
+    ])
+    switch (action.type) {
+      case zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS:
+        yield put(addJourneys(action.journeys))
+        break
+      case zoneData.actionTypes.SET_FILTERED_ROUTE_IDS:
+        yield put(setFilteredRouteIds(action.filteredRouteIds))
+        break
+      case zoneData.actionTypes.REMOVE_ZONE_JOURNEYS:
+        yield put(removeJourneys())
+        break
+    }
+  }
 }
 
 function * handleClick ({ features, shiftKey }) {
@@ -90,6 +125,10 @@ function * handleHover ({ feature }) {
       yield put(hoverOverZone(feature.properties.OBJECTID))
       // }
     }
+  } else if (feature.layer.source === 'journeys') {
+    yield put(linkingCoordinator.actions.setHoveredRouteId(feature.properties.id))
+  } else {
+    yield put(linkingCoordinator.actions.clearHoveredRouteId())
   }
 }
 

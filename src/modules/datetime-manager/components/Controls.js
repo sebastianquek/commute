@@ -2,11 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import Subheader from '../../core/components/Subheader'
+import Spinner from '../../core/components/Spinner'
 
 const Wrapper = styled.div`
-  grid-area: controls;
   display: flex;
   flex-direction: column;
+  grid-area: controls;
 `
 
 const ButtonGroup = styled.div`
@@ -14,20 +15,20 @@ const ButtonGroup = styled.div`
 `
 
 const Button = styled.button`
-  font-family: 'Barlow', sans-serif;
   background-color: transparent;
   border: 1px solid ${({theme}) => theme.colors.borderSecondary};
   border-right: none;
-  cursor: pointer;
   color: ${({theme}) => theme.colors.textPrimary};
-  transition: 0.2s all;
-  padding: 0.3em 0.46em;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
   font-size: 0.84em;
+  padding: 0.3em 0.46em;
+  transition: 0.2s all;
 
   ${({disabled}) => disabled && css`
-    color: white;
     background-color: #4a90e2;
     border-color: #4a90e2;
+    color: white;
     cursor: auto;
   `}
 
@@ -51,6 +52,8 @@ const Button = styled.button`
 class Controls extends React.Component {
   constructor (props) {
     super(props)
+
+    // Map ISO 8601 durations to readable text
     this.durations = {
       'PT30M': '30 mins',
       'PT1H': '1 hr',
@@ -61,11 +64,16 @@ class Controls extends React.Component {
 
   render () {
     const buttons = Object.keys(this.durations).map(key => {
-      let selected = false
-      if (key === this.props.step) {
-        selected = true
-      }
-      return <Button onClick={() => this.props.setStep(key)} key={key} disabled={selected}>{this.durations[key]}</Button>
+      let isSelected = key === this.props.step
+      return (
+        <Button
+          onClick={() => this.props.setStep(key)}
+          key={key}
+          disabled={isSelected}
+        >
+          {isSelected && this.props.isFetchingRidershipData ? <Spinner color='white'/> : this.durations[key]}
+        </Button>
+      )
     })
 
     return (
@@ -81,6 +89,7 @@ class Controls extends React.Component {
 
 Controls.propTypes = {
   step: PropTypes.string.isRequired,
+  isFetchingRidershipData: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired
 }
 

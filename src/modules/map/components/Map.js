@@ -4,12 +4,13 @@ import throttle from 'lodash.throttle'
 import MapGL from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import styled from 'styled-components'
-import Tooltip from './Tooltip'
+import TooltipContainer from '../containers/TooltipContainer'
+import arrowImage from '../arrow.png'
 
 const Wrapper = styled.div`
+  left: 0;
   position: fixed;
   top: 0;
-  left: 0;
 `
 
 export class Map extends Component {
@@ -46,6 +47,14 @@ export class Map extends Component {
 
   onLoad () {
     this.props.mapHasLoaded()
+    const map = this.mapRef.getMap()
+    map.loadImage(arrowImage, (err, image) => {
+      if (err) {
+        console.log(err)
+        return
+      }
+      map.addImage('arrow', image)
+    })
   }
 
   onViewportChange (viewport) {
@@ -95,14 +104,11 @@ export class Map extends Component {
           onHover={this.handleHover}
           onClick={this.handleClick}
           doubleClickZoom={false}
-          mapboxApiAccessToken={process.env.MAPBOX_TOKEN}>
-
+          mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
+          clickRadius={5}
+        >
           {this.state.hoveredFeature &&
-            <Tooltip x={this.state.x} y={this.state.y}>
-              {this.state.hoveredFeature.properties.REGION_N}<br/>
-              {this.state.hoveredFeature.properties.PLN_AREA_N}<br/>
-              {this.state.hoveredFeature.properties.SUBZONE_N}
-            </Tooltip>
+            <TooltipContainer x={this.state.x} y={this.state.y} feature={this.state.hoveredFeature}/>
           }
         </MapGL>
       </Wrapper>
