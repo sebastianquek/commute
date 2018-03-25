@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   border-top: 1px solid ${({theme}) => theme.colors.borderSecondary};
   bottom: 0;
   display: grid;
-  grid-column-gap: 2em;
+  grid-column-gap: 1.6em;
   grid-row-gap: 1.6em;
   grid-template-areas:
     'picker slider'
@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   height: ${({theme}) => theme.dimensions.bottomBarHeight};
   justify-items: start;
   left: 0;
-  padding: 0.8em ${({theme}) => `calc(${theme.dimensions.rightBarWidth} + 0.5em)`} 0.8em 1.2em;
+  padding: 0.8em ${({theme}) => `calc(${theme.dimensions.rightBarWidth} + 0.5rem)`} 0.8em 1.2em;
   position: fixed;
   width: 100%;
   z-index: 2;

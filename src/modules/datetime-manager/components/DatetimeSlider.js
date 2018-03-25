@@ -188,7 +188,7 @@ class DatetimeSlider extends React.Component {
 
     const w = this.w
     const h = this.h / 2
-    const padding = { top: 14, right: 160, bottom: 14, left: 60 }
+    const padding = { top: 14, right: 150, bottom: 14, left: 60 }
 
     let maxRidership
     switch (this.props.chartFormat) {
@@ -222,7 +222,7 @@ class DatetimeSlider extends React.Component {
     // Define axes
     const xAxis = d3.axisBottom()
       .scale(xScale)
-      .ticks(8)
+      .ticks(5)
       .tickFormat(this.formatAxisTime)
       .tickPadding(padding.bottom / 3)
       .tickSize(5)
@@ -295,8 +295,9 @@ class DatetimeSlider extends React.Component {
     // Setup brush domain background texture
     const bgTexture = textures
       .lines()
-      .thicker()
       .stroke('#ddd')
+      .size(5)
+      .strokeWidth(1)
 
     svg.call(bgTexture)
 
@@ -805,7 +806,7 @@ class DatetimeSlider extends React.Component {
 
     const ridershipValuesG = svg.append('g')
       .attr('class', 'values-container')
-      .attr('transform', `translate(${w - padding.right + 6}, 0)`)
+      .attr('transform', `translate(${w - padding.right - 6}, 0)`)
 
     ridershipValuesG.append('text')
       .attr('class', 'values-container--header')
