@@ -19,6 +19,7 @@ const AddZoneButton = (props) => {
     <ZoneButton
       color='transparent'
       onClick={props.onClick}
+      title='Add zones'
       dottedBorder>
       <PlusSign>
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512">

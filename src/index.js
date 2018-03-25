@@ -10,7 +10,7 @@ import rootSaga from './rootSaga'
 import { injectGlobal, ThemeProvider } from 'styled-components'
 import { configureAnchors } from 'react-scrollable-anchor'
 import theme from './utils/theme'
-import { ZoneManagerContainer } from './modules/zone-manager'
+import { ZoneManager } from './modules/zone-manager'
 import { MapContainer } from './modules/map'
 import { ZoneDataList } from './modules/zone-data'
 import { DatetimeManager } from './modules/datetime-manager'
@@ -57,13 +57,13 @@ injectGlobal`
   }
 `
 
-configureAnchors({offset: -50})
+configureAnchors({offset: -60})
 
 ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
       <div>
-        <ZoneManagerContainer />
+        <ZoneManager />
         <MapContainer />
         <DatetimeManager />
         <ZoneDataList />

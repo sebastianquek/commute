@@ -3,23 +3,11 @@ import MAP_STYLE from './style2.json'
 
 export const defaultMapStyle = fromJS(MAP_STYLE)
 
-export const zonesLayer = fromJS({
-  id: 'zones',
-  source: 'zones',
-  type: 'fill',
-  interactive: true,
-  paint: {
-    'fill-color': 'rgba(0, 0, 0, 0)',
-    'fill-opacity': 0.4,
-    'fill-outline-color': '#000'
-  }
-})
-
 export const zonesHoverLayer = fromJS({
   id: 'zonesHover',
   source: 'zones',
   type: 'fill',
-  interactive: true,
+  // interactive: true,
   paint: {
     'fill-color': '#000',
     'fill-opacity': 0.4,
@@ -28,40 +16,27 @@ export const zonesHoverLayer = fromJS({
   filter: ['in', 'OBJECTID', '']
 })
 
-export const zonesOriginSelectionLayer = fromJS({
-  id: 'zonesOriginSelection',
+export const zonesSelectionLayer = fromJS({
+  id: 'zonesSelection',
   source: 'zones',
   type: 'fill',
-  // interactive: true,
+  interactive: true,
   paint: {
     'fill-color': 'rgba(0, 0, 0, 0)',
     'fill-opacity': 0.8,
-    'fill-outline-color': 'blue'
+    'fill-outline-color': 'black'
   },
   filter: ['!in', 'OBJECTID', '']
 })
 
-export const zonesDestinationSelectionLayer = fromJS({
-  id: 'zonesDestinationSelection',
+export const selectedGroupLayer = (groupId, color = '#eee', zoneIds = []) => fromJS({
+  id: '' + groupId,
   source: 'zones',
   type: 'fill',
-  // interactive: true,
-  paint: {
-    'fill-color': 'rgba(0, 0, 0, 0)',
-    'fill-opacity': 0.8,
-    'fill-outline-color': 'orange'
-  },
-  filter: ['!in', 'OBJECTID', '']
-})
-
-export const selectedZoneLayer = (id, color = '#eee') => fromJS({
-  id: '' + id,
-  source: 'zones',
-  type: 'fill',
-  // interactive: true,
+  interactive: true,
   paint: {
     'fill-color': color,
     'fill-opacity': 0.8
   },
-  filter: ['in', 'OBJECTID', id]
+  filter: ['in', 'OBJECTID', ...zoneIds]
 })

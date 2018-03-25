@@ -27,12 +27,13 @@ export const resetLockHoveredZone = () => ({
   type: t.RESET_LOCK_HOVERED_ZONE
 })
 
-export const clickFeatures = features => ({
+export const clickFeatures = (features, shiftKey) => ({
   type: t.CLICK_FEATURES,
-  features
+  features,
+  shiftKey
 })
 
-export const colorSelectedZones = zones => ({
-  type: t.COLOR_SELECTED_ZONES,
-  zones
+export const colorSelectedGroups = groups => ({
+  type: t.COLOR_SELECTED_GROUPS,
+  groups
 })

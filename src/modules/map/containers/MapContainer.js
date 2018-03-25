@@ -19,7 +19,10 @@ const MapContainer = (props) => {
       {props.zoneSelectionMode &&
         <SelectionModeFeedback
           zoneSelectionMode={props.zoneSelectionMode}
-          resetSelectionMode={props.resetSelectionMode} />
+          resetSelectionMode={props.resetSelectionMode}
+          editingGroup={props.editingGroup}
+          editingGroupCounter={props.editingGroupCounter}
+        />
       }
     </div>
   )
@@ -33,7 +36,9 @@ MapContainer.propTypes = {
 const mapStateToProps = state => {
   return {
     mapStyle: mapStyleSelector(state),
-    zoneSelectionMode: zoneManager.selectors.zoneSelectionModeSelector(state)
+    zoneSelectionMode: zoneManager.selectors.zoneSelectionModeSelector(state),
+    editingGroup: zoneManager.selectors.editingGroupSelector(state),
+    editingGroupCounter: zoneManager.selectors.editingGroupCounterSelector(state)
   }
 }
 

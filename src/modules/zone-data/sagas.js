@@ -16,8 +16,8 @@ export function * watchAndUpdateZoneJourneys () {
     // https://redux-saga.js.org/docs/api/index.html#selectselector-args
     const { id, category } = yield take([
       REQUEST_ZONE_JOURNEYS,
-      zoneManager.actionTypes.ADD_SELECTION,
-      zoneManager.actionTypes.REMOVE_SELECTION,
+      zoneManager.actionTypes.ADD_ZONE_TO_GROUP,
+      zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP,
       datetimeManager.actionTypes.SET_DATETIME_BRUSH_DOMAIN
     ])
 
@@ -27,7 +27,7 @@ export function * watchAndUpdateZoneJourneys () {
     const duration = moment.duration(moment(dateDomain[1]).diff(startTime))
 
     let originZoneIds = yield select(zoneManager.selectors.originZoneIdsSelector)
-    let destinationZoneIds = yield select(zoneManager.selectors.destinationsZoneIdsSelector)
+    let destinationZoneIds = yield select(zoneManager.selectors.destinationZoneIdsSelector)
 
     // if (originZoneIds.length === 0 || destinationZoneIds.length === 0) {
     //   // Get specific zone's journeys if there are no zones in the other category

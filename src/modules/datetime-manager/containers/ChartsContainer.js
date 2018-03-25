@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
     step: stepSelector(state),
     data: ridershipDataSelector(state),
     zoomDomain: zoomDomainSelector(state),
-    zoneColors: zoneManager.selectors.zoneColorsSelector(state),
+    groupColors: zoneManager.selectors.groupColorsSelector(state),
     maxY: maxRidershipRangeSelector(state),
     ...ownProps
   }

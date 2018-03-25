@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { destinationZonesCompositionDataSelector, destinationZonesJourneyDataSelector } from '../selectors'
+import { destinationGroupsCompositionDataSelector, destinationGroupsJourneyDataSelector } from '../selectors'
 import zoneManager from '../../zone-manager'
-import DestinationZonesDataRows from '../components/DestinationZonesDataRows'
+import SelectedZonesDataRows from '../components/SelectedZonesDataRows'
 import ListSeparator from '../components/ListSeparator'
 
 const Wrapper = styled.div`
@@ -11,20 +11,20 @@ const Wrapper = styled.div`
   flex-direction: column;
 `
 
-const DestinationZonesDataRowsContainer = (props) => {
+const DestinationsDataRowsContainer = (props) => {
   return (
     <Wrapper>
       <ListSeparator>Destinations</ListSeparator>
-      <DestinationZonesDataRows {...props} />
+      <SelectedZonesDataRows {...props} category='destination' />
     </Wrapper>
   )
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    zoneCompositions: destinationZonesCompositionDataSelector(state),
-    zoneJourneys: destinationZonesJourneyDataSelector(state),
-    initialIdx: zoneManager.selectors.numOriginZonesSelector(state),
+    zoneCompositions: destinationGroupsCompositionDataSelector(state),
+    zoneJourneys: destinationGroupsJourneyDataSelector(state),
+    initialIdx: zoneManager.selectors.originGroupsSelector(state).length,
     ...ownProps
   }
 }
@@ -35,4 +35,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DestinationZonesDataRowsContainer)
+)(DestinationsDataRowsContainer)

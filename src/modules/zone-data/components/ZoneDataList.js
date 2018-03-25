@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import HoveredZoneDataRowContainer from '../containers/HoveredZoneDataRowContainer'
-import OriginZonesDataRowsContainer from '../containers/OriginZonesDataRowsContainer'
-import DestinationZonesDataRowsContainer from '../containers/DestinationZonesDataRowsContainer'
+import OriginsDataRowsContainer from '../containers/OriginsDataRowsContainer'
+import DestinationsDataRowsContainer from '../containers/DestinationsDataRowsContainer'
 
 const List = styled.div`
   position: absolute;
@@ -23,8 +23,8 @@ const ZoneDataList = (props) => {
   return (
     <List>
       <HoveredZoneDataRowContainer />
-      <OriginZonesDataRowsContainer />
-      <DestinationZonesDataRowsContainer />
+      <OriginsDataRowsContainer />
+      <DestinationsDataRowsContainer />
     </List>
   )
 }

@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import ZoneCategory from './ZoneCategory'
+import OriginsCategoryContainer from '../containers/OriginsCategoryContainer'
+import DestinationsCategoryContainer from '../containers/DestinationsCategoryContainer'
 
 const FixedWrapper = styled.div`
   position: fixed;
@@ -19,6 +19,7 @@ const Border = styled.div`
   background: white;
   height: 100%;
   z-index: -1;
+  transition: 0.4s;
 `
 
 const ScrollWrapper = styled.div`
@@ -47,23 +48,16 @@ class ZoneManager extends React.Component {
 
   componentDidMount () {
     this.updateScrollbarVisbility()
-    window.addEventListener('resize', this.updateScrollbarVisbility)
-  }
-
-  componentWillUnmount () {
-    window.removeEventListener('resize', this.updateScrollbarVisbility)
-  }
-
-  componentDidUpdate () {
-    this.updateScrollbarVisbility()
   }
 
   updateScrollbarVisbility () {
-    const isScrollbarVisible = this.scrollRef.scrollHeight > this.scrollRef.clientHeight
-    if (isScrollbarVisible !== this.state.isScrollbarVisible) {
-      this.setState({
-        isScrollbarVisible
-      })
+    if (this.scrollRef) {
+      const isScrollbarVisible = this.scrollRef.scrollHeight > this.scrollRef.clientHeight
+      if (isScrollbarVisible !== this.state.isScrollbarVisible) {
+        this.setState({
+          isScrollbarVisible
+        })
+      }
     }
   }
 
@@ -72,23 +66,12 @@ class ZoneManager extends React.Component {
       <FixedWrapper>
         <Border {...this.state}/>
         <ScrollWrapper innerRef={ref => (this.scrollRef = ref)}>
-          <ZoneCategory onClickAdd={this.props.setOriginSelectionMode} category="Origins">
-            {this.props.origins}
-          </ZoneCategory>
-          <ZoneCategory onClickAdd={this.props.setDestinationSelectionMode} category="Destinations">
-            {this.props.destinations}
-          </ZoneCategory>
+          <OriginsCategoryContainer updateScrollbarVisbility={this.updateScrollbarVisbility}/>
+          <DestinationsCategoryContainer updateScrollbarVisbility={this.updateScrollbarVisbility}/>
         </ScrollWrapper>
       </FixedWrapper>
     )
   }
-}
-
-ZoneManager.propTypes = {
-  origins: PropTypes.node,
-  destinations: PropTypes.node,
-  setOriginSelectionMode: PropTypes.func,
-  setDestinationSelectionMode: PropTypes.func
 }
 
 export default ZoneManager

@@ -21,12 +21,29 @@ export const brushedDateDomainSelector = state => state.datetimeBrushDomain.x
 export const zoomedDateDomainSelector = state => state.datetimeZoomDomain.x
 
 export const ridershipDataSelector = createSelector(
-  state => zoneManager.selectors.allZoneIdsSelector(state),
+  zoneManager.selectors.allGroupsSelector,
   state => state.ridershipData,
-  (zoneIds, ridershipData) => zoneIds.reduce((data, key) => {
-    data[key] = ridershipData[key] || {}
-    return data
-  }, {})
+  (groups, ridershipData) => {
+    return groups.reduce((data, g) => {
+      // For each group, aggregate ridership data of its zones
+      data[g.groupId] = g.zoneIds.reduce((summedData, id) => {
+        const zoneRidershipData = ridershipData[id] || {}
+        Object.keys(zoneRidershipData).forEach(date => {
+          const counts = zoneRidershipData[date]
+          if (!summedData.hasOwnProperty(date)) {
+            // Create a new empty entry if no previous entry
+            summedData[date] = {departure: 0, arrival: 0}
+          }
+          summedData[date] = {
+            departure: summedData[date].departure + (counts.departure || 0),
+            arrival: summedData[date].arrival + (counts.arrival || 0)
+          }
+        })
+        return summedData
+      }, {})
+      return data
+    }, {})
+  }
 )
 
 export const maxRidershipRangeSelector = createSelector(
