@@ -143,8 +143,9 @@ export const ridershipData = (state = {
           arrivalRow[groupId] = groupArrivalData
         })
 
-        arrivalData[moment(step['start_time'])] = arrivalRow
-        departureData[moment(step['start_time'])] = departureRow
+        const startTime = moment(step['start_time']).toISOString()
+        arrivalData[startTime] = arrivalRow
+        departureData[startTime] = departureRow
       })
       return {
         departureData,
