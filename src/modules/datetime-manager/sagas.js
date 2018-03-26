@@ -27,7 +27,7 @@ export function * watchAndReplaceAllRidershipData () {
     const interval = step || (yield select(stepSelector))
 
     // Reset data domain to be the same as window domain
-    yield put(setDataDomain([minDate, maxDate]))
+    yield put(setDataDomain([[minDate.toDate(), maxDate.toDate()]]))
 
     try {
       yield put(fetchingRidership())
