@@ -6,7 +6,7 @@ import {
 } from './actions'
 import { REQUEST_RIDERSHIP, SET_STEP, SET_START_DATETIME_BRUSH_DOMAIN } from './actionTypes'
 import {
-  minDateSelector, maxDateSelector, stepSelector, datetimeBrushDomainSelector,
+  windowMinDateSelector, windowMaxDateSelector, stepSelector, datetimeBrushDomainSelector,
   datetimeZoomDomainSelector
 } from './selectors'
 import zoneManager from '../zone-manager'
@@ -26,8 +26,8 @@ export function * watchAndUpdateRidership () {
     const shouldClearExistingRidershipData = step !== undefined
 
     // Get current time window
-    const minDate = moment(yield select(minDateSelector))
-    const maxDate = moment(yield select(maxDateSelector))
+    const minDate = moment(yield select(windowMinDateSelector))
+    const maxDate = moment(yield select(windowMaxDateSelector))
     const duration = moment.duration(maxDate.diff(minDate))
     const interval = step || (yield select(stepSelector))
 

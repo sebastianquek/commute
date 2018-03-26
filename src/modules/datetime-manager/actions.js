@@ -1,5 +1,5 @@
 import * as t from './actionTypes'
-import { maxDateSelector } from './selectors'
+import { absoluteMaxDateSelector } from './selectors'
 
 export const setDatetimeBrushDomain = domain => ({
   type: t.SET_DATETIME_BRUSH_DOMAIN,
@@ -11,7 +11,7 @@ export const setStartDatetime = datetime => {
     dispatch({
       type: t.SET_START_DATETIME_BRUSH_DOMAIN,
       startDatetime: datetime,
-      maxDate: maxDateSelector(getState())
+      maxDate: absoluteMaxDateSelector(getState())
     })
   }
 }
