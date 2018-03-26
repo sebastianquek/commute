@@ -136,12 +136,11 @@ class DatetimeSlider extends React.Component {
     if (
       nextProps.shouldUpdate ||
       !isEqual(nextProps.zoneIds, this.props.zoneIds) ||
-      nextProps.chartFormat !== this.props.chartFormat ||
-      d3.select(this.ref).select('svg').empty()
+      nextProps.chartFormat !== this.props.chartFormat
     ) {
       this.props = nextProps
-      this.props.resetForceDatetimeSliderUpdate()
       this.drawSlider()
+      this.props.resetForceDatetimeSliderUpdate()
     }
 
     if (nextProps.isFetchingRidershipData) {

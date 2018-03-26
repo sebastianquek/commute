@@ -77,33 +77,33 @@ export const ridershipDomain = (state = {
 }
 
 export const ridershipData = (state = {
-  departureData: [],
-  arrivalData: []
+  departureData: {},
+  arrivalData: {}
 }, action) => {
   switch (action.type) {
     case t.RECEIVE_RIDERSHIP:
-      const departureData = []
-      const arrivalData = []
+      const departureData = {}
+      const arrivalData = {}
 
-      // Generate 2 arrays, 1 for departures and 1 for arrivals
-      // Each element of the array is an object with the following shape:
+      // Generate 2 objects, 1 for departures and 1 for arrivals
+      // with the following shape:
       //  {
-      //    date: <moment date>,
-      //    <group id 1>: {
-      //      <zone id 1>: <number of arrivals/departures>
-      //      <zone id 2>: <number of arrivals/departures>
-      //      sum: <sum>
-      //    },
-      //    <group id 2>: {
-      //      <zone id 3>: <number of arrivals/departures>
-      //      <zone id 4>: <number of arrivals/departures>
-      //      sum: <sum>
+      //    <moment date>: {
+      //      <group id 1>: {
+      //        <zone id 1>: <number of arrivals/departures>
+      //        <zone id 2>: <number of arrivals/departures>
+      //        sum: <sum>
+      //      },
+      //      <group id 2>: {
+      //        <zone id 3>: <number of arrivals/departures>
+      //        <zone id 4>: <number of arrivals/departures>
+      //        sum: <sum>
+      //      }
       //    }
       //  }
       action.data.forEach((step, i) => {
-        const row = { date: moment(step['start_time']) }
-        const departureRow = { ...row }
-        const arrivalRow = { ...row }
+        const departureRow = {}
+        const arrivalRow = {}
 
         action.groups.forEach(({ groupId, zoneIds }) => {
           const groupDepartureData = { sum: 0 }
@@ -135,39 +135,58 @@ export const ridershipData = (state = {
           arrivalRow[groupId] = groupArrivalData
         })
 
-        arrivalData.push(arrivalRow)
-        departureData.push(departureRow)
+        arrivalData[moment(step['start_time'])] = arrivalRow
+        departureData[moment(step['start_time'])] = departureRow
       })
       return {
         departureData,
         arrivalData
       }
+
     case zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP:
-      const removeZone = data => data.map(step => {
-        const { [action.groupId]: group, ...groups } = step
-        const { [action.zoneId]: zone, ...zones } = group
-        zones.sum -= zone
-        return {
-          ...groups,
-          [action.groupId]: zones
-        }
-      })
+      const removeZone = data => Object.entries(data)
+        .reduce((updatedData, [date, step]) => {
+          const {
+            [action.groupId]: {
+              [action.zoneId]: count,
+              ...zones
+            },
+            ...groups
+          } = step
+
+          updatedData[date] = {
+            [action.groupId]: {
+              ...zones,
+              sum: zones.sum - count
+            },
+            ...groups
+          }
+
+          return updatedData
+        }, {})
       return {
         departureData: removeZone(state.departureData),
         arrivalData: removeZone(state.arrivalData)
       }
+
     case zoneManager.actionTypes.REMOVE_GROUP:
+      const removeGroup = data => Object.entries(data)
+        .reduce((updatedData, [date, step]) => {
+          updatedData[date] = omit(step, action.groupId)
+          return updatedData
+        }, {})
       return {
-        departureData: state.departureData.map(step => omit(step, action.groupId)),
-        arrivalData: state.arrivalData.map(step => omit(step, action.groupId))
+        departureData: removeGroup(state.departureData),
+        arrivalData: removeGroup(state.arrivalData)
       }
+
     default:
       return state
   }
 }
 
 export const datetimeManagerInterfaceFlags = (state = {
-  shouldDatetimeSliderUpdate: false,
+  shouldDatetimeSliderUpdate: true,
   isFetchingRidershipData: true
 }, action) => {
   switch (action.type) {
