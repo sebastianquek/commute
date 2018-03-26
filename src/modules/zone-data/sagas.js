@@ -32,7 +32,7 @@ function * getDataAndFetchZoneJourneys () {
   }
 
   // Get current brushed time window
-  const dateDomain = yield select(datetimeManager.selectors.brushedDateDomainSelector)
+  const dateDomain = yield select(datetimeManager.selectors.datetimeBrushDomainSelector)
   const startTime = moment(dateDomain[0])
   const duration = moment.duration(moment(dateDomain[1]).diff(startTime))
 

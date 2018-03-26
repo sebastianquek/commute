@@ -4,7 +4,7 @@ import {
   resetForceDatetimeSliderUpdate
 } from '../actions'
 import {
-  brushDomainSelector, zoomDomainSelector, minDateSelector,
+  datetimeBrushDomainSelector, datetimeZoomDomainSelector, minDateSelector,
   maxDateSelector, stepSelector, ridershipDataSelector,
   shouldDatetimeSliderUpdate, isFetchingRidershipData
 } from '../selectors'
@@ -13,8 +13,8 @@ import DatetimeSlider from '../components/DatetimeSlider'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    brushDomain: brushDomainSelector(state),
-    zoomDomain: zoomDomainSelector(state),
+    brushDomain: datetimeBrushDomainSelector(state),
+    zoomDomain: datetimeZoomDomainSelector(state),
     minDate: minDateSelector(state),
     maxDate: maxDateSelector(state),
     step: stepSelector(state),

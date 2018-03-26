@@ -6,8 +6,8 @@ import {
 } from './actions'
 import { REQUEST_RIDERSHIP, SET_STEP, SET_START_DATETIME_BRUSH_DOMAIN } from './actionTypes'
 import {
-  minDateSelector, maxDateSelector, stepSelector, zoomedDateDomainSelector,
-  brushedDateDomainSelector
+  minDateSelector, maxDateSelector, stepSelector, datetimeBrushDomainSelector,
+  datetimeZoomDomainSelector
 } from './selectors'
 import zoneManager from '../zone-manager'
 
@@ -48,13 +48,13 @@ export function * watchAndUpdateDatetimeZoom () {
     yield take(SET_START_DATETIME_BRUSH_DOMAIN)
 
     // Calculate current zoom duration
-    let [ minZoomDate, maxZoomDate ] = yield select(zoomedDateDomainSelector)
+    let [ minZoomDate, maxZoomDate ] = yield select(datetimeZoomDomainSelector)
     minZoomDate = moment(minZoomDate)
     maxZoomDate = moment(maxZoomDate)
     const zoomDuration = moment.duration(maxZoomDate.diff(minZoomDate))
 
     // Calculate new brush duration
-    let [ minBrushDate, maxBrushDate ] = yield select(brushedDateDomainSelector)
+    let [ minBrushDate, maxBrushDate ] = yield select(datetimeBrushDomainSelector)
     minBrushDate = moment(minBrushDate)
     maxBrushDate = moment(maxBrushDate)
     const brushDuration = moment.duration(maxBrushDate.diff(minBrushDate))
@@ -62,12 +62,10 @@ export function * watchAndUpdateDatetimeZoom () {
     // Calculate new zoom domain such that the brush can be seen and the size
     // of the zoom domain is kept consistent
     const durationBetweenZoomAndBrush = moment.duration(zoomDuration.subtract(brushDuration) / 2)
-    const newZoomDomain = {
-      x: [
-        minBrushDate.clone().subtract(durationBetweenZoomAndBrush).toDate(),
-        maxBrushDate.clone().add(durationBetweenZoomAndBrush).toDate()
-      ]
-    }
+    const newZoomDomain = [
+      minBrushDate.clone().subtract(durationBetweenZoomAndBrush).toDate(),
+      maxBrushDate.clone().add(durationBetweenZoomAndBrush).toDate()
+    ]
     yield put(setDatetimeZoomDomain(newZoomDomain))
   }
 }

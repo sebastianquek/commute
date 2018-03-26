@@ -1,15 +1,15 @@
 import { connect } from 'react-redux'
 import { setStartDatetime, forceDatetimeSliderUpdate } from '../actions'
 import {
-  brushedDateDomainSelector, zoomedDateDomainSelector,
+  datetimeBrushDomainSelector, datetimeZoomDomainSelector,
   minDateSelector, maxDateSelector
 } from '../selectors'
 import DatetimePicker from '../components/DatetimePicker'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    brushedDateDomain: brushedDateDomainSelector(state),
-    zoomedDateDomain: zoomedDateDomainSelector(state),
+    brushedDateDomain: datetimeBrushDomainSelector(state),
+    zoomedDateDomain: datetimeZoomDomainSelector(state),
     minDate: minDateSelector(state),
     maxDate: maxDateSelector(state),
     ...ownProps

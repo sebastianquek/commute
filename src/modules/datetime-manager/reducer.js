@@ -4,26 +4,20 @@ import omit from 'lodash.omit'
 import * as t from './actionTypes'
 import zoneManager from '../zone-manager'
 
-const minDate = moment('2016-07-10T00:00:00+08:00').toDate()
-const maxDate = moment('2016-07-15T23:59:59+08:00').toDate()
+const defaultZoomMinDate = moment('2016-07-10T00:00:00+08:00').toDate()
+const defaultZoomMaxDate = moment('2016-07-17T00:00:00+08:00').toDate()
 
-export const datetimeBrushDomain = (state = {
-  x: [
-    moment('2016-07-12T00:00:00+08:00').toDate(),
-    moment('2016-07-12T20:00:00+08:00').toDate()
-  ],
-  y: [0, 1]
-}, action) => {
+export const datetimeBrushDomain = (state = [
+  moment('2016-07-13T01:00:00+08:00').toDate(),
+  moment('2016-07-14T00:00:00+08:00').toDate()
+], action) => {
   switch (action.type) {
     case t.SET_DATETIME_BRUSH_DOMAIN:
-      return {
-        ...state,
-        x: action.domain.x,
-        y: action.domain.y
-      }
+      return action.domain
+
     case t.SET_START_DATETIME_BRUSH_DOMAIN:
-      const currentBrushStart = moment(state.x[0])
-      const duration = moment.duration(moment(state.x[1]).diff(currentBrushStart))
+      const currentBrushStart = moment(state[0])
+      const duration = moment.duration(moment(state[1]).diff(currentBrushStart))
       const x0 = moment(action.startDatetime)
       x0.hours(currentBrushStart.hours())
       x0.minutes(currentBrushStart.minutes())
@@ -36,25 +30,23 @@ export const datetimeBrushDomain = (state = {
       }
 
       const x1 = x0.clone().add(duration)
-      return {
-        ...state,
-        x: [x0.toDate(), x1.isBefore(action.maxDate) ? x1.toDate() : action.maxDate]
-      }
+      return [
+        x0.toDate(),
+        x1.isBefore(action.maxDate) ? x1.toDate() : action.maxDate
+      ]
+
     default:
       return state
   }
 }
 
-export const datetimeZoomDomain = (state = {
-  x: [minDate, maxDate]
-}, action) => {
+export const datetimeZoomDomain = (state = [
+  defaultZoomMinDate, defaultZoomMaxDate
+], action) => {
   switch (action.type) {
     case t.SET_DATETIME_ZOOM_DOMAIN:
-      return {
-        ...state,
-        x: action.domain.x,
-        y: action.domain.y
-      }
+      return action.domain
+
     default:
       return state
   }
