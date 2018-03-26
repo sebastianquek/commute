@@ -26,6 +26,16 @@ export const setStep = step => ({
   step
 })
 
+export const setWindowDomain = domain => ({
+  type: t.SET_WINDOW_DOMAIN,
+  domain
+})
+
+export const setDataDomain = domain => ({
+  type: t.SET_DATA_DOMAIN,
+  domain
+})
+
 export const requestRidership = () => ({
   type: t.REQUEST_RIDERSHIP
 })
