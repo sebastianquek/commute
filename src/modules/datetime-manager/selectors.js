@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export const absoluteMinDateSelector = state => state.ridershipDomain.absoluteDomain[0]
 export const absoluteMaxDateSelector = state => state.ridershipDomain.absoluteDomain[1]
 export const windowMinDateSelector = state => state.ridershipDomain.windowDomain[0]
@@ -9,9 +11,9 @@ export const datetimeZoomDomainSelector = state => state.datetimeZoomDomain
 
 export const ridershipDataSelector = state => ({
   departureData: Object.entries(state.ridershipData.departureData)
-    .map(([date, step]) => ({...step, date: new Date(date)})),
+    .map(([date, step]) => ({...step, date: moment(date)})),
   arrivalData: Object.entries(state.ridershipData.arrivalData)
-    .map(([date, step]) => ({...step, date: new Date(date)}))
+    .map(([date, step]) => ({...step, date: moment(date)}))
 })
 
 export const shouldDatetimeSliderUpdate = state =>
