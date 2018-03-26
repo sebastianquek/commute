@@ -98,7 +98,7 @@ export const ridershipData = (state = {
   arrivalData: {}
 }, action) => {
   switch (action.type) {
-    case t.RECEIVE_RIDERSHIP:
+    case t.RECEIVE_ALL_RIDERSHIP:
       const departureData = {}
       const arrivalData = {}
 
@@ -127,19 +127,10 @@ export const ridershipData = (state = {
           const groupArrivalData = { sum: 0 }
 
           zoneIds.forEach(zone => {
-            const existingZoneDepartures = get(state.departureData, [i, groupId, zone], 0)
-            const existingZoneArrivals = get(state.arrivalData, [i, groupId, zone], 0)
-
             if (step.counts && step.counts['' + zone]) { // zone has arrivals/departures
               const counts = step.counts['' + zone]
               groupDepartureData[zone] = counts.departure || 0
               groupArrivalData[zone] = counts.arrival || 0
-              groupDepartureData.sum += groupDepartureData[zone]
-              groupArrivalData.sum += groupArrivalData[zone]
-            } else if (!action.clearExistingRidershipData &&
-              (existingZoneDepartures || existingZoneArrivals)) {
-              groupDepartureData[zone] = existingZoneDepartures
-              groupArrivalData[zone] = existingZoneArrivals
               groupDepartureData.sum += groupDepartureData[zone]
               groupArrivalData.sum += groupArrivalData[zone]
             } else {

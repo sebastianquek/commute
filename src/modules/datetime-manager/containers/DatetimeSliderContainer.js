@@ -4,7 +4,7 @@ import {
   resetForceDatetimeSliderUpdate
 } from '../actions'
 import {
-  datetimeBrushDomainSelector, datetimeZoomDomainSelector, stepSelector, 
+  datetimeBrushDomainSelector, datetimeZoomDomainSelector, stepSelector,
   ridershipDataSelector, shouldDatetimeSliderUpdate, isFetchingRidershipData
 } from '../selectors'
 import zoneManager from '../../zone-manager'

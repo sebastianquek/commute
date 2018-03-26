@@ -8,7 +8,7 @@ export default function * rootSaga () {
     zoneData.sagas.watchAndUpdateZoneJourneys(),
     zoneData.sagas.getInitialZoneJourneys(),
     zoneData.sagas.getZoneCompositions(),
-    datetimeManager.sagas.watchAndUpdateRidership(),
+    datetimeManager.sagas.watchAndReplaceAllRidershipData(),
     datetimeManager.sagas.getInitialRidership(),
     datetimeManager.sagas.watchAndUpdateDatetimeZoom(),
     map.sagas.updateMapOnLoad(),

@@ -36,10 +36,6 @@ export const setDataDomain = domain => ({
   domain
 })
 
-export const requestRidership = () => ({
-  type: t.REQUEST_RIDERSHIP
-})
-
 export const fetchingRidership = () => ({
   type: t.FETCHING_RIDERSHIP
 })
@@ -49,9 +45,12 @@ export const requestRidershipError = error => ({
   error
 })
 
-export const receiveRidership = (clearExistingRidershipData, groups, data) => ({
-  type: t.RECEIVE_RIDERSHIP,
-  clearExistingRidershipData,
+export const requestAllRidership = () => ({
+  type: t.REQUEST_ALL_RIDERSHIP
+})
+
+export const receiveAllRidership = (groups, data) => ({
+  type: t.RECEIVE_ALL_RIDERSHIP,
   groups,
   data
 })

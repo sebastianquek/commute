@@ -1,29 +1,24 @@
 import moment from 'moment'
 import { select, call, put, take } from 'redux-saga/effects'
 import {
-  requestRidership, fetchingRidership, requestRidershipError, receiveRidership,
-  forceDatetimeSliderUpdate, setDatetimeZoomDomain
+  requestAllRidership, fetchingRidership, requestRidershipError, receiveAllRidership,
+  forceDatetimeSliderUpdate, setDatetimeZoomDomain, setDataDomain
 } from './actions'
-import { REQUEST_RIDERSHIP, SET_STEP, SET_START_DATETIME_BRUSH_DOMAIN } from './actionTypes'
+import { REQUEST_ALL_RIDERSHIP, SET_STEP, SET_START_DATETIME_BRUSH_DOMAIN } from './actionTypes'
 import {
   windowMinDateSelector, windowMaxDateSelector, stepSelector, datetimeBrushDomainSelector,
   datetimeZoomDomainSelector
 } from './selectors'
 import zoneManager from '../zone-manager'
 
-export function * watchAndUpdateRidership () {
+export function * watchAndReplaceAllRidershipData () {
   while (true) {
     const { zoneId, step } = yield take([
-      REQUEST_RIDERSHIP, SET_STEP, zoneManager.actionTypes.ADD_ZONE_TO_GROUP
+      REQUEST_ALL_RIDERSHIP, SET_STEP
     ])
 
     const zoneIds = zoneId ? [zoneId] : yield select(zoneManager.selectors.allZoneIdsSelector)
     if (zoneIds.length === 0) continue
-
-    // If step is present, SET_STEP was called. This indicates that existing
-    // ridership data needs to be cleared from the redux store since the
-    // resolution has changed
-    const shouldClearExistingRidershipData = step !== undefined
 
     // Get current time window
     const minDate = moment(yield select(windowMinDateSelector))
@@ -31,11 +26,14 @@ export function * watchAndUpdateRidership () {
     const duration = moment.duration(maxDate.diff(minDate))
     const interval = step || (yield select(stepSelector))
 
+    // Reset data domain to be the same as window domain
+    yield put(setDataDomain([minDate, maxDate]))
+
     try {
       yield put(fetchingRidership())
       const data = yield call(fetchRidership, zoneIds, minDate, duration, interval)
       const groups = yield select(zoneManager.selectors.allGroupsSelector)
-      yield put(receiveRidership(shouldClearExistingRidershipData, groups, data))
+      yield put(receiveAllRidership(groups, data))
       yield put(forceDatetimeSliderUpdate())
     } catch (err) {
       yield put(requestRidershipError(err))
@@ -72,7 +70,7 @@ export function * watchAndUpdateDatetimeZoom () {
 
 // Called once on initialisation of the app
 export function * getInitialRidership () {
-  yield put(requestRidership())
+  yield put(requestAllRidership())
 }
 
 async function fetchRidership (zoneIds, minDate, duration, step) {
