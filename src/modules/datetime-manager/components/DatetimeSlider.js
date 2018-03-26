@@ -218,6 +218,9 @@ class DatetimeSlider extends React.Component {
       .range([padding.top, h - padding.bottom])
       .nice()
 
+    // Calculate max zoom out value
+    const k = (xScale.range()[1] - xScale.range()[0]) / (xScale(this.props.zoomDomain.x[1]) - xScale(this.props.zoomDomain.x[0]))
+
     // Define axes
     const xAxis = d3.axisBottom()
       .scale(xScale)
@@ -246,7 +249,7 @@ class DatetimeSlider extends React.Component {
 
     // Define zoom
     const zoom = d3.zoom()
-      .scaleExtent([1, 20])
+      .scaleExtent([k, 20])
       .translateExtent([
         [0, 0],
         [w, h]]
@@ -856,7 +859,6 @@ class DatetimeSlider extends React.Component {
       setDatetimeZoomDomain({x: newScale.domain()})
     }
 
-    const k = (xScale.range()[1] - xScale.range()[0]) / (xScale(this.props.zoomDomain.x[1]) - xScale(this.props.zoomDomain.x[0]))
     svg.call(
       zoom.transform,
       d3.zoomIdentity
