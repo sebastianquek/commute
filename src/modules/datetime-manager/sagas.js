@@ -51,9 +51,9 @@ function * updateRidershipData ({ zoneId }) {
 
     try {
       yield put(fetchingRidership())
-      const data = yield call(fetchRidership, zoneId, minDate, duration, interval)
+      const data = yield call(fetchRidership, [zoneId], minDate, duration, interval)
       const zoneIdToGroupIdMap = yield select(zoneManager.selectors.zoneIdsToGroupIdSelector)
-      yield put(receiveZoneRidership(zoneId, zoneIdToGroupIdMap[zoneId], data))
+      yield put(receiveZoneRidership([zoneId], zoneIdToGroupIdMap, data))
       yield put(forceDatetimeSliderUpdate())
     } catch (err) {
       yield put(requestRidershipError(err))

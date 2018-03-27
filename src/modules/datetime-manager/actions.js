@@ -55,15 +55,15 @@ export const receiveAllRidership = (groups, data) => ({
   data
 })
 
-export const requestZoneRidership = zoneId => ({
+export const requestZoneRidership = zoneIds => ({
   type: t.REQUEST_ZONE_RIDERSHIP,
-  zoneId
+  zoneIds
 })
 
-export const receiveZoneRidership = (zoneId, groupId, data) => ({
+export const receiveZoneRidership = (zoneIds, zoneIdToGroupIdMap, data) => ({
   type: t.RECEIVE_ZONE_RIDERSHIP,
-  zoneId,
-  groupId,
+  zoneIds,
+  zoneIdToGroupIdMap,
   data
 })
 

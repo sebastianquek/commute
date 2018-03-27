@@ -1,4 +1,7 @@
 import moment from 'moment'
+import isObject from 'lodash.isobject'
+import merge from 'lodash.merge'
+import mergeWith from 'lodash.mergewith'
 import cloneDeep from 'lodash.clonedeep'
 import omit from 'lodash.omit'
 import * as t from './actionTypes'
@@ -93,6 +96,15 @@ export const ridershipDomain = (state = {
   }
 }
 
+function customizer (initialValue, incomingValue) {
+  if (isObject(initialValue) && isObject(incomingValue)) {
+    const totalSum = initialValue.sum + incomingValue.sum
+    const res = merge(initialValue, incomingValue)
+    res.sum = totalSum
+    return res
+  }
+}
+
 export const ridershipData = (state = {
   departureData: {},
   arrivalData: {}
@@ -127,16 +139,19 @@ export const ridershipData = (state = {
           const groupArrivalData = { sum: 0 }
 
           zoneIds.forEach(zone => {
-            if (step.counts && step.counts['' + zone]) { // zone has arrivals/departures
-              const counts = step.counts['' + zone]
-              groupDepartureData[zone] = counts.departure || 0
-              groupArrivalData[zone] = counts.arrival || 0
-              groupDepartureData.sum += groupDepartureData[zone]
-              groupArrivalData.sum += groupArrivalData[zone]
-            } else {
-              groupDepartureData[zone] = 0
-              groupArrivalData[zone] = 0
+            let departure = 0
+            let arrival = 0
+
+            const counts = step.counts && step.counts['' + zone]
+            if (counts) { // zone has arrivals/departures
+              departure = counts.departure || 0
+              arrival = counts.arrival || 0
             }
+
+            groupDepartureData[zone] = departure
+            groupDepartureData.sum += departure
+            groupArrivalData[zone] = arrival
+            groupArrivalData.sum += arrival
           })
 
           departureRow[groupId] = groupDepartureData
@@ -156,36 +171,40 @@ export const ridershipData = (state = {
       departureData = {}
       arrivalData = {}
 
-      const addZoneData = (startTime, ridership, currentData, newData) => {
-        const {
-          ['' + action.groupId]: { // Keys are stored as strings
-            sum = 0,
-            ...zones
-          } = {}, // Default value if groupId does not exist, ensures sum = 0 too
-          ...groups
-        } = currentData[startTime]
-
-        newData[startTime] = {
-          [action.groupId]: {
-            [action.zoneId]: ridership,
-            sum: sum + ridership,
-            ...cloneDeep(zones)
-          },
-          ...cloneDeep(groups)
-        }
-      }
-
       action.data.forEach((step) => {
         const startTime = moment(step['start_time']).toISOString()
-        let d = 0
-        let a = 0
-        if (step.counts) {
-          const { departure = 0, arrival = 0 } = step.counts['' + action.zoneId]
-          d = departure
-          a = arrival
-        }
-        addZoneData(startTime, d, state.departureData, departureData)
-        addZoneData(startTime, a, state.arrivalData, arrivalData)
+        const newDepartureStepData = {}
+        const newArrivalStepData = {}
+
+        action.zoneIds.forEach(zone => {
+          let departure = 0
+          let arrival = 0
+          const groupId = action.zoneIdToGroupIdMap[zone]
+
+          const counts = step.counts && step.counts['' + zone]
+          if (counts) { // zone has arrivals/departures
+            departure = counts.departure || 0
+            arrival = counts.arrival || 0
+          }
+
+          if (!newDepartureStepData.hasOwnProperty(groupId)) {
+            newDepartureStepData[groupId] = { sum: 0 }
+          }
+          if (!newArrivalStepData.hasOwnProperty(groupId)) {
+            newArrivalStepData[groupId] = { sum: 0 }
+          }
+          newDepartureStepData[groupId][zone] = departure
+          newDepartureStepData[groupId].sum += departure
+          newArrivalStepData[groupId][zone] = arrival
+          newArrivalStepData[groupId].sum += arrival
+        })
+
+        departureData[startTime] = mergeWith(
+          state.departureData[startTime], newDepartureStepData, customizer
+        )
+        arrivalData[startTime] = mergeWith(
+          state.arrivalData[startTime], newArrivalStepData, customizer
+        )
       })
 
       return {
