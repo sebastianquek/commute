@@ -4,7 +4,12 @@ import styled from 'styled-components'
 import * as d3 from 'd3'
 import ZoneButton from './ZoneButton'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div.attrs({
+  style: ({x, y}) => ({
+    top: `${y}px`,
+    left: `${x}px`
+  })
+})`
   display: flex;
   flex-direction: column;
   padding: 0.8rem;
@@ -16,8 +21,6 @@ const Wrapper = styled.div`
   min-width: 300px;
   color: ${({theme}) => theme.colors.textPrimary};
   background: rgba(255, 255, 255, 0.8);
-  top: ${({y}) => y}px;
-  left: ${({x}) => x}px;
   transform: translate(-148px, -6px);
   transition: all 0.15s;
   opacity: ${({hidden}) => hidden ? 0 : 1};
