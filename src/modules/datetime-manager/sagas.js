@@ -1,5 +1,6 @@
 import moment from 'moment'
-import { select, call, put, take, takeEvery } from 'redux-saga/effects'
+import { delay } from 'redux-saga'
+import { select, call, put, take, takeLatest } from 'redux-saga/effects'
 import {
   requestAllRidership, fetchingRidership, requestRidershipError, receiveAllRidership,
   forceDatetimeSliderUpdate, setDatetimeZoomDomain, setDataDomain, receiveZoneRidership
@@ -41,7 +42,15 @@ export function * watchAndReplaceAllRidershipData () {
   }
 }
 
+let bufferedZoneIds = []
+
 function * updateRidershipData ({ zoneId }) {
+  bufferedZoneIds.push(zoneId)
+  yield call(delay, 1000) // Debounce the fetching of API calls
+
+  let zoneIds = [...bufferedZoneIds]
+  bufferedZoneIds = []
+
   const interval = yield select(stepSelector)
   const dateDomains = yield select(dataDomainsSelector)
   for (let domain of dateDomains) {
@@ -51,9 +60,9 @@ function * updateRidershipData ({ zoneId }) {
 
     try {
       yield put(fetchingRidership())
-      const data = yield call(fetchRidership, [zoneId], minDate, duration, interval)
+      const data = yield call(fetchRidership, zoneIds, minDate, duration, interval)
       const zoneIdToGroupIdMap = yield select(zoneManager.selectors.zoneIdsToGroupIdSelector)
-      yield put(receiveZoneRidership([zoneId], zoneIdToGroupIdMap, data))
+      yield put(receiveZoneRidership(zoneIds, zoneIdToGroupIdMap, data))
       yield put(forceDatetimeSliderUpdate())
     } catch (err) {
       yield put(requestRidershipError(err))
@@ -62,7 +71,7 @@ function * updateRidershipData ({ zoneId }) {
 }
 
 export function * watchAndUpdateRidershipData () {
-  yield takeEvery(zoneManager.actionTypes.ADD_ZONE_TO_GROUP, updateRidershipData)
+  yield takeLatest(zoneManager.actionTypes.ADD_ZONE_TO_GROUP, updateRidershipData)
 }
 
 export function * watchAndUpdateDatetimeZoom () {
