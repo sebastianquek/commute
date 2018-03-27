@@ -2,6 +2,7 @@ import moment from 'moment'
 
 export const absoluteMinDateSelector = state => state.ridershipDomain.absoluteDomain[0]
 export const absoluteMaxDateSelector = state => state.ridershipDomain.absoluteDomain[1]
+export const dataDomainsSelector = state => state.ridershipDomain.dataDomain
 export const windowMinDateSelector = state => state.ridershipDomain.windowDomain[0]
 export const windowMaxDateSelector = state => state.ridershipDomain.windowDomain[1]
 export const stepSelector = state => state.ridershipDomain.step

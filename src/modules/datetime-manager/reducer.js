@@ -1,10 +1,10 @@
 import moment from 'moment'
-import get from 'lodash.get'
+import cloneDeep from 'lodash.clonedeep'
 import omit from 'lodash.omit'
 import * as t from './actionTypes'
 import zoneManager from '../zone-manager'
 
-const windowDomainDaysOffset = 3
+const windowDomainDaysOffset = 2
 const defaultZoomMinDate = moment('2016-07-10T00:00:00+08:00').toDate()
 const defaultZoomMaxDate = moment('2016-07-17T00:00:00+08:00').toDate()
 
@@ -99,8 +99,8 @@ export const ridershipData = (state = {
 }, action) => {
   switch (action.type) {
     case t.RECEIVE_ALL_RIDERSHIP:
-      const departureData = {}
-      const arrivalData = {}
+      let departureData = {}
+      let arrivalData = {}
 
       // Generate 2 objects, 1 for departures and 1 for arrivals
       // with the following shape:
@@ -152,12 +152,54 @@ export const ridershipData = (state = {
         arrivalData
       }
 
+    case t.RECEIVE_ZONE_RIDERSHIP:
+      departureData = {}
+      arrivalData = {}
+
+      const addZoneData = (startTime, ridership, currentData, newData) => {
+        const {
+          ['' + action.groupId]: { // Keys are stored as strings
+            sum = 0,
+            ...zones
+          } = {}, // Default value if groupId does not exist, ensures sum = 0 too
+          ...groups
+        } = currentData[startTime]
+
+        newData[startTime] = {
+          [action.groupId]: {
+            [action.zoneId]: ridership,
+            sum: sum + ridership,
+            ...cloneDeep(zones)
+          },
+          ...cloneDeep(groups)
+        }
+      }
+
+      action.data.forEach((step) => {
+        const startTime = moment(step['start_time']).toISOString()
+        let d = 0
+        let a = 0
+        if (step.counts) {
+          const { departure = 0, arrival = 0 } = step.counts['' + action.zoneId]
+          d = departure
+          a = arrival
+        }
+        addZoneData(startTime, d, state.departureData, departureData)
+        addZoneData(startTime, a, state.arrivalData, arrivalData)
+      })
+
+      return {
+        departureData,
+        arrivalData
+      }
+
     case zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP:
       const removeZone = data => Object.entries(data)
         .reduce((updatedData, [date, step]) => {
           const {
-            [action.groupId]: {
-              [action.zoneId]: count,
+            ['' + action.groupId]: {
+              ['' + action.zoneId]: count,
+              sum,
               ...zones
             },
             ...groups
@@ -165,10 +207,10 @@ export const ridershipData = (state = {
 
           updatedData[date] = {
             [action.groupId]: {
-              ...zones,
-              sum: zones.sum - count
+              ...cloneDeep(zones),
+              sum: sum - count
             },
-            ...groups
+            ...cloneDeep(groups)
           }
 
           return updatedData
@@ -214,7 +256,8 @@ export const datetimeManagerInterfaceFlags = (state = {
         ...state,
         isFetchingRidershipData: true
       }
-    case t.RECEIVE_RIDERSHIP:
+    case t.RECEIVE_ALL_RIDERSHIP:
+    case t.RECEIVE_ZONE_RIDERSHIP:
       return {
         ...state,
         isFetchingRidershipData: false

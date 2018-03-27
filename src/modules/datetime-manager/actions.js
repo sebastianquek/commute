@@ -55,6 +55,18 @@ export const receiveAllRidership = (groups, data) => ({
   data
 })
 
+export const requestZoneRidership = zoneId => ({
+  type: t.REQUEST_ZONE_RIDERSHIP,
+  zoneId
+})
+
+export const receiveZoneRidership = (zoneId, groupId, data) => ({
+  type: t.RECEIVE_ZONE_RIDERSHIP,
+  zoneId,
+  groupId,
+  data
+})
+
 export const forceDatetimeSliderUpdate = () => ({
   type: t.FORCE_DATETIME_SLIDER_UPDATE
 })

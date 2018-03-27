@@ -1,23 +1,23 @@
 import moment from 'moment'
-import { select, call, put, take } from 'redux-saga/effects'
+import { select, call, put, take, takeEvery } from 'redux-saga/effects'
 import {
   requestAllRidership, fetchingRidership, requestRidershipError, receiveAllRidership,
-  forceDatetimeSliderUpdate, setDatetimeZoomDomain, setDataDomain
+  forceDatetimeSliderUpdate, setDatetimeZoomDomain, setDataDomain, receiveZoneRidership
 } from './actions'
 import { REQUEST_ALL_RIDERSHIP, SET_STEP, SET_START_DATETIME_BRUSH_DOMAIN } from './actionTypes'
 import {
   windowMinDateSelector, windowMaxDateSelector, stepSelector, datetimeBrushDomainSelector,
-  datetimeZoomDomainSelector
+  datetimeZoomDomainSelector, dataDomainsSelector
 } from './selectors'
 import zoneManager from '../zone-manager'
 
 export function * watchAndReplaceAllRidershipData () {
   while (true) {
-    const { zoneId, step } = yield take([
+    const { step } = yield take([
       REQUEST_ALL_RIDERSHIP, SET_STEP
     ])
 
-    const zoneIds = zoneId ? [zoneId] : yield select(zoneManager.selectors.allZoneIdsSelector)
+    const zoneIds = yield select(zoneManager.selectors.allZoneIdsSelector)
     if (zoneIds.length === 0) continue
 
     // Get current time window
@@ -39,6 +39,30 @@ export function * watchAndReplaceAllRidershipData () {
       yield put(requestRidershipError(err))
     }
   }
+}
+
+function * updateRidershipData ({ zoneId }) {
+  const interval = yield select(stepSelector)
+  const dateDomains = yield select(dataDomainsSelector)
+  for (let domain of dateDomains) {
+    const minDate = moment(domain[0])
+    const maxDate = moment(domain[1])
+    const duration = moment.duration(maxDate.diff(minDate))
+
+    try {
+      yield put(fetchingRidership())
+      const data = yield call(fetchRidership, zoneId, minDate, duration, interval)
+      const zoneIdToGroupIdMap = yield select(zoneManager.selectors.zoneIdsToGroupIdSelector)
+      yield put(receiveZoneRidership(zoneId, zoneIdToGroupIdMap[zoneId], data))
+      yield put(forceDatetimeSliderUpdate())
+    } catch (err) {
+      yield put(requestRidershipError(err))
+    }
+  }
+}
+
+export function * watchAndUpdateRidershipData () {
+  yield takeEvery(zoneManager.actionTypes.ADD_ZONE_TO_GROUP, updateRidershipData)
 }
 
 export function * watchAndUpdateDatetimeZoom () {
