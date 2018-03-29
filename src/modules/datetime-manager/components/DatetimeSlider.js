@@ -726,7 +726,7 @@ class DatetimeSlider extends React.Component {
           .attr('class', 'area')
           .attr('d', lineInverted)
           .attr('stroke', (d, i) => this.props.groupColors[d.key])
-          .attr('stroke-width', 3)
+          .attr('stroke-width', 2)
           .attr('vector-effect', 'non-scaling-stroke')
           .attr('fill', 'none')
 
@@ -737,7 +737,7 @@ class DatetimeSlider extends React.Component {
           .attr('class', 'area')
           .attr('d', line)
           .attr('stroke', (d, i) => this.props.groupColors[d.key])
-          .attr('stroke-width', 3)
+          .attr('stroke-width', 2)
           .attr('vector-effect', 'non-scaling-stroke')
           .attr('fill', 'none')
         break
