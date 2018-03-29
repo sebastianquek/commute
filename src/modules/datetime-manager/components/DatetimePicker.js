@@ -108,7 +108,7 @@ class DatetimePicker extends React.Component {
           fromMonth={this.props.minDate}
           toMonth={moment(this.props.maxDate).subtract(1, 'day').toDate()}
           disabledDays={{
-            after: this.props.maxDate,
+            after: moment(this.props.maxDate).subtract(1, 'day').toDate(),
             before: this.props.minDate
           }}
           onDayClick={this.handleDateChange}

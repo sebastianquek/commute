@@ -7,7 +7,6 @@ import omit from 'lodash.omit'
 import * as t from './actionTypes'
 import zoneManager from '../zone-manager'
 
-const windowDomainDaysOffset = 2
 const defaultZoomMinDate = moment('2016-07-10T00:00:00+08:00').toDate()
 const defaultZoomMaxDate = moment('2016-07-17T00:00:00+08:00').toDate()
 
@@ -59,17 +58,13 @@ export const datetimeZoomDomain = (state = [
 export const ridershipDomain = (state = {
   step: 'PT1H',
   windowDomain: [
-    moment(defaultZoomMinDate).subtract(windowDomainDaysOffset, 'days')
-      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-      .toDate(),
-    moment(defaultZoomMaxDate).add(windowDomainDaysOffset + 1, 'days')
-      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-      .toDate()
+    defaultZoomMinDate,
+    defaultZoomMaxDate
   ],
   dataDomain: [[]], // Array of intervals
   absoluteDomain: [
-    moment('2016-07-01T00:00:00+08:00').toDate(),
-    moment('2016-08-01T00:00:00+08:00').toDate()
+    defaultZoomMinDate,
+    defaultZoomMaxDate
   ]
 }, action) => {
   switch (action.type) {
