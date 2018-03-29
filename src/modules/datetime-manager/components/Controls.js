@@ -12,6 +12,10 @@ const Wrapper = styled.div`
 
 const ButtonGroup = styled.div`
   display: flex;
+
+  &:not(:last-of-type) {
+    margin-bottom: 1.6em;
+  }
 `
 
 const Button = styled.button`
@@ -82,6 +86,21 @@ class Controls extends React.Component {
         <ButtonGroup>
           {buttons}
         </ButtonGroup>
+        <Subheader>Ridership values</Subheader>
+        <ButtonGroup>
+          <Button
+            onClick={() => this.props.setAbsoluteRidership()}
+            disabled={this.props.showAbsoluteRidership}
+          >
+            Absolute
+          </Button>
+          <Button
+            onClick={() => this.props.setRelativeRidership()}
+            disabled={!this.props.showAbsoluteRidership}
+          >
+            Relative
+          </Button>
+        </ButtonGroup>
       </Wrapper>
     )
   }
@@ -90,7 +109,10 @@ class Controls extends React.Component {
 Controls.propTypes = {
   step: PropTypes.string.isRequired,
   isFetchingRidershipData: PropTypes.bool.isRequired,
-  setStep: PropTypes.func.isRequired
+  showAbsoluteRidership: PropTypes.bool.isRequired,
+  setStep: PropTypes.func.isRequired,
+  setAbsoluteRidership: PropTypes.func.isRequired,
+  setRelativeRidership: PropTypes.func.isRequired
 }
 
 export default Controls

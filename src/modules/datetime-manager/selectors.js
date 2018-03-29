@@ -22,3 +22,6 @@ export const shouldDatetimeSliderUpdate = state =>
 
 export const isFetchingRidershipData = state =>
   state.datetimeManagerInterfaceFlags.isFetchingRidershipData
+
+export const showAbsoluteRidershipSelector = state =>
+  state.datetimeManagerInterfaceFlags.showAbsoluteRidership
