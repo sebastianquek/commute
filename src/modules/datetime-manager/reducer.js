@@ -252,7 +252,8 @@ export const ridershipData = (state = {
 
 export const datetimeManagerInterfaceFlags = (state = {
   shouldDatetimeSliderUpdate: true,
-  isFetchingRidershipData: true
+  isFetchingRidershipData: true,
+  showAbsoluteRidership: true
 }, action) => {
   switch (action.type) {
     case t.FORCE_DATETIME_SLIDER_UPDATE:
@@ -275,6 +276,16 @@ export const datetimeManagerInterfaceFlags = (state = {
       return {
         ...state,
         isFetchingRidershipData: false
+      }
+    case t.SET_ABSOLUTE_RIDERSHIP:
+      return {
+        ...state,
+        showAbsoluteRidership: true
+      }
+    case t.SET_RELATIVE_RIDERSHIP:
+      return {
+        ...state,
+        showAbsoluteRidership: false
       }
     default:
       return state

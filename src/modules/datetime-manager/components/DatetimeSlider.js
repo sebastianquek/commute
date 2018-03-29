@@ -136,7 +136,8 @@ class DatetimeSlider extends React.Component {
     if (
       nextProps.shouldUpdate ||
       !isEqual(nextProps.zoneIds, this.props.zoneIds) ||
-      nextProps.chartFormat !== this.props.chartFormat
+      nextProps.chartFormat !== this.props.chartFormat ||
+      nextProps.showAbsoluteRidership !== this.props.showAbsoluteRidership
     ) {
       this.props = nextProps
       this.drawSlider()
@@ -190,14 +191,18 @@ class DatetimeSlider extends React.Component {
     const padding = { top: 14, right: 150, bottom: 14, left: 60 }
 
     let maxRidership
-    switch (this.props.chartFormat) {
-      case 'stack':
-        maxRidership = Math.max(this.getMaxStackSum(this.arrivalData), this.getMaxStackSum(this.departureData))
-        break
-      case 'line':
-      default:
-        maxRidership = Math.max(this.getMaxValue(this.arrivalData), this.getMaxValue(this.departureData))
-        break
+    if (this.props.showAbsoluteRidership) {
+      switch (this.props.chartFormat) {
+        case 'stack':
+          maxRidership = Math.max(this.getMaxStackSum(this.arrivalData), this.getMaxStackSum(this.departureData))
+          break
+        case 'line':
+        default:
+          maxRidership = Math.max(this.getMaxValue(this.arrivalData), this.getMaxValue(this.departureData))
+          break
+      }
+    } else {
+      maxRidership = 1
     }
 
     // Create scale functions
@@ -685,12 +690,12 @@ class DatetimeSlider extends React.Component {
       // Set departure values
       valuesG.merge(selectionWithData)
         .select('text.departure-value')
-        .text(d => d.numDepartures)
+        .text(d => Math.round(d.numDepartures) === d.numDepartures ? d.numDepartures : d.numDepartures.toFixed(2))
 
       // Set arrival values
       valuesG.merge(selectionWithData)
         .select('text.arrival-value')
-        .text(d => d.numArrivals)
+        .text(d => Math.round(d.numArrivals) === d.numArrivals ? d.numArrivals : d.numArrivals.toFixed(2))
     }
 
     switch (this.props.chartFormat) {
@@ -920,6 +925,7 @@ DatetimeSlider.propTypes = {
   groupColors: PropTypes.object.isRequired,
   isFetchingRidershipData: PropTypes.bool.isRequired,
   chartFormat: PropTypes.string.isRequired,
+  showAbsoluteRidership: PropTypes.bool.isRequired,
   setDatetimeBrushDomain: PropTypes.func.isRequired,
   setDatetimeZoomDomain: PropTypes.func.isRequired,
   resetForceDatetimeSliderUpdate: PropTypes.func.isRequired
