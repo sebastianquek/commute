@@ -49,7 +49,6 @@ function * updateRidershipData ({ zoneId }) {
   yield call(delay, 1000) // Debounce the fetching of API calls
 
   let zoneIds = [...bufferedZoneIds]
-  bufferedZoneIds = []
 
   const interval = yield select(stepSelector)
   const dateDomains = yield select(dataDomainsSelector)
@@ -63,6 +62,7 @@ function * updateRidershipData ({ zoneId }) {
       const data = yield call(fetchRidership, zoneIds, minDate, duration, interval)
       const zoneIdToGroupIdMap = yield select(zoneManager.selectors.zoneIdsToGroupIdSelector)
       yield put(receiveZoneRidership(zoneIds, zoneIdToGroupIdMap, data))
+      bufferedZoneIds = []
       yield put(forceDatetimeSliderUpdate())
     } catch (err) {
       yield put(requestRidershipError(err))
