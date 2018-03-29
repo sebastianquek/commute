@@ -10,6 +10,8 @@ const Button = styled.button`
   border: 1px ${({dottedBorder}) => dottedBorder ? 'dashed' : 'solid'} ${({theme}) => theme.colors.borderPrimary};
   height: 1.7rem;
   margin: 0.5rem;
+  min-height: 1.7rem;
+  min-width: 1.7rem;
   padding: 0;
   transform: rotate(45deg);
   transition: 0.2s all;
