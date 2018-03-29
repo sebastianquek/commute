@@ -99,6 +99,17 @@ export const zoneIdsAndGroupColorsSelector = createSelector(
   }
 )
 
+export const zoneIdsToGroupIdSelector = createSelector(
+  originGroupsSelector,
+  destinationGroupsSelector,
+  (origins, destinations) => {
+    const idMap = {}
+    origins.forEach(({ groupId, zoneIds }) => zoneIds.forEach(id => (idMap[id] = groupId)))
+    destinations.forEach(({ groupId, zoneIds }) => zoneIds.forEach(id => (idMap[id] = groupId)))
+    return idMap
+  }
+)
+
 export const nextGroupIdSelector = createSelector(
   allGroupIdsSelector,
   groupIds => groupIds.length > 0 ? Math.max(...groupIds) + 1 : 1

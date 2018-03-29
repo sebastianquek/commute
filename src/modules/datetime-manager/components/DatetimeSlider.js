@@ -136,12 +136,11 @@ class DatetimeSlider extends React.Component {
     if (
       nextProps.shouldUpdate ||
       !isEqual(nextProps.zoneIds, this.props.zoneIds) ||
-      nextProps.chartFormat !== this.props.chartFormat ||
-      d3.select(this.ref).select('svg').empty()
+      nextProps.chartFormat !== this.props.chartFormat
     ) {
       this.props = nextProps
-      this.props.resetForceDatetimeSliderUpdate()
       this.drawSlider()
+      this.props.resetForceDatetimeSliderUpdate()
     }
 
     if (nextProps.isFetchingRidershipData) {
@@ -150,7 +149,7 @@ class DatetimeSlider extends React.Component {
       this.hideSpinner()
     }
 
-    this.updateDomainLabel(nextProps.brushDomain.x)
+    this.updateDomainLabel(nextProps.brushDomain)
     return false
   }
 
@@ -184,7 +183,7 @@ class DatetimeSlider extends React.Component {
     const setDatetimeBrushDomain = throttle(this.props.setDatetimeBrushDomain, 500)
     const setDatetimeZoomDomain = throttle(this.props.setDatetimeZoomDomain, 500)
     const groupColors = this.props.groupColors
-    const brushDomain = this.props.brushDomain
+    let brushDomain = this.props.brushDomain
 
     const w = this.w
     const h = this.h / 2
@@ -219,6 +218,9 @@ class DatetimeSlider extends React.Component {
       .range([padding.top, h - padding.bottom])
       .nice()
 
+    // Calculate max zoom out value
+    const k = (xScale.range()[1] - xScale.range()[0]) / (xScale(this.props.zoomDomain[1]) - xScale(this.props.zoomDomain[0]))
+
     // Define axes
     const xAxis = d3.axisBottom()
       .scale(xScale)
@@ -247,7 +249,7 @@ class DatetimeSlider extends React.Component {
 
     // Define zoom
     const zoom = d3.zoom()
-      .scaleExtent([1, 20])
+      .scaleExtent([k, 20])
       .translateExtent([
         [0, 0],
         [w, h]]
@@ -517,7 +519,7 @@ class DatetimeSlider extends React.Component {
       .append('g')
       .attr('class', 'brush')
       .call(brushX)
-      .call(brushX.move, this.props.brushDomain.x.map(xScale))
+      .call(brushX.move, this.props.brushDomain.map(xScale))
 
     brush.selectAll('.overlay')
       .on('mousedown touchstart', clearBrush)
@@ -553,11 +555,11 @@ class DatetimeSlider extends React.Component {
         d1[1] = d3.timeHour.offset(d1[0])
       }
       if (
-        !moment(d1[0]).isSame(brushDomain.x[0]) ||
-        !moment(d1[1]).isSame(brushDomain.x[1])
+        !moment(d1[0]).isSame(brushDomain[0]) ||
+        !moment(d1[1]).isSame(brushDomain[1])
       ) {
-        setDatetimeBrushDomain({x: d1})
-        brushDomain.x = d1
+        setDatetimeBrushDomain(d1)
+        brushDomain = d1
       }
       brushDomainAxisG.call(brushDomainAxis.tickValues(d1))
       brushDomainBgMask.attr('x', xScale(d1[0]))
@@ -854,15 +856,14 @@ class DatetimeSlider extends React.Component {
           .scale(d3.event.transform.k)
       )
 
-      setDatetimeZoomDomain({x: newScale.domain()})
+      setDatetimeZoomDomain(newScale.domain())
     }
 
-    const k = (xScale.range()[1] - xScale.range()[0]) / (xScale(this.props.zoomDomain.x[1]) - xScale(this.props.zoomDomain.x[0]))
     svg.call(
       zoom.transform,
       d3.zoomIdentity
         .scale(k)
-        .translate(-xScale(this.props.zoomDomain.x[0]) + padding.left / k, 0)
+        .translate(-xScale(this.props.zoomDomain[0]) + padding.left / k, 0)
     )
   }
 
@@ -913,8 +914,8 @@ class DatetimeSlider extends React.Component {
 }
 
 DatetimeSlider.propTypes = {
-  brushDomain: PropTypes.object.isRequired,
-  zoomDomain: PropTypes.object.isRequired,
+  brushDomain: PropTypes.array.isRequired,
+  zoomDomain: PropTypes.array.isRequired,
   zoneIds: PropTypes.array.isRequired,
   groupColors: PropTypes.object.isRequired,
   isFetchingRidershipData: PropTypes.bool.isRequired,

@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import moment from 'moment'
 import DayPicker from 'react-day-picker'
 import 'react-day-picker/lib/style.css'
 import Subheader from '../../core/components/Subheader'
@@ -105,9 +106,9 @@ class DatetimePicker extends React.Component {
         <DayPicker
           month={this.props.brushedDateDomain[0]}
           fromMonth={this.props.minDate}
-          toMonth={this.props.maxDate}
+          toMonth={moment(this.props.maxDate).subtract(1, 'day').toDate()}
           disabledDays={{
-            after: this.props.maxDate,
+            after: moment(this.props.maxDate).subtract(1, 'day').toDate(),
             before: this.props.minDate
           }}
           onDayClick={this.handleDateChange}

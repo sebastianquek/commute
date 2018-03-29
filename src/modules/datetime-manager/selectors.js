@@ -1,25 +1,21 @@
-import { createSelector } from 'reselect'
+import moment from 'moment'
 
-export const brushDomainSelector = createSelector(
-  state => state.datetimeBrushDomain.x,
-  state => state.datetimeBrushDomain.y,
-  (x, y) => ({x, y})
-)
-
-export const zoomDomainSelector = createSelector(
-  state => state.datetimeZoomDomain.x,
-  state => state.datetimeZoomDomain.y,
-  (x, y) => ({x, y})
-)
-
-export const minDateSelector = state => state.ridershipDomain.minX
-export const maxDateSelector = state => state.ridershipDomain.maxX
+export const absoluteMinDateSelector = state => state.ridershipDomain.absoluteDomain[0]
+export const absoluteMaxDateSelector = state => state.ridershipDomain.absoluteDomain[1]
+export const dataDomainsSelector = state => state.ridershipDomain.dataDomain
+export const windowMinDateSelector = state => state.ridershipDomain.windowDomain[0]
+export const windowMaxDateSelector = state => state.ridershipDomain.windowDomain[1]
 export const stepSelector = state => state.ridershipDomain.step
 
-export const brushedDateDomainSelector = state => state.datetimeBrushDomain.x
-export const zoomedDateDomainSelector = state => state.datetimeZoomDomain.x
+export const datetimeBrushDomainSelector = state => state.datetimeBrushDomain
+export const datetimeZoomDomainSelector = state => state.datetimeZoomDomain
 
-export const ridershipDataSelector = state => state.ridershipData
+export const ridershipDataSelector = state => ({
+  departureData: Object.entries(state.ridershipData.departureData)
+    .map(([date, step]) => ({...step, date: moment(date)})),
+  arrivalData: Object.entries(state.ridershipData.arrivalData)
+    .map(([date, step]) => ({...step, date: moment(date)}))
+})
 
 export const shouldDatetimeSliderUpdate = state =>
   state.datetimeManagerInterfaceFlags.shouldDatetimeSliderUpdate

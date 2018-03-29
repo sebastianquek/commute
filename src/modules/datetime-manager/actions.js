@@ -1,5 +1,5 @@
 import * as t from './actionTypes'
-import { maxDateSelector } from './selectors'
+import { absoluteMaxDateSelector } from './selectors'
 
 export const setDatetimeBrushDomain = domain => ({
   type: t.SET_DATETIME_BRUSH_DOMAIN,
@@ -11,7 +11,7 @@ export const setStartDatetime = datetime => {
     dispatch({
       type: t.SET_START_DATETIME_BRUSH_DOMAIN,
       startDatetime: datetime,
-      maxDate: maxDateSelector(getState())
+      maxDate: absoluteMaxDateSelector(getState())
     })
   }
 }
@@ -26,8 +26,14 @@ export const setStep = step => ({
   step
 })
 
-export const requestRidership = () => ({
-  type: t.REQUEST_RIDERSHIP
+export const setWindowDomain = domain => ({
+  type: t.SET_WINDOW_DOMAIN,
+  domain
+})
+
+export const setDataDomain = domain => ({
+  type: t.SET_DATA_DOMAIN,
+  domain
 })
 
 export const fetchingRidership = () => ({
@@ -39,10 +45,25 @@ export const requestRidershipError = error => ({
   error
 })
 
-export const receiveRidership = (clearExistingRidershipData, groups, data) => ({
-  type: t.RECEIVE_RIDERSHIP,
-  clearExistingRidershipData,
+export const requestAllRidership = () => ({
+  type: t.REQUEST_ALL_RIDERSHIP
+})
+
+export const receiveAllRidership = (groups, data) => ({
+  type: t.RECEIVE_ALL_RIDERSHIP,
   groups,
+  data
+})
+
+export const requestZoneRidership = zoneIds => ({
+  type: t.REQUEST_ZONE_RIDERSHIP,
+  zoneIds
+})
+
+export const receiveZoneRidership = (zoneIds, zoneIdToGroupIdMap, data) => ({
+  type: t.RECEIVE_ZONE_RIDERSHIP,
+  zoneIds,
+  zoneIdToGroupIdMap,
   data
 })
 
