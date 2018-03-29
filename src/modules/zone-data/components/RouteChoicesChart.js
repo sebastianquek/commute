@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import * as d3 from 'd3'
+import { shouldTextBeDark } from '../../../utils/randomColor'
+import theme from '../../../utils/theme'
 
 const Chart = styled.div`
   .links path {
@@ -32,7 +34,6 @@ const Chart = styled.div`
     font-size: 0.7rem;
     text-anchor: middle;
     pointer-events: none;
-    fill: #4F4F4F;
   }
 `
 
@@ -159,6 +160,7 @@ class RouteChoicesChart extends Component {
     nodeElements.append('text')
       .attr('class', 'group-number')
       .attr('y', '0.26rem')
+      .attr('fill', d => shouldTextBeDark(d.color) ? theme.colors.textPrimary : theme.colors.textSecondaryAlt)
       .text(d => d.group)
   }
 

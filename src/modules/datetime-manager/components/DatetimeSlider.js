@@ -8,6 +8,8 @@ import moment from 'moment'
 import textures from 'textures'
 import Subheader from '../../core/components/Subheader'
 import Spinner from '../../core/components/Spinner'
+import { shouldTextBeDark } from '../../../utils/randomColor'
+import theme from '../../../utils/theme'
 
 const Wrapper = styled.div`
   display: flex;
@@ -657,8 +659,8 @@ class DatetimeSlider extends React.Component {
         .attr('class', 'key-rect')
         .attr('width', 18)
         .attr('height', 18)
-        .attr('rx', 4)
-        .attr('ry', 4)
+        .attr('rx', 3)
+        .attr('ry', 3)
         .attr('stroke', '#4F4F4F')
         .attr('transform', 'rotate(45)')
         .attr('y', -12)
@@ -685,6 +687,7 @@ class DatetimeSlider extends React.Component {
 
       valuesG.merge(selectionWithData)
         .select('text.key-value')
+        .attr('fill', d => shouldTextBeDark(groupColors[d.key]) ? theme.colors.textPrimary : theme.colors.textSecondaryAlt)
         .text(d => d.key)
 
       // Set departure values
