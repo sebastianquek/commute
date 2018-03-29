@@ -74,3 +74,11 @@ export const forceDatetimeSliderUpdate = () => ({
 export const resetForceDatetimeSliderUpdate = () => ({
   type: t.RESET_FORCE_DATETIME_SLIDER_UPDATE
 })
+
+export const setAbsoluteRidership = () => ({
+  type: t.SET_ABSOLUTE_RIDERSHIP
+})
+
+export const setRelativeRidership = () => ({
+  type: t.SET_RELATIVE_RIDERSHIP
+})
