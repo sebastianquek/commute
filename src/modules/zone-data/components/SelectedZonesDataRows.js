@@ -22,7 +22,7 @@ const SelectedZonesDataRows = (props) => {
             zoneColor={group.color}>
             <SelectedZoneDataRowContent
               zoneComposition={group.groupData}
-              zoneJourneys={props.zoneJourneys[key].groupData} />
+            />
           </ZoneDataRow>
         </ScrollableAnchor>
       )
