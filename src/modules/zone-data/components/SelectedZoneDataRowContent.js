@@ -43,10 +43,10 @@ const SubDetail = styled.div`
 const SelectedZoneDataRowContent = (props) => {
   let temp = []
   for (let i = 0; i < props.zoneComposition.length; i++) {
-    const mainDetail = get(props.zoneComposition, [i, 'zoneData', 'SUBZONE_N'], 'HARBOURFRONT HARBOURFRONT')
-    const subDetail = get(props.zoneComposition, [i, 'zoneData', 'PLN_AREA_N'], 'HARBOURFRONT HARBOURFRONT HARBOURFRONT')
+    const mainDetail = get(props.zoneComposition, [i, 'zoneData', 'SUBZONE_N'], '')
+    const subDetail = get(props.zoneComposition, [i, 'zoneData', 'PLN_AREA_N'], '')
     temp.push(
-      <GridElement>
+      <GridElement key={i}>
         <ZoneButton
           color={color.next().value}
           hover={false}
