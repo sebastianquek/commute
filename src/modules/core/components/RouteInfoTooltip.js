@@ -124,11 +124,11 @@ const RouteInfoTooltip = ({ link, durationBarsWidth, x, y, hidden, maxDuration }
   return (
     <Wrapper x={x} y={y} hidden={hidden} className='tooltip'>
       <ZoneInfo>
-        <ZoneIcon><ZoneButton animate={false} hover={false} color={link.sourceColor}>{link.originZone}</ZoneButton></ZoneIcon>
+        <ZoneIcon><ZoneButton animate={false} hover={false} color={link.sourceColor} circle={link.sourceColor !== '#ddd'}>{link.originZone}</ZoneButton></ZoneIcon>
         <ZoneName>{link.originZoneName}</ZoneName>
         <Arrow>↓</Arrow>
         <div><strong>{link.count}</strong> commuter{link.count > 1 ? 's' : ''} took <strong>{Math.round(link.totalDuration / 60)}</strong> mins{link.count > 1 ? ' on the average' : ''}</div>
-        <ZoneIcon><ZoneButton animate={false} hover={false} color={link.targetColor}>{link.destinationZone}</ZoneButton></ZoneIcon>
+        <ZoneIcon><ZoneButton animate={false} hover={false} color={link.targetColor} circle={link.targetColor !== '#ddd'}>{link.destinationZone}</ZoneButton></ZoneIcon>
         <ZoneName>{link.destinationZoneName}</ZoneName>
       </ZoneInfo>
       <div>
