@@ -12,32 +12,25 @@ export function shouldTextBeDark (color) {
 }
 
 function * colorGenerator () {
-  const hues = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
-  let currentHues = [...hues]
+  const colors = ['#8dd3c7', '#bc80bd', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5']
+  let currentColors = [...colors]
 
+  let i = 0
   while (true) {
-    if (currentHues.length === 0) {
-      currentHues = hues
+    if (currentColors.length === 0) {
+      currentColors = [...colors]
+      if (++i === 3) i = 0
+      if (i > 0) {
+        const delta = i * 6
+        currentColors = currentColors.map(c => chroma(c).set('lch.c', `+${delta}`).hex())
+      }
     }
 
-    let idx = Math.floor(Math.random() * currentHues.length)
-    let hue = currentHues[idx]
-    currentHues.splice(idx, 1)
+    let idx = Math.floor(Math.random() * currentColors.length)
+    let hue = currentColors[idx]
+    currentColors.splice(idx, 1)
 
-    let foundColor = false
-    let color
-    let count = 0
-    while (!foundColor) {
-      // Use normal random colors after 50 attempts to get luminous ones
-      color = ++count > 50 ? randomColor({hue: hue}) : randomColor({luminosity: 'light', hue: hue})
-      const hcl = chroma(color).hcl()
-      foundColor = count >= 100 || // Give up after 100 attempts
-        (hcl[0] >= 0 && hcl[0] <= 360 &&
-        hcl[1] >= 20 && hcl[1] <= 100 &&
-        hcl[2] >= 50 && hcl[2] <= 80)
-    }
-
-    yield color
+    yield hue
   }
 }
 
