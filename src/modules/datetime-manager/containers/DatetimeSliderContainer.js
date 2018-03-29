@@ -5,7 +5,8 @@ import {
 } from '../actions'
 import {
   datetimeBrushDomainSelector, datetimeZoomDomainSelector, stepSelector,
-  ridershipDataSelector, shouldDatetimeSliderUpdate, isFetchingRidershipData
+  ridershipDataSelector, shouldDatetimeSliderUpdate, isFetchingRidershipData,
+  showAbsoluteRidershipSelector
 } from '../selectors'
 import zoneManager from '../../zone-manager'
 import DatetimeSlider from '../components/DatetimeSlider'
@@ -20,6 +21,7 @@ const mapStateToProps = (state, ownProps) => {
     zoneIds: zoneManager.selectors.allZoneIdsSelector(state),
     shouldUpdate: shouldDatetimeSliderUpdate(state),
     isFetchingRidershipData: isFetchingRidershipData(state),
+    showAbsoluteRidership: showAbsoluteRidershipSelector(state),
     ...ownProps
   }
 }
