@@ -106,11 +106,13 @@ const categorizedZones = (state = initialZones, action) => {
 
 const subgraphGroups = (state = {
   1: {
+    groupId: 1,
     color: c.next().value,
     zoneIds: [10, 11, 12],
     hidden: false
   },
   2: {
+    groupId: 2,
     color: c.next().value,
     zoneIds: [13, 14, 15],
     hidden: false

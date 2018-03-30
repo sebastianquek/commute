@@ -34,14 +34,20 @@ class Subgraphs extends React.Component {
   }
 
   render () {
+    const groupComponents = this.props.groups.map((group, idx) =>
+      <SubgraphGroupButtonContainer
+        key={group.groupId}
+        groupId={group.groupId}
+        color={group.color}
+        hidden={group.hidden}>
+        {String.fromCharCode('A'.charCodeAt() + idx)}
+      </SubgraphGroupButtonContainer>
+    )
     return (
       <Container>
         <Label>Subgraphs</Label>
         <Children>
-          <SubgraphGroupButtonContainer
-            subgraphGroupId={1}
-          >
-          </SubgraphGroupButtonContainer>
+          {groupComponents}
         </Children>
       </Container>
     )
@@ -49,6 +55,7 @@ class Subgraphs extends React.Component {
 }
 
 Subgraphs.propTypes = {
+  groups: PropTypes.array,
   updateScrollbarVisbility: PropTypes.func
 }
 

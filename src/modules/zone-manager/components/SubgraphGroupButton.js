@@ -1,58 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import ZoneButton from '../../core/components/ZoneButton'
+import chroma from 'chroma-js'
 import { shouldTextBeDark } from '../../../utils/randomColor'
+import { ZoneButtonWithDelete, OptionButtons, OptionButton, DeleteButton } from './SelectedGroupButton'
 
 const Wrapper = styled.div`
   align-items: center;  
   display: flex;
-`
-
-const ZoneButtonWithDelete = styled(ZoneButton)`
-`
-
-const OptionButtons = styled.div`
-  align-items: center;
-  background-color: ${({color}) => color};
-  border-radius: 0 ${({theme}) => theme.borderRadius} ${({theme}) => theme.borderRadius};
-  display: flex;
-  margin-left: -1.8em;
-  margin-right: 1.8em;
-  opacity: 0;
-  padding: 0.2em 0.2em 0.2em 1.2em;
-  transform: translate(-10px, 0);
-  transition: 0.2s all;
-
-  ${ZoneButtonWithDelete}:hover + & {
-    opacity: 1;
-    transform: translate(8px, -1px);
-  }
-
-  :hover {
-    opacity: 1;
-    transform: translate(8px, 0);
-  }
-`
-
-const OptionButton = styled.button`
-  align-items: center;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  margin: 0;
-  padding: 0 0.2em;
-
-  svg {
-    fill: ${({darkText, theme}) => darkText ? theme.colors.iconPrimary : theme.colors.iconPrimaryAlt};
-    height: 1.3em;
-    width: 1.3em;
-  }
-
-  :focus {
-    outline: none;
-  }
 `
 
 const HideButton = OptionButton.extend`
@@ -61,26 +16,20 @@ const HideButton = OptionButton.extend`
   }
 `
 
-const DeleteButton = OptionButton.extend`
-  :hover svg {
-    fill: ${({theme}) => theme.colors.iconWarning};
-  }
-`
-
 const SelectedGroupButton = (props) => {
   return (
     <Wrapper>
       <ZoneButtonWithDelete
-        color={props.color}
+        color={props.hidden ? 'white' : props.color}
         title="Scroll to subgraph group's information"
-        onClick={() => props.onClick(props.subgraphGroupId)}
+        onClick={() => props.onClick(props.groupId)}
         dottedBorder={props.hidden}
         roundedSquare>
         {props.children}
       </ZoneButtonWithDelete>
-      <OptionButtons color={props.color}>
+      <OptionButtons color={props.hidden ? chroma(props.color).brighten(0.35).css() : props.color}>
         <HideButton
-          onClick={() => props.onClickHide(props.subgraphGroupId)}
+          onClick={() => props.hidden ? props.onClickShow(props.groupId) : props.onClickHide(props.groupId)}
           darkText={shouldTextBeDark(props.color)}
           title={props.hidden ? 'Show' : 'Hide'}
         >
@@ -90,7 +39,7 @@ const SelectedGroupButton = (props) => {
           }
         </HideButton>
         <DeleteButton
-          onClick={() => props.onClickDelete(props.subgraphGroupId)}
+          onClick={() => props.onClickDelete(props.groupId)}
           darkText={shouldTextBeDark(props.color)}
           title='Delete'
         >
@@ -104,11 +53,12 @@ const SelectedGroupButton = (props) => {
 }
 
 SelectedGroupButton.propTypes = {
-  subgraphGroupId: PropTypes.number,
+  groupId: PropTypes.number,
   color: PropTypes.string,
   hidden: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
   onClickHide: PropTypes.func.isRequired,
+  onClickShow: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
   children: PropTypes.node
 }

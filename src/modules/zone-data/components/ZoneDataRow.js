@@ -58,7 +58,7 @@ ZoneDataRow.propTypes = {
   zoneName: PropTypes.string,
   dottedBorder: PropTypes.bool,
   zoneColor: PropTypes.string,
-  zoneNum: PropTypes.number,
+  zoneNum: PropTypes.any,
   circle: PropTypes.bool,
   roundedSquare: PropTypes.bool
 }

@@ -6,7 +6,6 @@ import color from '../../../utils/randomColor'
 
 const Wrapper = styled.div`
   display: flex;
-  margin-left: ${({small}) => small ? '-0.5em' : '0'};
   margin-bottom: ${({small}) => small ? '-0.2em' : '0'};
   margin-top: ${({small}) => small ? '-0.2em' : '0'};
 `

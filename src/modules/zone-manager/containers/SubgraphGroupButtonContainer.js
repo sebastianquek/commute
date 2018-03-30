@@ -2,19 +2,16 @@ import { connect } from 'react-redux'
 import { goToAnchor } from 'react-scrollable-anchor'
 import SubgraphGroupButton from '../components/SubgraphGroupButton'
 import {
-  setEditingGroupId, setEditSelectionMode, removeGroup
+  removeSubgraphGroup, showSubgraphGroup, hideSubgraphGroup
 } from '../actions'
 
 const mapStateToProps = (state, ownProps) => ownProps
 
 const mapDispatchToProps = dispatch => ({
-  // onClick: groupId => goToAnchor('' + groupId, false),
-  // onClickEdit: groupId => {
-  //   dispatch(setEditingGroupId(groupId))
-  //   dispatch(setEditSelectionMode())
-  //   goToAnchor('' + groupId, false)
-  // },
-  // onClickDelete: groupId => dispatch(removeGroup(groupId))
+  onClick: groupId => goToAnchor('subgraph-' + groupId, false),
+  onClickShow: groupId => dispatch(showSubgraphGroup(groupId)),
+  onClickHide: groupId => dispatch(hideSubgraphGroup(groupId)),
+  onClickDelete: groupId => dispatch(removeSubgraphGroup(groupId))
 })
 
 export default connect(

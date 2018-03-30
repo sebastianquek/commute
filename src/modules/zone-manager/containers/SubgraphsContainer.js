@@ -1,7 +1,9 @@
 import { connect } from 'react-redux'
 import Subgraphs from '../components/Subgraphs'
+import { subgraphGroupDataSelector } from '../selectors'
 
 const mapStateToProps = (state, ownProps) => ({
+  groups: subgraphGroupDataSelector(state),
   ...ownProps
 })
 

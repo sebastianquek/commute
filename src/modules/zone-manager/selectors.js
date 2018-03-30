@@ -136,7 +136,12 @@ export const emptyGroupsIdSelector = createSelector(
 
 export const subgraphGroupIdsSelector = createDeepEqualSelector(
   subgraphGroupsSelector,
-  groups => groups.map(g => g.groupId)
+  groups => Object.keys(groups)
+)
+
+export const subgraphGroupDataSelector = createDeepEqualSelector(
+  subgraphGroupsSelector,
+  groups => Object.values(groups)
 )
 
 export const nextSubgraphGroupIdSelector = createSelector(

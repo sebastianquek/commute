@@ -7,7 +7,7 @@ import { fadeSlideUpRotated } from '../../../utils/animations'
 const Button = styled.button` 
   background-color: ${({color}) => color};
   border-radius: ${({circle, theme}) => circle ? '100%' : theme.borderRadius};
-  border: 1px ${({dottedBorder}) => dottedBorder ? 'dashed' : 'solid'} ${({theme}) => theme.colors.borderPrimary};
+  border: ${({borderWidth}) => borderWidth || '1px'} ${({dottedBorder}) => dottedBorder ? 'dashed' : 'solid'} ${({borderColor, theme}) => borderColor || theme.colors.borderPrimary};
   min-height: ${({roundedSquare, circle}) => (roundedSquare || circle) ? '2rem' : '1.7rem'};
   height: ${({roundedSquare, circle}) => (roundedSquare || circle) ? '2rem' : '1.7rem'};
   margin: ${({roundedSquare, circle}) => (roundedSquare || circle) && css`0.3rem`} 0.5rem;
@@ -69,6 +69,8 @@ const ZoneButton = (props) => {
 
 ZoneButton.propTypes = {
   color: PropTypes.string,
+  borderColor: PropTypes.string,
+  borderWidth: PropTypes.string,
   onClick: PropTypes.func,
   dottedBorder: PropTypes.bool,
   hover: PropTypes.bool,

@@ -16,20 +16,15 @@ const Wrapper = styled.div`
 const LandUseTypesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  grid-gap: 0.2em 1em;
+  grid-gap: 0.2em 0.5em;
 `
 
-const SelectLandUseButton = styled.button`
-  background-color: transparent;
+const SelectLandUseButton = styled.div`
   color: ${({theme}) => theme.colors.textPrimary};
-  font-family: inherit;
-  font-size: inherit;
-  text-align: left;
   border: 1px solid transparent;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s;
-  outline: none;
   &:hover {
     border: 1px solid #4a90e2;
   }
@@ -140,7 +135,7 @@ class SubgraphSelection extends Component {
         </LandUseTypesGrid>
         <SubmitButton
           disabled={this.state.selectedLandUse.length === 0}
-          title={this.state.selectedLandUse.length === 0 && 'Please select a land use type'}
+          title={this.state.selectedLandUse.length === 0 ? 'Please select a land use type' : ''}
         >
           {this.props.isFetchingSubgraphs ? <Spinner /> : 'Find Subgraphs'}
         </SubmitButton>
