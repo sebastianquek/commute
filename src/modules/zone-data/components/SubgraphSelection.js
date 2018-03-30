@@ -65,7 +65,7 @@ const SubmitButton = styled.button`
     &:hover {
       background-color: #4a90e2;
       color: white;
-  }
+    }
   `}
 
   ${({disabled}) => disabled && css`
