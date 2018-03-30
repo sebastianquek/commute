@@ -3,11 +3,14 @@ import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import Subheader from '../../core/components/Subheader'
 import ZoneDetails from '../../core/components/ZoneDetails'
+import Spinner from '../../core/components/Spinner'
 
 const Wrapper = styled.div`
   padding: 0.4rem 1.7rem 0 1.5rem;
   font-family: Barlow, sans-serif;
   color: ${({theme}) => theme.colors.textPrimary};
+  display: flex;
+  flex-direction: column;
 `
 
 const LandUseTypesGrid = styled.div`
@@ -35,6 +38,40 @@ const SelectLandUseButton = styled.button`
     background-color: #4a90e2;
     border-color: #4a90e2;
     color: white;
+  `}
+`
+
+const SubmitButton = styled.button`
+  background-color: transparent;
+  color: ${({theme}) => theme.colors.textPrimary};
+  font-family: inherit;
+  font-size: ${({theme}) => theme.typography.headerSize};
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  border: 1px solid #4a90e2;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  outline: none;
+  padding: 0.5em 0.8em;
+  align-self: flex-end;
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 140px;
+
+  ${({disabled}) => !disabled && css`
+    &:hover {
+      background-color: #4a90e2;
+      color: white;
+  }
+  `}
+
+  ${({disabled}) => disabled && css`
+    border-color: #bbb;
+    color: #bbb;
+    cursor: auto;
   `}
 `
 
@@ -101,13 +138,23 @@ class SubgraphSelection extends Component {
         <LandUseTypesGrid>
           {checkboxes}
         </LandUseTypesGrid>
+        <SubmitButton
+          disabled={this.state.selectedLandUse.length === 0}
+          title={this.state.selectedLandUse.length === 0 && 'Please select a land use type'}
+        >
+          {this.props.isFetchingSubgraphs ? <Spinner /> : 'Find Subgraphs'}
+        </SubmitButton>
       </Wrapper>
     )
   }
 }
 
 SubgraphSelection.propTypes = {
+  isFetchingSubgraphs: PropTypes.bool
+}
 
+SubgraphSelection.defaultProps = {
+  isFetchingSubgraphs: false
 }
 
 export default SubgraphSelection
