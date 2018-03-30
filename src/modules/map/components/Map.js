@@ -18,9 +18,9 @@ export class Map extends Component {
     super(props)
     this.state = {
       viewport: {
-        latitude: 1.3450,
-        longitude: 103.8132,
-        zoom: 11,
+        latitude: 1.286052,
+        longitude: 103.916023,
+        zoom: 10.84,
         bearing: 0,
         pitch: 0,
         width: 500,
