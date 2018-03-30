@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import RouteInfoTooltip from '../../core/components/RouteInfoTooltip'
 import TooltipWrapper from '../../core/components/Tooltip'
-import ZoneDetails from '../../core/components/ZoneDetails';
+import ZoneDetails from '../../core/components/ZoneDetails'
 
 // Tooltip for elements on the map
 const Tooltip = (props) => {
