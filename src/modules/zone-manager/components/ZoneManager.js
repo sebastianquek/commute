@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import OriginsCategoryContainer from '../containers/OriginsCategoryContainer'
 import DestinationsCategoryContainer from '../containers/DestinationsCategoryContainer'
+import SubgraphsContainer from '../containers/SubgraphsContainer'
 
 const FixedWrapper = styled.div`
   height: 100%;
@@ -37,6 +38,14 @@ const ScrollWrapper = styled.div`
   }
 `
 
+const Separator = styled.div`
+  border-top: 1px solid ${({theme}) => theme.colors.borderSecondary};
+  width: ${({isScrollbarVisible}) => isScrollbarVisible ? '6.5rem' : '5.5rem'};
+  margin-top: 1em;
+  margin-left: -0.6em;
+  padding-bottom: 1em;
+`
+
 class ZoneManager extends React.Component {
   constructor (props) {
     super(props)
@@ -68,6 +77,8 @@ class ZoneManager extends React.Component {
         <ScrollWrapper innerRef={ref => (this.scrollRef = ref)}>
           <OriginsCategoryContainer updateScrollbarVisbility={this.updateScrollbarVisbility}/>
           <DestinationsCategoryContainer updateScrollbarVisbility={this.updateScrollbarVisbility}/>
+          <Separator />
+          <SubgraphsContainer updateScrollbarVisbility={this.updateScrollbarVisbility}/>
         </ScrollWrapper>
       </FixedWrapper>
     )
