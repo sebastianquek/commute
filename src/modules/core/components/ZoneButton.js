@@ -4,11 +4,6 @@ import styled, { css } from 'styled-components'
 import { shouldTextBeDark } from '../../../utils/randomColor'
 import { fadeSlideUpRotated } from '../../../utils/animations'
 
-const ScaleWrapper = styled.div`
-  display: inline-block;
-  ${({small}) => small && css`transform: scale(0.6);`}
-`
-
 const Button = styled.button` 
   background-color: ${({color}) => color};
   border-radius: ${({circle, theme}) => circle ? '100%' : theme.borderRadius};
@@ -22,16 +17,28 @@ const Button = styled.button`
   width: ${({roundedSquare, circle}) => (roundedSquare || circle) ? '2rem' : '1.7rem'};
   z-index: 2;
 
-  ${({roundedSquare, circle}) => (!roundedSquare && !circle) && css`transform: rotate(45deg);`}
+  ${({roundedSquare, circle, small}) => {
+    if (!roundedSquare && !circle) {
+      return css`transform: rotate(45deg) ${small && 'scale(0.6)'};`
+    } else {
+      return css`transform: ${small && 'scale(0.6)'};`
+    }
+  }}
   ${({animate}) => animate && css`animation: ${fadeSlideUpRotated} 0.7s ease;`}
   
   ${({hover}) => hover && css`
     :hover {
       box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 10px 0;
       cursor: pointer;
-      transform: ${({roundedSquare, circle}) => (!roundedSquare && !circle) && css`rotate(45deg)`} translate(-1px, -1px);
+    ${({roundedSquare, circle, small}) => {
+    if (!roundedSquare && !circle) {
+      return css`transform: rotate(45deg) ${small && 'scale(0.6)'} translate(-1px, -1px);`
+    } else {
+      return css`transform: ${small && 'scale(0.6)'} translate(-1px, -1px);`
     }
-  `}
+  }}
+    }
+    `}
 
   > span {
     color: ${({darkText, theme}) => darkText ? theme.colors.textPrimary : theme.colors.textSecondaryAlt};
@@ -40,25 +47,23 @@ const Button = styled.button`
     font-size: 1rem;
     font-weight: 600;
 
-    ${({roundedSquare, circle}) => (!roundedSquare && !circle) && css`transform: rotate(-45deg);`}
+  ${({roundedSquare, circle}) => (!roundedSquare && !circle) && css`transform: rotate(-45deg);`}
   }
 
   :focus {
     outline: none;
   }
-`
+  `
 
 const ZoneButton = (props) => {
   return (
-    <ScaleWrapper small={props.small}>
-      <Button
-        onClick={props.onClick}
-        {...props}
-        darkText={shouldTextBeDark(props.color)}
-      >
-        <span>{props.children}</span>
-      </Button>
-    </ScaleWrapper>
+    <Button
+      onClick={props.onClick}
+      {...props}
+      darkText={shouldTextBeDark(props.color)}
+    >
+      <span>{props.children}</span>
+    </Button>
   )
 }
 
