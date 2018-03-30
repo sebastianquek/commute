@@ -21,6 +21,10 @@ const List = styled.div`
   & > *:not(:first-child) {
     margin-top: 1.8em;
   }
+
+  & > *:last-child {
+    margin-bottom: 2em;
+  }
 `
 
 const ZoneDataList = (props) => {
