@@ -4,6 +4,11 @@ import styled, { css } from 'styled-components'
 import { shouldTextBeDark } from '../../../utils/randomColor'
 import { fadeSlideUpRotated } from '../../../utils/animations'
 
+const ScaleWrapper = styled.div`
+  display: inline-block;
+  ${({small}) => small && css`transform: scale(0.6);`}
+`
+
 const Button = styled.button` 
   background-color: ${({color}) => color};
   border-radius: ${({circle, theme}) => circle ? '100%' : theme.borderRadius};
@@ -45,13 +50,15 @@ const Button = styled.button`
 
 const ZoneButton = (props) => {
   return (
-    <Button
-      onClick={props.onClick}
-      {...props}
-      darkText={shouldTextBeDark(props.color)}
-    >
-      <span>{props.children}</span>
-    </Button>
+    <ScaleWrapper small={props.small}>
+      <Button
+        onClick={props.onClick}
+        {...props}
+        darkText={shouldTextBeDark(props.color)}
+      >
+        <span>{props.children}</span>
+      </Button>
+    </ScaleWrapper>
   )
 }
 
@@ -61,6 +68,7 @@ ZoneButton.propTypes = {
   dottedBorder: PropTypes.bool,
   hover: PropTypes.bool,
   animate: PropTypes.bool,
+  small: PropTypes.bool,
   children: PropTypes.node
 }
 
@@ -70,7 +78,8 @@ ZoneButton.defaultProps = {
   hover: true,
   animate: true,
   circle: false,
-  roundedSquare: false
+  roundedSquare: false,
+  small: false
 }
 
 export default ZoneButton

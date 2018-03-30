@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import RouteChoicesContainer from '../containers/RouteChoicesContainer'
 import OriginsDataRowsContainer from '../containers/OriginsDataRowsContainer'
 import DestinationsDataRowsContainer from '../containers/DestinationsDataRowsContainer'
+import SubgraphSelectionContainer from '../containers/SubgraphSelectionContainer'
 
 const List = styled.div`
   background: white;
@@ -33,6 +34,7 @@ const ZoneDataList = (props) => {
       <RouteChoicesContainer />
       <OriginsDataRowsContainer />
       <DestinationsDataRowsContainer />
+      <SubgraphSelectionContainer />
     </List>
   )
 }
