@@ -77,7 +77,7 @@ class ZoneManager extends React.Component {
         <ScrollWrapper innerRef={ref => (this.scrollRef = ref)}>
           <OriginsCategoryContainer updateScrollbarVisbility={this.updateScrollbarVisbility}/>
           <DestinationsCategoryContainer updateScrollbarVisbility={this.updateScrollbarVisbility}/>
-          <Separator />
+          <Separator {...this.state} />
           <SubgraphsContainer updateScrollbarVisbility={this.updateScrollbarVisbility}/>
         </ScrollWrapper>
       </FixedWrapper>

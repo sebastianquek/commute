@@ -43,6 +43,7 @@ class Subgraphs extends React.Component {
         {String.fromCharCode('A'.charCodeAt() + idx)}
       </SubgraphGroupButtonContainer>
     )
+    if (groupComponents.length === 0) return null
     return (
       <Container>
         <Label>Subgraphs</Label>

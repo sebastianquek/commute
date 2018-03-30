@@ -79,3 +79,8 @@ export const shouldRouteChoicesChartUpdate = state =>
 
 export const isFetchingZoneJourneyData = state =>
   state.zoneDataInterfaceFlags.isFetchingZoneJourneyData
+
+export const subgraphGroupsCompositionSelector = createSelector(
+  [zoneManager.selectors.subgraphGroupDataSelector, zoneCompositionDataSelector],
+  mapGroupsToData
+)

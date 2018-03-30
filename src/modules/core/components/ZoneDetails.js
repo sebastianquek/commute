@@ -25,7 +25,7 @@ const MainDetail = styled.div`
   font-size: ${({small}) => small ? '0.98em' : '1.1em'};
   margin-bottom: -0.05em;
 
-  ${({wrap}) => wrap && css`
+  ${({lineWrap}) => lineWrap && css`
     white-space: pre-wrap;
     line-height: 1.05;
     margin: 0.2em 0;
@@ -36,7 +36,7 @@ const SubDetail = styled.div`
   font-size: 0.75em;
 `
 
-const ZoneDetails = ({ color, mainDetail, subDetail, animate, small, wrap }) => {
+const ZoneDetails = ({ color, mainDetail, subDetail, animate, small, lineWrap }) => {
   return (
     <Wrapper small={small}>
       <ZoneButton
@@ -46,7 +46,7 @@ const ZoneDetails = ({ color, mainDetail, subDetail, animate, small, wrap }) => 
         small={small}
       />
       <Details small={small}>
-        <MainDetail title={mainDetail} small={small} wrap={wrap}>{mainDetail}</MainDetail>
+        <MainDetail title={mainDetail} small={small} lineWrap={lineWrap}>{mainDetail}</MainDetail>
         <SubDetail title={subDetail}>{subDetail}</SubDetail>
       </Details>
     </Wrapper>
@@ -59,14 +59,14 @@ ZoneDetails.propTypes = {
   subDetail: PropTypes.string,
   animate: PropTypes.bool,
   small: PropTypes.bool,
-  wrap: PropTypes.bool
+  lineWrap: PropTypes.bool
 }
 
 ZoneDetails.defaultProps = {
   color: color.next().value,
   animate: true,
   small: false,
-  wrap: false
+  lineWrap: false
 }
 
 export default ZoneDetails

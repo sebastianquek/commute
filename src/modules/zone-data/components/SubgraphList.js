@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import ScrollableAnchor from 'react-scrollable-anchor'
 import styled from 'styled-components'
 import ZoneDataRow from './ZoneDataRow'
+import ZoneFeedback from './ZoneFeedback'
 import Subheader from '../../core/components/Subheader'
+import SelectedZoneDataRowContent from './SelectedZoneDataRowContent'
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,31 +16,47 @@ const Wrapper = styled.div`
   }
 `
 
-const SubgraphList = () => {
-  const subgraphs = []
-  for (let i = 0; i < 5; i++) {
-    subgraphs.push(
-      <ScrollableAnchor key={i} id={'s' + i}>
+const SubgraphList = (props) => {
+  const keys = Object.keys(props.subgraphCompositions)
+  let subgraphs = keys.map((key, idx) => {
+    const group = props.subgraphCompositions[key]
+    let zoneName = ''
+    if (group.groupData[0] && group.groupData[0].zoneData) {
+      zoneName = group.groupData[0].zoneData['SUBZONE_N']
+    }
+    return (
+      <ScrollableAnchor key={key} id={'' + key}>
         <ZoneDataRow
-          zoneName='TESTING'
-          zoneNum={'A'}
+          zoneName={zoneName}
+          zoneNum={String.fromCharCode('A'.charCodeAt() + idx)}
+          zoneColor={group.color}
           roundedSquare
         >
-
+          <SelectedZoneDataRowContent
+            composition={group.groupData}
+          />
         </ZoneDataRow>
       </ScrollableAnchor>
     )
-  }
+  })
+
   return (
     <Wrapper>
       <Subheader>Identified subgraphs</Subheader>
-      {subgraphs}
+      {
+        subgraphs.length > 0
+          ? subgraphs
+          : <ZoneFeedback
+            zoneDataContainer={<ZoneDataRow roundedSquare/>}
+            feedback={`Details of subgraphs that were found will appear here`}
+          />
+      }
     </Wrapper>
   )
 }
 
 SubgraphList.propTypes = {
-
+  subgraphCompositions: PropTypes.object
 }
 
 export default SubgraphList

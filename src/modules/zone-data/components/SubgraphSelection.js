@@ -123,7 +123,7 @@ class SubgraphSelection extends Component {
             selected={this.state.selectedLandUse.includes(id)}
             onClick={() => this.handleSelectLandUse(id)}
           >
-            <ZoneDetails mainDetail={desc} small={true} wrap={true}/>
+            <ZoneDetails mainDetail={desc} small={true} lineWrap={true}/>
           </SelectLandUseButton>
         )
       })

@@ -17,9 +17,9 @@ const Grid = styled.div`
 
 const SelectedZoneDataRowContent = (props) => {
   let temp = []
-  for (let i = 0; i < props.zoneComposition.length; i++) {
-    const mainDetail = get(props.zoneComposition, [i, 'zoneData', 'SUBZONE_N'], '')
-    const subDetail = get(props.zoneComposition, [i, 'zoneData', 'PLN_AREA_N'], '')
+  for (let i = 0; i < props.composition.length; i++) {
+    const mainDetail = get(props.composition, [i, 'zoneData', 'SUBZONE_N'], '')
+    const subDetail = get(props.composition, [i, 'zoneData', 'PLN_AREA_N'], '')
     temp.push(
       <ZoneDetails key={i} mainDetail={mainDetail} subDetail={subDetail} />
     )
@@ -37,7 +37,7 @@ const SelectedZoneDataRowContent = (props) => {
 }
 
 SelectedZoneDataRowContent.propTypes = {
-  zoneComposition: PropTypes.array
+  composition: PropTypes.array
 }
 
 export default SelectedZoneDataRowContent

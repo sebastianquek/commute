@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import SubgraphSelection from '../components/SubgraphSelection'
 import ListSeparator from '../components/ListSeparator'
 import SubgraphList from '../components/SubgraphList'
+import { subgraphGroupsCompositionSelector } from '../selectors'
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,13 +15,14 @@ const SubgraphSelectionContainer = (props) => {
   return (
     <Wrapper>
       <ListSeparator>Subgraph selection</ListSeparator>
-      <SubgraphSelection {...props} />
-      <SubgraphList />
+      <SubgraphSelection />
+      <SubgraphList {...props} />
     </Wrapper>
   )
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  subgraphCompositions: subgraphGroupsCompositionSelector(state),
   ...ownProps
 })
 

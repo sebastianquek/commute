@@ -23,7 +23,7 @@ const SelectedZonesDataRows = (props) => {
             circle
           >
             <SelectedZoneDataRowContent
-              zoneComposition={group.groupData}
+              composition={group.groupData}
             />
           </ZoneDataRow>
         </ScrollableAnchor>
@@ -31,7 +31,7 @@ const SelectedZonesDataRows = (props) => {
     })
   } else {
     return <ZoneFeedback
-      zoneDataContainer={<ZoneDataRow />}
+      zoneDataContainer={<ZoneDataRow circle />}
       feedback={`Select a ${props.category} zone to see more details`} />
   }
 }
