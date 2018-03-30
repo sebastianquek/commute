@@ -18,6 +18,7 @@ const Tooltip = (props) => {
           minWidth='0px'
         >
           <ZoneDetails
+            zoneId={properties.OBJECTID}
             mainDetail={properties.SUBZONE_N}
             subDetail={properties.PLN_AREA_N}
             animate={false}
