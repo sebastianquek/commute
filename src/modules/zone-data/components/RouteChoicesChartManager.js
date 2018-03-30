@@ -30,6 +30,7 @@ class RouteChoicesChartManager extends Component {
     this.maxNumLinks = 50
     this.numHiddenLinks = 0
     this.setTooltipInfo = this.setTooltipInfo.bind(this)
+    this.defaultNodeColor = '#ddd'
   }
 
   componentWillReceiveProps (nextProps) {
@@ -76,8 +77,8 @@ class RouteChoicesChartManager extends Component {
             minDuration <= link.totalDuration && link.totalDuration <= maxDuration &&
             minCommuters <= link.count && link.count <= maxCommuters
           ) {
-            link.sourceColor = nextProps.zoneIdToGroupColor[link.originZone] || '#ddd'
-            link.targetColor = nextProps.zoneIdToGroupColor[link.destinationZone] || '#ddd'
+            link.sourceColor = nextProps.zoneIdToGroupColor[link.originZone] || this.defaultNodeColor
+            link.targetColor = nextProps.zoneIdToGroupColor[link.destinationZone] || this.defaultNodeColor
 
             link.originZoneName = nextProps.zoneIdToName[link.originZone]
             link.destinationZoneName = nextProps.zoneIdToName[link.destinationZone]
@@ -115,8 +116,18 @@ class RouteChoicesChartManager extends Component {
         }
 
         // Add node
-        this.nodes[link.source] || (this.nodes[link.source] = {group: link.source, color: link.sourceColor, numLinks: 0})
-        this.nodes[link.target] || (this.nodes[link.target] = {group: link.target, color: link.targetColor, numLinks: 0})
+        this.nodes[link.source] || (this.nodes[link.source] = {
+          group: link.source,
+          color: link.sourceColor,
+          isGroup: link.sourceColor !== this.defaultNodeColor,
+          numLinks: 0
+        })
+        this.nodes[link.target] || (this.nodes[link.target] = {
+          group: link.target,
+          color: link.targetColor,
+          isGroup: link.targetColor !== this.defaultNodeColor,
+          numLinks: 0
+        })
 
         // Update number of links for current source and target nodes
         this.nodes[link.source].numLinks += this.linksMetadata[key].numLinks

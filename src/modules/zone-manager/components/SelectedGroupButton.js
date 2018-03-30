@@ -73,7 +73,8 @@ const SelectedGroupButton = (props) => {
       <ZoneButtonWithDelete
         color={props.color}
         title="Scroll to group's information"
-        onClick={() => props.onClick(props.groupId)}>
+        onClick={() => props.onClick(props.groupId)}
+        circle>
         {props.children}
       </ZoneButtonWithDelete>
       <OptionButtons color={props.color}>

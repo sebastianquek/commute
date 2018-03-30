@@ -73,9 +73,11 @@ class RouteChoicesChart extends Component {
       this.previousHoveredRouteId = hoveredRouteId
     } else if (this.previousHoveredRouteId !== -1) {
       const targetLink = this.props.links.filter(e => e.id === this.previousHoveredRouteId)[0]
-      d3.select(`#link${this.previousHoveredRouteId} path`)
-        .style('stroke', `url(#S${targetLink.source.group}-T${targetLink.target.group})`)
-      this.previousHoveredRouteId = -1
+      if (targetLink) {
+        d3.select(`#link${this.previousHoveredRouteId} path`)
+          .style('stroke', `url(#S${targetLink.source.group}-T${targetLink.target.group})`)
+        this.previousHoveredRouteId = -1
+      }
     }
   }
 
@@ -151,8 +153,8 @@ class RouteChoicesChart extends Component {
       .attr('fill', d => d.color)
       .attr('width', 18)
       .attr('height', 18)
-      .attr('rx', 3)
-      .attr('ry', 3)
+      .attr('rx', d => d.isGroup ? 18 : 3)
+      .attr('ry', d => d.isGroup ? 18 : 3)
       .attr('y', -9)
       .attr('x', -9)
       .attr('transform', 'rotate(45)')
@@ -203,7 +205,7 @@ class RouteChoicesChart extends Component {
       // Scale for link distance
       linkDistanceScale: d3.scaleLinear()
         .domain([d3.min(links, d => d.totalDuration), d3.max(links, d => d.totalDuration)])
-        .range([80, 200]),
+        .range([nodes.length > 3 ? 80 : 200, 200]),
 
       // Scale for node size
       nodeSizeScale: d3.scaleLinear()
