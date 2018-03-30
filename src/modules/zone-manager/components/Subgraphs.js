@@ -8,10 +8,7 @@ const Container = styled.div`
   animation: ${fadeSlideUp} 0.7s ease;
   display: flex;
   position: relative;
-  
-  :last-of-type {
-    margin-bottom: 0;
-  }
+  margin-bottom: 2em;
 `
 
 const Label = styled.span`
