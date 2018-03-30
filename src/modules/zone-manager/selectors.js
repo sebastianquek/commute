@@ -12,6 +12,8 @@ export const editingGroupIdSelector = state => state.zoneManager.editingGroupId
 export const originGroupsSelector = state => state.zoneManager.categorizedZones.origins
 export const destinationGroupsSelector = state => state.zoneManager.categorizedZones.destinations
 
+export const subgraphGroupsSelector = state => state.zoneManager.subgraphGroups
+
 export const originGroupIdsAndColorsSelector = createDeepEqualSelector(
   originGroupsSelector,
   groups => groups.reduce((idsAndColors, g) => {
@@ -130,4 +132,14 @@ export const editingGroupCounterSelector = createSelector(
 export const emptyGroupsIdSelector = createSelector(
   allGroupsSelector,
   groups => groups.filter(g => g.zoneIds.length === 0).map(g => g.groupId)
+)
+
+export const subgraphGroupIdsSelector = createDeepEqualSelector(
+  subgraphGroupsSelector,
+  groups => groups.map(g => g.groupId)
+)
+
+export const nextSubgraphGroupIdSelector = createSelector(
+  subgraphGroupIdsSelector,
+  groupIds => groupIds.length > 0 ? Math.max(...groupIds) + 1 : 1
 )
