@@ -29,7 +29,8 @@ const SubgraphList = (props) => {
         <ZoneDataRow
           zoneName={zoneName}
           zoneNum={String.fromCharCode('A'.charCodeAt() + idx)}
-          zoneColor={group.color}
+          zoneColor={group.hidden ? '#ddd' : group.color}
+          dottedBorder={group.hidden}
           roundedSquare
         >
           <SelectedZoneDataRowContent
