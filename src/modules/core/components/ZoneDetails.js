@@ -36,7 +36,7 @@ const SubDetail = styled.div`
   font-size: 0.75em;
 `
 
-const ZoneDetails = ({ color, mainDetail, subDetail, animate, small, lineWrap }) => {
+const ZoneDetails = ({ color, zoneId, mainDetail, subDetail, animate, small, lineWrap }) => {
   return (
     <Wrapper small={small}>
       <ZoneButton
@@ -44,7 +44,9 @@ const ZoneDetails = ({ color, mainDetail, subDetail, animate, small, lineWrap })
         hover={false}
         animate={animate}
         small={small}
-      />
+      >
+        {zoneId}
+      </ZoneButton>
       <Details small={small}>
         <MainDetail title={mainDetail} small={small} lineWrap={lineWrap}>{mainDetail}</MainDetail>
         <SubDetail title={subDetail}>{subDetail}</SubDetail>
@@ -55,6 +57,7 @@ const ZoneDetails = ({ color, mainDetail, subDetail, animate, small, lineWrap })
 
 ZoneDetails.propTypes = {
   color: PropTypes.string,
+  zoneId: PropTypes.any,
   mainDetail: PropTypes.string,
   subDetail: PropTypes.string,
   animate: PropTypes.bool,
