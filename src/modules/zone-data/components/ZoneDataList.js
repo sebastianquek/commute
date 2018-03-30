@@ -17,6 +17,10 @@ const List = styled.div`
   transition: 0.2s all;
   width: ${({theme}) => theme.dimensions.rightBarWidth};
   z-index: 2;
+
+  & > *:not(:first-child) {
+    margin-top: 1.8em;
+  }
 `
 
 const ZoneDataList = (props) => {

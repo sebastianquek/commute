@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const Line = styled.div`
   border-bottom: 1px dashed ${({theme}) => theme.colors.borderSecondary};
   color: ${({theme}) => theme.colors.textSecondary};
-  margin: 1.8em 0 1.5em;
+  margin: 0 0 1.5em;
   text-align: center;
 `
 
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   background-color: white;
   font-size: ${({theme}) => theme.typography.headerSize};
   position: sticky;
-  top: -1.8em;
+  top: -0.1em;
   z-index: 3;
 `
 
