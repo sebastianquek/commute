@@ -5,6 +5,7 @@ import SubgraphSelection from '../components/SubgraphSelection'
 import ListSeparator from '../components/ListSeparator'
 import SubgraphList from '../components/SubgraphList'
 import { subgraphGroupsCompositionSelector } from '../selectors'
+import zoneManager from '../../zone-manager'
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const SubgraphSelectionContainer = (props) => {
   return (
     <Wrapper>
       <ListSeparator>Subgraph selection</ListSeparator>
-      <SubgraphSelection />
+      <SubgraphSelection {...props} />
       <SubgraphList {...props} />
     </Wrapper>
   )
@@ -23,10 +24,12 @@ const SubgraphSelectionContainer = (props) => {
 
 const mapStateToProps = (state, ownProps) => ({
   subgraphCompositions: subgraphGroupsCompositionSelector(state),
+  isFetchingSubgraphs: zoneManager.selectors.isFetchingSubgraphsSelector(state),
   ...ownProps
 })
 
 const mapDispatchToProps = {
+  requestSubgraphs: zoneManager.actions.requestSubgraphs
 }
 
 export default connect(

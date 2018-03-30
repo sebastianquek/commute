@@ -70,3 +70,17 @@ export const showSubgraphGroup = groupId => ({
   type: t.SHOW_SUBGRAPH_GROUP,
   groupId
 })
+
+export const requestSubgraphs = (contraints) => ({
+  type: t.REQUEST_SUBGRAPHS,
+  contraints
+})
+
+export const fetchingSubgraphs = () => ({
+  type: t.FETCHING_SUBGRAPHS
+})
+
+export const receiveSubgraphs = (data) => ({
+  type: t.RECEIVE_SUBGRAPHS,
+  data
+})

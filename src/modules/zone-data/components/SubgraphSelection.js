@@ -102,6 +102,11 @@ class SubgraphSelection extends Component {
     selectedLandUse: ['AG']
   }
 
+  constructor (props) {
+    super(props)
+    this.handleFindSubgraphs = this.handleFindSubgraphs.bind(this)
+  }
+
   handleSelectLandUse (id) {
     const selectedLandUse = [...this.state.selectedLandUse]
     if (selectedLandUse.includes(id)) {
@@ -112,6 +117,10 @@ class SubgraphSelection extends Component {
     this.setState({
       selectedLandUse
     })
+  }
+
+  handleFindSubgraphs () {
+    this.props.requestSubgraphs(this.state.selectedLandUse)
   }
 
   render () {
@@ -134,8 +143,9 @@ class SubgraphSelection extends Component {
           {checkboxes}
         </LandUseTypesGrid>
         <SubmitButton
-          disabled={this.state.selectedLandUse.length === 0}
+          disabled={this.props.isFetchingSubgraphs || this.state.selectedLandUse.length === 0}
           title={this.state.selectedLandUse.length === 0 ? 'Please select a land use type' : ''}
+          onClick={this.handleFindSubgraphs}
         >
           {this.props.isFetchingSubgraphs ? <Spinner /> : 'Find Subgraphs'}
         </SubmitButton>
@@ -145,7 +155,8 @@ class SubgraphSelection extends Component {
 }
 
 SubgraphSelection.propTypes = {
-  isFetchingSubgraphs: PropTypes.bool
+  isFetchingSubgraphs: PropTypes.bool,
+  requestSubgraphs: PropTypes.func
 }
 
 SubgraphSelection.defaultProps = {

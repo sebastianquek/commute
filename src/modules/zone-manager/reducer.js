@@ -105,23 +105,24 @@ const categorizedZones = (state = initialZones, action) => {
 }
 
 const subgraphGroups = (state = {
-  1: {
-    groupId: 1,
-    color: c.next().value,
-    zoneIds: [10, 11, 12],
-    hidden: false
-  },
-  2: {
-    groupId: 2,
-    color: c.next().value,
-    zoneIds: [13, 14, 15],
-    hidden: false
-  }
+  // 1: {
+  //   groupId: 1,
+  //   color: c.next().value,
+  //   zoneIds: [10, 11, 12],
+  //   hidden: false
+  // },
+  // 2: {
+  //   groupId: 2,
+  //   color: c.next().value,
+  //   zoneIds: [13, 14, 15],
+  //   hidden: false
+  // }
 }, action) => {
   const newState = cloneDeep(state)
   switch (action.type) {
     case t.ADD_SUBGRAPH_GROUP:
       newState[action.groupId] = {
+        groupId: action.groupId,
         color: action.color,
         zoneIds: action.zoneIds,
         hidden: false
@@ -144,9 +145,27 @@ const subgraphGroups = (state = {
   }
 }
 
+const subgraphInterfaceFlags = (state = {
+  isFetchingSubgraphs: false
+}, action) => {
+  switch (action.type) {
+    case t.FETCHING_SUBGRAPHS:
+      return {
+        isFetchingSubgraphs: true
+      }
+
+    case t.RECEIVE_SUBGRAPHS:
+    default:
+      return {
+        isFetchingSubgraphs: false
+      }
+  }
+}
+
 export default combineReducers({
   zoneSelectionMode,
   editingGroupId,
   categorizedZones,
-  subgraphGroups
+  subgraphGroups,
+  subgraphInterfaceFlags
 })

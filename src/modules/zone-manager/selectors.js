@@ -13,6 +13,7 @@ export const originGroupsSelector = state => state.zoneManager.categorizedZones.
 export const destinationGroupsSelector = state => state.zoneManager.categorizedZones.destinations
 
 export const subgraphGroupsSelector = state => state.zoneManager.subgraphGroups
+export const isFetchingSubgraphsSelector = state => state.zoneManager.subgraphInterfaceFlags.isFetchingSubgraphs
 
 export const originGroupIdsAndColorsSelector = createDeepEqualSelector(
   originGroupsSelector,
