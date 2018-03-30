@@ -5,7 +5,7 @@ import zoneManager from '../zone-manager'
 import { fromJS } from 'immutable'
 import {
   defaultMapStyle, zonesHoverLayer, zonesSelectionLayer, selectedGroupLayer,
-  journeysLayer, journeysHoverLayer, flowArrowsLayer
+  journeysLayer, journeysHoverLayer, flowArrowsLayer, subgraphGroupLayer
 } from './map-style'
 
 // Add a selection layer (layer that outlines selectable zones) or
@@ -102,6 +102,13 @@ function mapStyle (state = defaultMapStyle, action) {
         )
       }, state)
 
+    case t.COLOR_SUBGRAPH_GROUPS:
+      return action.groups.reduce((newState, g) => {
+        return newState.update('layers', layers =>
+          layers.push(subgraphGroupLayer(g.groupId, g.color, g.zoneIds))
+        )
+      }, state)
+
     case zoneManager.actionTypes.ADD_GROUP:
       if (state.get('layers').findIndex(layer => layer.get('id') === '' + action.groupId) === -1) {
         idx = state.get('layers').findIndex(i => i.get('id') === journeysLayer.get('id'))
@@ -131,6 +138,36 @@ function mapStyle (state = defaultMapStyle, action) {
         return state.updateIn(['layers', idx, 'filter'], filter =>
           filter.filterNot(id => id === action.zoneId)
         )
+      }
+      return state
+
+    case zoneManager.actionTypes.ADD_SUBGRAPH_GROUP:
+      if (state.get('layers').findIndex(layer => layer.get('id') === 'subgraph-' + action.groupId) === -1) {
+        idx = state.get('layers').findIndex(i => i.get('id') === journeysLayer.get('id'))
+        return state.update('layers', layers =>
+          layers.insert(idx - 1, subgraphGroupLayer(action.groupId, action.color, action.zoneIds))
+        )
+      }
+      return state
+
+    case zoneManager.actionTypes.REMOVE_SUBGRAPH_GROUP:
+      return state.update('layers', layers =>
+        layers.filterNot(l =>
+          l.get('id') === 'subgraph-' + action.groupId
+        )
+      )
+
+    case zoneManager.actionTypes.HIDE_SUBGRAPH_GROUP:
+      idx = state.get('layers').findIndex(layer => layer.get('id') === 'subgraph-' + action.groupId)
+      if (idx !== -1) {
+        return state.setIn(['layers', idx, 'paint', 'line-opacity'], 0)
+      }
+      return state
+
+    case zoneManager.actionTypes.SHOW_SUBGRAPH_GROUP:
+      idx = state.get('layers').findIndex(layer => layer.get('id') === 'subgraph-' + action.groupId)
+      if (idx !== -1) {
+        return state.setIn(['layers', idx, 'paint', 'line-opacity'], 0.8)
       }
       return state
 

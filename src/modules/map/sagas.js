@@ -4,7 +4,7 @@ import zoneData from '../zone-data'
 import { MAP_HAS_LOADED, CLICK_FEATURES, HOVER_OVER_FEATURE } from './actionTypes'
 import {
   addZoneCompositions, addJourneys, removeJourneys, colorSelectedGroups,
-  hoverOverZone, setFilteredRouteIds
+  hoverOverZone, setFilteredRouteIds, colorSubgraphGroups
 } from './actions'
 import linkingCoordinator from '../linking-coordinator'
 import zoneManager from '../zone-manager'
@@ -19,6 +19,8 @@ export function * updateMapOnLoad () {
   yield put(addZoneCompositions(zones))
   const selectedGroups = yield select(zoneManager.selectors.allGroupsSelector)
   yield put(colorSelectedGroups(selectedGroups))
+  const subgraphGroups = yield select(zoneManager.selectors.subgraphGroupDataSelector)
+  yield put(colorSubgraphGroups(subgraphGroups))
 }
 
 export function * updateJourneys () {

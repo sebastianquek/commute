@@ -41,6 +41,25 @@ export const selectedGroupLayer = (groupId, color = '#eee', zoneIds = []) => fro
   filter: ['in', 'OBJECTID', ...zoneIds]
 })
 
+export const subgraphGroupLayer = (groupId, color = '#eee', zoneIds = []) => fromJS({
+  id: 'subgraph-' + groupId,
+  source: 'zones',
+  type: 'line',
+  interactive: true,
+  paint: {
+    'line-color': color,
+    'line-opacity': 0.8,
+    'line-width': {
+      'base': 1,
+      'stops': [
+        [10, 1],
+        [16, 5]
+      ]
+    }
+  },
+  filter: ['in', 'OBJECTID', ...zoneIds]
+})
+
 export const journeysLayer = fromJS({
   id: 'journeys',
   source: 'journeys',
