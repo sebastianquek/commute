@@ -2,40 +2,29 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import RouteInfoTooltip from '../../core/components/RouteInfoTooltip'
-
-const Wrapper = styled.div.attrs({
-  style: ({x, y}) => ({
-    top: `${y + 10}px`,
-    left: `${x + 10}px`
-  })
-})`
-  // background: rgba(0, 0, 0, 0.8);
-  // border-radius: ${({theme}) => theme.borderRadius};
-  // color: white;
-  // font-family: 'Barlow', sans-serif;
-  // font-size: ${({theme}) => theme.typography.tooltipSize};
-  // letter-spacing: 1px;
-  // max-width: 220px;
-  // padding: 0.6em 0.8em;
-  position: absolute;
-`
+import TooltipWrapper from '../../core/components/Tooltip'
+import ZoneDetails from '../../core/components/ZoneDetails';
 
 // Tooltip for elements on the map
 const Tooltip = (props) => {
   if (!props.x || !props.y) return null
   let { layer: { source }, properties } = props.feature
-  let desc
 
   switch (source) {
     case 'zones':
-      desc = (
-        <div>
-          {properties.REGION_N}<br/>
-          {properties.PLN_AREA_N}<br/>
-          {properties.SUBZONE_N}
-        </div>
+      return (
+        <TooltipWrapper
+          x={props.x}
+          y={props.y}
+          minWidth='0px'
+        >
+          <ZoneDetails
+            mainDetail={properties.SUBZONE_N}
+            subDetail={properties.PLN_AREA_N}
+            animate={false}
+          />
+        </TooltipWrapper>
       )
-      break
 
     case 'journeys':
       try {
@@ -47,18 +36,19 @@ const Tooltip = (props) => {
       properties.destinationZoneName = props.zoneIdToName[properties.destinationZone]
       properties.sourceColor = props.zoneIdToGroupColor(properties.originZone)
       properties.targetColor = props.zoneIdToGroupColor(properties.destinationZone)
-      desc = (
+      return (
         <RouteInfoTooltip
           link={properties}
           maxDuration={props.maxDuration}
+          x={props.x}
+          y={props.y}
         />
       )
-      break
 
     default:
       break
   }
-  if (desc) return <Wrapper {...props}>{desc}</Wrapper>
+
   return null
 }
 
