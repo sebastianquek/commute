@@ -48,3 +48,25 @@ export const setEditingGroupId = groupId => ({
 export const resetEditingGroup = () => ({
   type: t.RESET_EDITING_GROUP
 })
+
+export const addSubgraphGroup = (groupId, color, zoneIds) => ({
+  type: t.ADD_SUBGRAPH_GROUP,
+  groupId,
+  color,
+  zoneIds
+})
+
+export const removeSubgraphGroup = groupId => ({
+  type: t.REMOVE_SUBGRAPH_GROUP,
+  groupId
+})
+
+export const hideSubgraphGroup = groupId => ({
+  type: t.HIDE_SUBGRAPH_GROUP,
+  groupId
+})
+
+export const showSubgraphGroup = groupId => ({
+  type: t.SHOW_SUBGRAPH_GROUP,
+  groupId
+})
