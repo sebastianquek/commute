@@ -20,11 +20,11 @@ const List = styled.div`
   z-index: 2;
 
   & > *:not(:first-child) {
-    margin-top: 1.8em;
+    margin-top: 5rem;
   }
 
   & > *:last-child {
-    margin-bottom: 2em;
+    margin-bottom: 3rem;
   }
 `
 

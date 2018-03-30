@@ -15,7 +15,7 @@ const Details = styled.div`
   flex-direction: column;
   justify-content: center;
   letter-spacing: 0.05em;
-  margin-left: ${({small}) => small ? '0' : '0.2em'};
+  margin-left: ${({small}) => small ? '0' : '0.4em'};
   white-space: nowrap;
   overflow: hidden;
 `
