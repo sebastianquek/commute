@@ -19,7 +19,9 @@ const SelectedZonesDataRows = (props) => {
           <ZoneDataRow
             zoneName={zoneName}
             zoneNum={props.initialIdx + idx + 1}
-            zoneColor={group.color}>
+            zoneColor={group.color}
+            circle
+          >
             <SelectedZoneDataRowContent
               zoneComposition={group.groupData}
             />

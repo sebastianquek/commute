@@ -13,13 +13,13 @@ const Button = styled.button`
   background-color: ${({color}) => color};
   border-radius: ${({circle, theme}) => circle ? '100%' : theme.borderRadius};
   border: 1px ${({dottedBorder}) => dottedBorder ? 'dashed' : 'solid'} ${({theme}) => theme.colors.borderPrimary};
-  min-height: ${({circle}) => circle ? '2rem' : '1.7rem'};
-  height: ${({circle}) => circle ? '2rem' : '1.7rem'};
+  min-height: ${({roundedSquare, circle}) => (roundedSquare || circle) ? '2rem' : '1.7rem'};
+  height: ${({roundedSquare, circle}) => (roundedSquare || circle) ? '2rem' : '1.7rem'};
   margin: ${({roundedSquare, circle}) => (roundedSquare || circle) && css`0.3rem`} 0.5rem;
   padding: 0;
   transition: 0.2s all;
-  min-width: ${({circle}) => circle ? '2rem' : '1.7rem'};
-  width: ${({circle}) => circle ? '2rem' : '1.7rem'};
+  min-width: ${({roundedSquare, circle}) => (roundedSquare || circle) ? '2rem' : '1.7rem'};
+  width: ${({roundedSquare, circle}) => (roundedSquare || circle) ? '2rem' : '1.7rem'};
   z-index: 2;
 
   ${({roundedSquare, circle}) => (!roundedSquare && !circle) && css`transform: rotate(45deg);`}

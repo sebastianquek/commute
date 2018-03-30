@@ -43,7 +43,7 @@ class ZoneDataRow extends React.Component {
     return (
       <Row dottedBorder={this.props.dottedBorder} color={this.props.zoneColor} className={this.props.className}>
         <RowLabel>
-          <ZoneButton color={this.props.zoneColor} hover={false} circle>{this.props.zoneNum}</ZoneButton>
+          <ZoneButton color={this.props.zoneColor} hover={false} circle={this.props.circle} roundedSquare={this.props.roundedSquare}>{this.props.zoneNum}</ZoneButton>
           {this.props.zoneName && <ZoneName>{this.props.zoneName}</ZoneName>}
         </RowLabel>
         {this.props.children}
@@ -58,7 +58,9 @@ ZoneDataRow.propTypes = {
   zoneName: PropTypes.string,
   dottedBorder: PropTypes.bool,
   zoneColor: PropTypes.string,
-  zoneNum: PropTypes.number
+  zoneNum: PropTypes.number,
+  circle: PropTypes.bool,
+  roundedSquare: PropTypes.bool
 }
 
 export default ZoneDataRow
