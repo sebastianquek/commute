@@ -86,7 +86,7 @@ export const journeysHoverLayer = fromJS({
   id: 'journeysHover',
   source: 'journeys',
   type: 'line',
-  interactive: true,
+  interactive: false,
   layout: {
     'line-join': 'round',
     'line-cap': 'round'

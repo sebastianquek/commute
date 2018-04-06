@@ -1,5 +1,6 @@
 import { all, call, put, take, select, takeEvery } from 'redux-saga/effects'
 import { goToAnchor } from 'react-scrollable-anchor'
+import orderBy from 'lodash.orderby'
 import zoneData from '../zone-data'
 import { MAP_HAS_LOADED, CLICK_FEATURES, HOVER_OVER_FEATURE } from './actionTypes'
 import {
@@ -25,11 +26,12 @@ export function * updateMapOnLoad () {
 
 export function * updateJourneys () {
   // Handle first load
-  const [{ journeys }, { filteredRouteIds }] = yield all([
+  let [{ journeys }, { filteredRouteIds }] = yield all([
     take(zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS),
     take(zoneData.actionTypes.SET_FILTERED_ROUTE_IDS),
     take(MAP_HAS_LOADED)
   ])
+  journeys.features = orderBy(journeys.features, f => f.properties.totalDuration, ['desc'])
   yield put(addJourneys(journeys))
   yield put(setFilteredRouteIds(filteredRouteIds))
 
@@ -42,6 +44,7 @@ export function * updateJourneys () {
     ])
     switch (action.type) {
       case zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS:
+        action.journeys.features = orderBy(action.journeys.features, f => f.properties.totalDuration, ['desc'])
         yield put(addJourneys(action.journeys))
         break
       case zoneData.actionTypes.SET_FILTERED_ROUTE_IDS:
