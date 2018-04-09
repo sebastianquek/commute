@@ -75,13 +75,13 @@ function mapStyle (state = defaultMapStyle, action) {
       }
 
     case zoneManager.actionTypes.SET_ORIGIN_SELECTION_MODE:
-      return addOrEditSelectionLayer(state, 'blue')
+      return addOrEditSelectionLayer(state, '#2196f3')
 
     case zoneManager.actionTypes.SET_DESTINATION_SELECTION_MODE:
-      return addOrEditSelectionLayer(state, 'orange')
+      return addOrEditSelectionLayer(state, '#ffab40')
 
     case zoneManager.actionTypes.SET_EDIT_SELECTION_MODE:
-      return addOrEditSelectionLayer(state, 'black')
+      return addOrEditSelectionLayer(state, '#455a64')
 
     case zoneManager.actionTypes.RESET_SELECTION_MODE:
       newState = state.update('layers', layers =>
