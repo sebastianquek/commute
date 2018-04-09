@@ -22,7 +22,7 @@ const Details = styled.div`
 
 const MainDetail = styled.div`
   font-weight: ${({small}) => small ? 600 : 700};
-  font-size: ${({small}) => small ? '0.98em' : '1.3em'};
+  font-size: ${({small}) => small ? '0.98em' : '1.2em'};
   margin-bottom: -0.05em;
 
   ${({lineWrap}) => lineWrap && css`
@@ -33,7 +33,7 @@ const MainDetail = styled.div`
 `
 
 const SubDetail = styled.div`
-  font-size: 0.68em;
+  font-size: 0.69em;
 `
 
 export const landUseColors = {

@@ -20,7 +20,7 @@ const RouteInfo = styled.div`
 `
 
 const Arrow = styled.div`
-  margin: 0 1rem;
+  margin: 0 1.3rem 0 1rem;
   font-size: 1.4rem;
 `
 
