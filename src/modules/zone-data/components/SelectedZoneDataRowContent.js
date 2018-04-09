@@ -12,17 +12,17 @@ const Section = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  grid-gap: 0.2em 1em;
+  grid-gap: 0.4em 1em;
 `
 
 const SelectedZoneDataRowContent = (props) => {
   let temp = []
   for (let i = 0; i < props.composition.length; i++) {
-    const zoneId = get(props.composition, [i, 'zoneId'], '')
-    const mainDetail = get(props.composition, [i, 'zoneData', 'SUBZONE_N'], '')
-    const subDetail = get(props.composition, [i, 'zoneData', 'PLN_AREA_N'], '')
+    const id = get(props.composition, [i, 'zoneData', 'objectid'], '')
+    const mainDetail = get(props.composition, [i, 'zoneData', 'lu_desc'], '')
+    const subDetail = get(props.composition, [i, 'zoneData', 'subzone_n'], '')
     temp.push(
-      <ZoneDetails key={i} zoneId={zoneId} mainDetail={mainDetail} subDetail={subDetail} />
+      <ZoneDetails key={i} mainDetail={mainDetail} subDetail={`${subDetail} — ${id}`} />
     )
   }
   return (

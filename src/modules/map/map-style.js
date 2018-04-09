@@ -13,7 +13,7 @@ export const zonesHoverLayer = fromJS({
     'fill-opacity': 0.4,
     'fill-outline-color': '#000'
   },
-  filter: ['in', 'OBJECTID', '']
+  filter: ['in', 'objectid', '']
 })
 
 export const zonesSelectionLayer = fromJS({
@@ -26,7 +26,7 @@ export const zonesSelectionLayer = fromJS({
     'fill-opacity': 0.8,
     'fill-outline-color': 'black'
   },
-  filter: ['!in', 'OBJECTID', '']
+  filter: ['!in', 'objectid', '']
 })
 
 export const selectedGroupLayer = (groupId, color = '#eee', zoneIds = []) => fromJS({
@@ -38,7 +38,7 @@ export const selectedGroupLayer = (groupId, color = '#eee', zoneIds = []) => fro
     'fill-color': color,
     'fill-opacity': 0.8
   },
-  filter: ['in', 'OBJECTID', ...zoneIds]
+  filter: ['in', 'objectid', ...zoneIds]
 })
 
 export const subgraphGroupLayer = (groupId, color = '#eee', zoneIds = []) => fromJS({
@@ -57,7 +57,7 @@ export const subgraphGroupLayer = (groupId, color = '#eee', zoneIds = []) => fro
       ]
     }
   },
-  filter: ['in', 'OBJECTID', ...zoneIds]
+  filter: ['in', 'objectid', ...zoneIds]
 })
 
 export const journeysLayer = fromJS({

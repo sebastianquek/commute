@@ -61,7 +61,7 @@ function * handleClick ({ features, shiftKey }) {
   const zone = features.find(f => f.layer.source === 'zones')
 
   if (zone) {
-    const zoneId = zone.properties.OBJECTID
+    const zoneId = zone.properties.objectid
     const groups = yield select(zoneManager.selectors.allGroupsSelector)
     const groupOfZone = groups.find(g => g.zoneIds.includes(zoneId)) || -1
     const allGroupIds = yield select(zoneManager.selectors.allGroupIdsSelector)
@@ -127,7 +127,7 @@ function * handleHover ({ feature }) {
       // Disable highlighting zones if hovered feature has been selected
       // const isSelected = yield select(isHoveredZoneSelectedSelector)
       // if (!isSelected) {
-      yield put(hoverOverZone(feature.properties.OBJECTID))
+      yield put(hoverOverZone(feature.properties.objectid))
       // }
     }
   } else if (feature.layer.source === 'journeys') {

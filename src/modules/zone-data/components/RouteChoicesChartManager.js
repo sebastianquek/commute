@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import get from 'lodash.get'
 import RouteChoicesChart from './RouteChoicesChart'
 import RouteInfoTooltip from '../../core/components/RouteInfoTooltip'
 import Spinner from '../../core/components/Spinner'
+import { landUseColors } from '../../core/components/ZoneDetails'
 
 const Wrapper = styled.div`
   position: relative;
@@ -77,11 +79,10 @@ class RouteChoicesChartManager extends Component {
             minDuration <= link.totalDuration && link.totalDuration <= maxDuration &&
             minCommuters <= link.count && link.count <= maxCommuters
           ) {
-            link.sourceColor = nextProps.zoneIdToGroupColor[link.originZone] || this.defaultNodeColor
-            link.targetColor = nextProps.zoneIdToGroupColor[link.destinationZone] || this.defaultNodeColor
-
-            link.originZoneName = nextProps.zoneIdToName[link.originZone]
-            link.destinationZoneName = nextProps.zoneIdToName[link.destinationZone]
+            link.sourceColor = nextProps.zoneIdToGroupColor[link.originZone] || get(landUseColors, get(link.originZoneData, 'lu_desc'), this.defaultNodeColor)
+            link.targetColor = nextProps.zoneIdToGroupColor[link.destinationZone] || get(landUseColors, get(link.destinationZoneData, 'lu_desc'), this.defaultNodeColor)
+            link.sourceIsGroup = nextProps.zoneIdToGroupColor.hasOwnProperty(link.originZone)
+            link.targetIsGroup = nextProps.zoneIdToGroupColor.hasOwnProperty(link.destinationZone)
 
             // Add link
             this.links.push(link)
@@ -119,13 +120,13 @@ class RouteChoicesChartManager extends Component {
         this.nodes[link.source] || (this.nodes[link.source] = {
           group: link.source,
           color: link.sourceColor,
-          isGroup: link.sourceColor !== this.defaultNodeColor,
+          isGroup: link.sourceIsGroup,
           numLinks: 0
         })
         this.nodes[link.target] || (this.nodes[link.target] = {
           group: link.target,
           color: link.targetColor,
-          isGroup: link.targetColor !== this.defaultNodeColor,
+          isGroup: link.targetIsGroup,
           numLinks: 0
         })
 

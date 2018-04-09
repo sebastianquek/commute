@@ -12,7 +12,7 @@ const SelectedZonesDataRows = (props) => {
       const group = props.zoneCompositions[key]
       let zoneName = ''
       if (group.groupData[0] && group.groupData[0].zoneData) {
-        zoneName = group.groupData[0].zoneData['SUBZONE_N']
+        zoneName = group.groupData[0].zoneData['subzone_n']
       }
       return (
         <ScrollableAnchor key={key} id={'' + key}>

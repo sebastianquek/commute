@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import zoneManager from '../zone-manager'
 import map from '../map'
 
-const zoneCompositionDataSelector = state => state.zoneCompositionData
+export const zoneCompositionDataSelector = state => state.zoneCompositionData
 export const zoneJourneyDataSelector = state => state.zoneJourneyData
 export const routeChoicesFiltersSelector = state => state.routeChoicesFilters
 export const filteredRouteIds = createSelector(
@@ -43,12 +43,15 @@ export const zoneNamesSelector = createSelector(
     return Object.keys(compositionData)
       .map(Number)
       .reduce((zoneNamesMap, id) => {
-        const name = compositionData[id].SUBZONE_N
-          .toLowerCase()
-          .split(' ')
-          .map(c => `${c.substring(0, 1).toUpperCase()}${c.substring(1)}`)
-          .join(' ')
-        zoneNamesMap[id] = name
+        const name = compositionData[id].subzone_n
+        if (name) {
+          zoneNamesMap[id] = name.toLowerCase()
+            .split(' ')
+            .map(c => `${c.substring(0, 1).toUpperCase()}${c.substring(1)}`)
+            .join(' ')
+        } else {
+          zoneNamesMap[id] = ''
+        }
         return zoneNamesMap
       }, {})
   }
@@ -79,6 +82,9 @@ export const shouldRouteChoicesChartUpdate = state =>
 
 export const isFetchingZoneJourneyData = state =>
   state.zoneDataInterfaceFlags.isFetchingZoneJourneyData
+
+export const hasReceivedZoneCompositions = state =>
+  state.zoneDataInterfaceFlags.hasReceivedZoneCompositions
 
 export const subgraphGroupsCompositionSelector = createSelector(
   [zoneManager.selectors.subgraphGroupDataSelector, zoneCompositionDataSelector],

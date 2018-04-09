@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import ZoneButton from '../../core/components/ZoneButton'
-import color from '../../../utils/randomColor'
+import get from 'lodash.get'
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ const Details = styled.div`
 
 const MainDetail = styled.div`
   font-weight: ${({small}) => small ? 600 : 700};
-  font-size: ${({small}) => small ? '0.98em' : '1.1em'};
+  font-size: ${({small}) => small ? '0.98em' : '1.3em'};
   margin-bottom: -0.05em;
 
   ${({lineWrap}) => lineWrap && css`
@@ -33,14 +33,41 @@ const MainDetail = styled.div`
 `
 
 const SubDetail = styled.div`
-  font-size: 0.75em;
+  font-size: 0.68em;
 `
+
+export const landUseColors = {
+  'AGRICULTURE': 'rgb(140, 135, 93)',
+  'BEACH AREA': 'rgb(249, 247, 198)',
+  'BUSINESS': 'rgb(177, 1, 102)',
+  'BUSINESS PARK': 'rgb(0, 127, 162)',
+  'CEMETERY': 'rgb(159, 137, 0)',
+  'CIVIC & COMMUNITY INSTITUTION': 'rgb(204, 0, 33)',
+  'COMMERCIAL': 'rgb(54, 173, 229)',
+  'EDUCATIONAL INSTITUTION': 'rgb(244, 242, 193)',
+  'HEALTH & MEDICAL CARE': 'rgb(204, 0, 33)',
+  'HOTEL': 'rgb(167, 156, 198)',
+  'MASS RAPID TRANSIT': 'rgb(255,161,0)',
+  'OPEN SPACE': 'rgb(171, 178, 13)',
+  'PARK': 'rgb(0, 163, 58)',
+  'PLACE OF WORSHIP': 'rgb(204, 0, 33)',
+  'PORT / AIRPORT': 'rgb(208, 208, 208)',
+  'RESERVE SITE': 'rgb(254, 246, 109)',
+  'RESIDENTIAL': 'rgb(246, 187, 129)',
+  'ROAD': 'rgb(230, 230, 230)',
+  'SPECIAL USE': 'rgb(81, 103, 3)',
+  'SPORTS & RECREATION': 'rgb(163, 212, 157)',
+  'TRANSPORT FACILITIES': 'rgb(149, 154, 157)',
+  'UTILITY': 'rgb(148, 153, 156)',
+  'WATERBODY': 'rgb(190, 222, 243)',
+  'WHITE': 'rgb(245, 241, 242)'
+}
 
 const ZoneDetails = ({ color, zoneId, mainDetail, subDetail, animate, small, lineWrap }) => {
   return (
     <Wrapper small={small}>
       <ZoneButton
-        color={color}
+        color={color || get(landUseColors, mainDetail, '#ddd')}
         hover={false}
         animate={animate}
         small={small}
@@ -66,7 +93,6 @@ ZoneDetails.propTypes = {
 }
 
 ZoneDetails.defaultProps = {
-  color: color.next().value,
   animate: true,
   small: false,
   lineWrap: false

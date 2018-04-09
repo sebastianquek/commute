@@ -163,7 +163,7 @@ class RouteChoicesChart extends Component {
       .attr('class', 'group-number')
       .attr('y', '0.26rem')
       .attr('fill', d => shouldTextBeDark(d.color) ? theme.colors.textPrimary : theme.colors.textSecondaryAlt)
-      .text(d => d.group)
+      .text(d => d.isGroup ? d.group : '')
   }
 
   addGradients (defs, links) {

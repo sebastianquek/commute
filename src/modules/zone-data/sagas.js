@@ -1,16 +1,20 @@
 import moment from 'moment'
 import { delay } from 'redux-saga'
-import { select, call, put, takeLatest } from 'redux-saga/effects'
+import { select, call, put, take, takeLatest } from 'redux-saga/effects'
 import * as topojson from 'topojson-client'
+import get from 'lodash.get'
 import {
-  REQUEST_ZONE_JOURNEYS
+  REQUEST_ZONE_JOURNEYS, RECEIVE_ZONE_COMPOSITIONS
 } from './actionTypes'
 import {
   requestZoneJourneys, receiveZoneJourneys, requestZoneJourneysError, removeAllZoneJourneys,
   requestZoneCompositions, receiveZoneCompositions, requestZoneCompositionsError,
   fetchingZoneJourneys, forceRouteChoicesChartUpdate
 } from './actions'
-import { routeChoicesFiltersSelector } from './selectors'
+import {
+  routeChoicesFiltersSelector, zoneCompositionDataSelector,
+  hasReceivedZoneCompositions
+} from './selectors'
 import zoneManager from '../zone-manager'
 import datetimeManager from '../datetime-manager'
 
@@ -47,6 +51,17 @@ function * getDataAndFetchZoneJourneys () {
       fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration,
       minCommuters, minRouteDuration, includeMrt, includeBus
     )
+
+    if (!(yield select(hasReceivedZoneCompositions))) {
+      yield take(RECEIVE_ZONE_COMPOSITIONS)
+    }
+
+    const zoneData = yield select(zoneCompositionDataSelector)
+    journeys.features.forEach(f => {
+      f.properties.originZoneData = get(zoneData, f.properties.originZone, null)
+      f.properties.destinationZoneData = get(zoneData, f.properties.destinationZone, null)
+    })
+
     yield put(receiveZoneJourneys(journeys, originZoneIds, destinationZoneIds))
     yield put(forceRouteChoicesChartUpdate())
   } catch (err) {
@@ -87,9 +102,8 @@ async function fetchZoneJourneys (
 
 async function fetchZoneCompositions () {
   const res = await fetch('/api/v3/zones')
-  const resJson = await res.json()
-  const data = topojson.feature(resJson, resJson.objects.zones)
-  return data
+  const topojsonZones = await res.json()
+  return topojson.feature(topojsonZones, topojsonZones.objects.zones)
 }
 
 // Called once on initialisation of the app

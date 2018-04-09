@@ -144,10 +144,10 @@ class SubgraphSelection extends Component {
         </LandUseTypesGrid>
         <SubmitButton
           disabled={this.props.isFetchingSubgraphs || this.state.selectedLandUse.length === 0}
-          title={this.state.selectedLandUse.length === 0 ? 'Please select a land use type' : ''}
+          title={this.state.selectedLandUse.length === 0 ? 'Please select a land use type' : '' }
           onClick={this.handleFindSubgraphs}
         >
-          {this.props.isFetchingSubgraphs ? <Spinner /> : 'Find Subgraphs'}
+          {this.props.isFetchingSubgraphs ? <Spinner /> : 'Find Subgraphs' }
         </SubmitButton>
       </Wrapper>
     )

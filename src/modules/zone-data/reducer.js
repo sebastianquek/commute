@@ -75,7 +75,7 @@ export const zoneCompositionData = (state = {}, action) => {
   switch (action.type) {
     case t.RECEIVE_ZONE_COMPOSITIONS:
       return action.zones.features.reduce((zones, f) => {
-        zones[f.properties.OBJECTID] = f.properties
+        zones[f.properties.objectid] = f.properties
         return zones
       }, {})
     default:
@@ -123,7 +123,8 @@ export const zoneJourneyData = (state = {}, action) => {
 
 export const zoneDataInterfaceFlags = (state = {
   shouldRouteChoicesChartUpdate: false,
-  isFetchingZoneJourneyData: true
+  isFetchingZoneJourneyData: true,
+  hasReceivedZoneCompositions: false
 }, action) => {
   switch (action.type) {
     case t.FORCE_ROUTE_CHOICES_CHART_UPDATE:
@@ -146,6 +147,11 @@ export const zoneDataInterfaceFlags = (state = {
       return {
         ...state,
         isFetchingZoneJourneyData: false
+      }
+    case t.RECEIVE_ZONE_COMPOSITIONS:
+      return {
+        ...state,
+        hasReceivedZoneCompositions: true
       }
     default:
       return state
