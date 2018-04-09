@@ -24,6 +24,19 @@ const MaxNumLinksFeedback = styled.div`
   text-align: right;
 `
 
+const FeedbackLabel = styled.div`
+  position: absolute;
+  align-items: center;
+  color: ${({theme}) => theme.colors.textPrimary};
+  display: flex;
+  font-size: ${({theme}) => theme.typography.bodySize};
+  font-style: italic;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+`
+
 // Contains the chart and tooltip
 class RouteChoicesChartManager extends Component {
   constructor (props) {
@@ -33,6 +46,7 @@ class RouteChoicesChartManager extends Component {
     this.numHiddenLinks = 0
     this.setTooltipInfo = this.setTooltipInfo.bind(this)
     this.defaultNodeColor = '#ddd'
+    this.noRoutes = true
   }
 
   componentWillReceiveProps (nextProps) {
@@ -154,6 +168,7 @@ class RouteChoicesChartManager extends Component {
 
     // Convert nodes object to array
     this.nodes = Object.values(this.nodes)
+    this.noRoutes = this.nodes.length === 0
   }
 
   setTooltipInfo (link, x, y) {
@@ -173,6 +188,7 @@ class RouteChoicesChartManager extends Component {
       <Wrapper>
         { this.numHiddenLinks > 0 && <MaxNumLinksFeedback>Showing {this.maxNumLinks} links ({this.numHiddenLinks} links are hidden)</MaxNumLinksFeedback> }
         { this.props.isFetchingZoneJourneyData && <BottomLeftSpinner /> }
+        { this.noRoutes && <FeedbackLabel>No routes match your criteria</FeedbackLabel> }
         <RouteChoicesChart
           links={this.links}
           nodes={this.nodes}

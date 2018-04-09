@@ -60,7 +60,7 @@ injectGlobal`
 `
 
 // For react-scrollable-anchor; anchors for the zone data
-configureAnchors({offset: -60})
+configureAnchors({offset: -70})
 
 ReactDOM.render(
   <Provider store={store}>
