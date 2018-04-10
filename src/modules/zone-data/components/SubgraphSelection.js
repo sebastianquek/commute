@@ -78,7 +78,7 @@ class SubgraphSelection extends Component {
     'BUSINESS PARK': 'BP',
     'CEMETERY': 'CE',
     'CIVIC & COMMUNITY INSTITUTION': 'CI',
-    'COMMERCIAL & RESIDENTIAL': 'CM',
+    'COMMERCIAL': 'CM',
     'EDUCATIONAL INSTITUTION': 'ED',
     'HEALTH & MEDICAL CARE': 'HE',
     'HOTEL': 'HO',

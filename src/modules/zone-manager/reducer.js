@@ -34,7 +34,7 @@ const initialZones = {
   origins: [{
     groupId: 1,
     color: c.next().value,
-    zoneIds: [6012]
+    zoneIds: [6012, 7405]
   }
   // {
   //   groupId: 2,
