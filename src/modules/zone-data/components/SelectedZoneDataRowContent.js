@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import get from 'lodash.get'
+import orderBy from 'lodash.orderby'
 import Subheader from '../../core/components/Subheader'
 import ZoneDetails from '../../core/components/ZoneDetails'
 
@@ -17,12 +18,13 @@ const Grid = styled.div`
 
 const SelectedZoneDataRowContent = (props) => {
   let temp = []
-  for (let i = 0; i < props.composition.length; i++) {
-    const id = get(props.composition, [i, 'zoneData', 'objectid'], '')
-    const mainDetail = get(props.composition, [i, 'zoneData', 'lu_desc'], '')
-    const subDetail = get(props.composition, [i, 'zoneData', 'subzone_n'], '')
+  const composition = orderBy(props.composition, ['zoneData.lu_desc', 'zoneData.objectid'])
+  for (let i = 0; i < composition.length; i++) {
+    const id = get(composition, [i, 'zoneData', 'objectid'], '')
+    const desc = get(composition, [i, 'zoneData', 'lu_desc'], '')
+    const name = get(composition, [i, 'zoneData', 'subzone_n'], '')
     temp.push(
-      <ZoneDetails key={i} mainDetail={mainDetail} subDetail={`${subDetail} — ${id}`} />
+      <ZoneDetails key={i} mainDetail={desc} subDetail={`${name} — ${id}`} />
     )
   }
   return (
