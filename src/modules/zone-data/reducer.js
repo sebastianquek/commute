@@ -1,9 +1,9 @@
 import * as t from './actionTypes'
 
 export const routeChoicesFilters = (state = {
-  dataNumCommutersBounds: [1, 100], // Extent based on current route choices data
+  dataNumCommutersBounds: [50, 200], // Extent based on current route choices data
   dataDurationBounds: [25 * 60, 60 * 60], // Data is updated when selected filter is outside these bounds
-  numCommuters: [1, 100],
+  numCommuters: [50, 200],
   duration: [25 * 60, 60 * 60], // 1hr
   includeMrt: true,
   includeBus: true,

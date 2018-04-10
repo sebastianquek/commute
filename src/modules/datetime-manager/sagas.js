@@ -46,7 +46,7 @@ let bufferedZoneIds = []
 
 function * updateRidershipData ({ zoneId }) {
   bufferedZoneIds.push(zoneId)
-  yield call(delay, 1000) // Debounce the fetching of API calls
+  yield call(delay, 3000) // Debounce the fetching of API calls
 
   let zoneIds = [...bufferedZoneIds]
 

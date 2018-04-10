@@ -23,7 +23,7 @@ function * getDataAndFetchZoneJourneys () {
   // already be updated in the state.
   // https://redux-saga.js.org/docs/api/index.html#selectselector-args
 
-  yield call(delay, 1000) // Debounce the fetching of API calls
+  yield call(delay, 2000) // Debounce the fetching of API calls
 
   const originZoneIds = yield select(zoneManager.selectors.originZoneIdsSelector)
   const destinationZoneIds = yield select(zoneManager.selectors.destinationZoneIdsSelector)
