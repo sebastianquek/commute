@@ -75,7 +75,7 @@ const SelectionModeFeedback = ({zoneSelectionMode, editingGroup, editingGroupCou
       feedback = (
         <span>
           <span style={{marginRight: '0.2em'}}>Editing</span>
-          <ZoneButton hover={false} animate={false} color={editingGroup.color}>{editingGroupCounter}</ZoneButton>
+          <ZoneButton hover={false} animate={false} color={editingGroup.color} circle={true}>{editingGroupCounter}</ZoneButton>
         </span>
       )
       break
