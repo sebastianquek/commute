@@ -26,7 +26,8 @@ function * colorGenerator () {
       }
     }
 
-    let idx = Math.floor(Math.random() * currentColors.length)
+    // let idx = Math.floor(Math.random() * currentColors.length)
+    let idx = 0
     let hue = currentColors[idx]
     currentColors.splice(idx, 1)
 
