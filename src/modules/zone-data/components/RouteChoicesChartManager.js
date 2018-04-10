@@ -188,7 +188,7 @@ class RouteChoicesChartManager extends Component {
       <Wrapper>
         { this.numHiddenLinks > 0 && <MaxNumLinksFeedback>Showing {this.maxNumLinks} links ({this.numHiddenLinks} links are hidden)</MaxNumLinksFeedback> }
         { this.props.isFetchingZoneJourneyData && <BottomLeftSpinner /> }
-        { this.noRoutes && <FeedbackLabel>No routes match your criteria</FeedbackLabel> }
+        { !this.props.isFetchingZoneJourneyData && this.noRoutes && <FeedbackLabel>No routes match your criteria</FeedbackLabel> }
         <RouteChoicesChart
           links={this.links}
           nodes={this.nodes}
