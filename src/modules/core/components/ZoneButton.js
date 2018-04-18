@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import { shouldTextBeDark } from '../../../utils/randomColor'
-import { fadeSlideUpRotated } from '../../../utils/animations'
+import { fadeSlideUp, fadeSlideUpRotated } from '../../../utils/animations'
 
 const Button = styled.button` 
   background-color: ${({color}) => color};
@@ -24,7 +24,15 @@ const Button = styled.button`
       return css`transform: ${small && 'scale(0.6)'};`
     }
   }}
-  ${({animate}) => animate && css`animation: ${fadeSlideUpRotated} 0.7s ease;`}
+  ${({animate, roundedSquare, circle}) => {
+    if (animate) {
+      if (roundedSquare || circle) {
+        return css`animation: ${fadeSlideUp} 0.7s ease;`
+      } else {
+        return css`animation: ${fadeSlideUpRotated} 0.7s ease;`
+      }
+    }
+  }}
   
   ${({hover}) => hover && css`
     :hover {
