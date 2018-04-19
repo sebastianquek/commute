@@ -8,7 +8,7 @@ const FeedbackLabel = styled.div`
   animation: ${fadeSlideUp} 0.7s ease;
   color: ${({theme}) => theme.colors.textPrimary};
   display: flex;
-  font-size: ${({theme}) => theme.typography.bodySize};
+  font-size: 1rem;
   font-style: italic;
   height: 100px;
   justify-content: center;

@@ -190,7 +190,7 @@ class DatetimeSlider extends React.Component {
 
     const w = this.w
     const h = this.h / 2
-    const padding = { top: 14, right: 150, bottom: 14, left: 60 }
+    const padding = { top: 14, right: 130, bottom: 14, left: 60 }
 
     let maxRidership
     if (this.props.showAbsoluteRidership) {

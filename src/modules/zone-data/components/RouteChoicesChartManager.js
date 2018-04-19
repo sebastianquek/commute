@@ -29,7 +29,7 @@ const FeedbackLabel = styled.div`
   align-items: center;
   color: ${({theme}) => theme.colors.textPrimary};
   display: flex;
-  font-size: ${({theme}) => theme.typography.bodySize};
+  font-size: 1rem;
   font-style: italic;
   width: 100%;
   height: 100%;

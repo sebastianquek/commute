@@ -42,6 +42,7 @@ const Wrapper = styled.div`
 
   .DayPicker-Weekday, .DayPicker-Day {
     font-family: 'Barlow', sans-serif;
+    font-weight: 500;
     font-size: 0.84em;
     padding: 0.3em 0.46em;
   }

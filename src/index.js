@@ -46,6 +46,12 @@ injectGlobal`
     -webkit-text-size-adjust: 100%;
     font-size: ${theme.typography.baseSize}px;
     font-weight: 500;
+    
+    @media
+    (-webkit-min-device-pixel-ratio: 2),
+    (min-resolution: 192dpi) { 
+      font-size: 10px;
+    }
   }
 
   body {

@@ -25,6 +25,7 @@ const Button = styled.button`
   color: ${({theme}) => theme.colors.textPrimary};
   cursor: pointer;
   font-family: 'Barlow', sans-serif;
+  font-weight: 500;
   font-size: 0.84em;
   padding: 0.3em 0.46em;
   transition: 0.2s all;

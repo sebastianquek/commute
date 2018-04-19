@@ -33,7 +33,7 @@ const MainDetail = styled.div`
 `
 
 const SubDetail = styled.div`
-  font-size: 0.69em;
+  font-size: 0.7em;
 `
 
 export const landUseColors = {

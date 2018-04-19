@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 
 const LandUseTypesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
   grid-gap: 0.2em 0.5em;
 `
 
