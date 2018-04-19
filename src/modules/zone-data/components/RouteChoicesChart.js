@@ -106,7 +106,11 @@ class RouteChoicesChart extends Component {
       )
       .force('charge',
         d3.forceManyBody()
-          .strength(-100)
+          .strength(-8)
+      )
+      .force('collision',
+        d3.forceCollide()
+          .radius(d => nodeSizeScale(d.numLinks) * 12)
       )
       .force('center',
         d3.forceCenter(w / 2, h / 2)
