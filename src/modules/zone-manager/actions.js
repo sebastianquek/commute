@@ -24,6 +24,10 @@ export const removeZoneFromGroup = (zoneId, groupId) => ({
   groupId
 })
 
+export const swapOriginsAndDestinations = () => ({
+  type: t.SWAP_OD
+})
+
 export const resetSelectionMode = () => ({
   type: t.RESET_SELECTION_MODE
 })

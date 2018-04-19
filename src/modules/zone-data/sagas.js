@@ -75,6 +75,7 @@ export function * watchAndUpdateZoneJourneys () {
     zoneManager.actionTypes.ADD_ZONE_TO_GROUP,
     zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP,
     zoneManager.actionTypes.REMOVE_GROUP,
+    zoneManager.actionTypes.SWAP_OD,
     datetimeManager.actionTypes.SET_DATETIME_BRUSH_DOMAIN
   ], getDataAndFetchZoneJourneys)
 }

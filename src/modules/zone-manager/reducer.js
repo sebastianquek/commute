@@ -101,6 +101,12 @@ const categorizedZones = (state = initialZones, action) => {
       }
       return state
 
+    case t.SWAP_OD:
+      return {
+        origins: cloneDeep(state.destinations),
+        destinations: cloneDeep(state.origins)
+      }
+
     default:
       return state
   }
