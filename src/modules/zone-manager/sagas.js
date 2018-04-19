@@ -48,8 +48,9 @@ export function * watchForSubgraphRequests () {
   while (true) {
     const { constraints } = yield take(REQUEST_SUBGRAPHS)
     yield put(fetchingSubgraphs())
-    yield call(delay, 2000)
-    const data = [[10, 11, 12], [13, 14, 15]]
+    // yield call(delay, 2000)
+    // const data = [[10, 11, 12], [13, 14, 15]]
+    const data = yield call(fetchSubgraphs, constraints)
     const existingGroupData = (yield select(subgraphGroupDataSelector))
     const existingZoneIds = existingGroupData.map(g => new Set(g.zoneIds))
 
@@ -65,4 +66,10 @@ export function * watchForSubgraphRequests () {
     }
     yield put(receiveSubgraphs())
   }
+}
+
+async function fetchSubgraphs (constraints) {
+  const res = await fetch(`/subgraphs/constraints=${constraints.join(',')}`)
+  const data = await res.json()
+  return Object.values(data)[0].map(r => r.map(Number))
 }

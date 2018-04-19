@@ -99,7 +99,7 @@ class SubgraphSelection extends Component {
   }
 
   state = {
-    selectedLandUse: ['AG']
+    selectedLandUse: ['ED', 'HE', 'OS', 'PK', 'RE']
   }
 
   constructor (props) {
