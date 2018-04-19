@@ -188,7 +188,7 @@ function mapStyle (state = defaultMapStyle, action) {
           newState = state.updateIn(['layers', hoverLayerIdx, 'filter'], f => f.set(2, action.routeId))
         }
         // Make flows thinner
-        newState = newState.setIn(['layers', journeysLayerIdx, 'paint', 'line-width', 'base'], 4)
+        newState = newState.setIn(['layers', journeysLayerIdx, 'paint', 'line-width', 'base'], 2)
         return newState
       }
       return state

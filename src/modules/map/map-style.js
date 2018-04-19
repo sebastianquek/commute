@@ -1,5 +1,5 @@
 import {fromJS} from 'immutable'
-import MAP_STYLE from './style3.json'
+import MAP_STYLE from './style4.json'
 
 export const defaultMapStyle = fromJS(MAP_STYLE)
 
@@ -74,11 +74,11 @@ export const journeysLayer = fromJS({
     'line-width': {
       'base': 1,
       'stops': [
-        [10, 2],
-        [16, 8]
+        [10, 4],
+        [16, 9]
       ]
     },
-    'line-opacity': 0.3
+    'line-opacity': 0.35
   }
 })
 
@@ -96,8 +96,8 @@ export const journeysHoverLayer = fromJS({
     'line-width': {
       'base': 0.1,
       'stops': [
-        [10, 2],
-        [16, 8]
+        [10, 4],
+        [16, 9]
       ]
     },
     'line-opacity': 1
@@ -116,7 +116,7 @@ export const flowArrowsLayer = fromJS({
     // 'icon-ignore-placement': true,
     'icon-image': 'arrow',
     'icon-size': {
-      'base': 1,
+      'base': 0.7,
       'stops': [
         [10, 0.08],
         [16, 0.2]
