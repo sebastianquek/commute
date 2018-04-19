@@ -44,7 +44,7 @@ class GroupCategory extends React.Component {
         key={group.groupId}
         groupId={group.groupId}
         color={group.color}>
-        {this.props.initialIdx + idx + 1}
+        {group.groupId}
       </SelectedGroupButtonContainer>
     )
     return (

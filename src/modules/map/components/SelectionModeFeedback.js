@@ -52,7 +52,7 @@ const Button = styled.button`
 
 // Shows the current selection mode and additional helpful information
 // A button is also created to reset the selection mode
-const SelectionModeFeedback = ({zoneSelectionMode, editingGroup, editingGroupCounter, resetSelectionMode}) => {
+const SelectionModeFeedback = ({zoneSelectionMode, editingGroup, resetSelectionMode}) => {
   let feedback
   switch (zoneSelectionMode) {
     case 'origins':
@@ -75,7 +75,7 @@ const SelectionModeFeedback = ({zoneSelectionMode, editingGroup, editingGroupCou
       feedback = (
         <span>
           <span style={{marginRight: '0.2em'}}>Editing</span>
-          <ZoneButton hover={false} animate={false} color={editingGroup.color} circle={true}>{editingGroupCounter}</ZoneButton>
+          <ZoneButton hover={false} animate={false} color={editingGroup.color} circle={true}>{editingGroup.groupId}</ZoneButton>
         </span>
       )
       break

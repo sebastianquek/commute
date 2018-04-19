@@ -18,7 +18,7 @@ const SelectedZonesDataRows = (props) => {
         <ScrollableAnchor key={key} id={'' + key}>
           <ZoneDataRow
             zoneName={zoneName}
-            zoneNum={props.initialIdx + idx + 1}
+            zoneNum={key}
             zoneColor={group.color}
             circle
           >

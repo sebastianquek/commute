@@ -21,7 +21,6 @@ const MapContainer = (props) => {
           zoneSelectionMode={props.zoneSelectionMode}
           resetSelectionMode={props.resetSelectionMode}
           editingGroup={props.editingGroup}
-          editingGroupCounter={props.editingGroupCounter}
         />
       }
     </div>
