@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import OriginsCategoryContainer from '../containers/OriginsCategoryContainer'
 import DestinationsCategoryContainer from '../containers/DestinationsCategoryContainer'
 import SubgraphsContainer from '../containers/SubgraphsContainer'
+import SwapCategoriesButtonContainer from '../containers/SwapCategoriesButtonContainer'
 
 const FixedWrapper = styled.div`
   height: 100%;
@@ -76,6 +77,7 @@ class ZoneManager extends React.Component {
         <Border {...this.state}/>
         <ScrollWrapper innerRef={ref => (this.scrollRef = ref)}>
           <OriginsCategoryContainer updateScrollbarVisbility={this.updateScrollbarVisbility}/>
+          <SwapCategoriesButtonContainer />
           <DestinationsCategoryContainer updateScrollbarVisbility={this.updateScrollbarVisbility}/>
           <Separator {...this.state} />
           <SubgraphsContainer updateScrollbarVisbility={this.updateScrollbarVisbility}/>
