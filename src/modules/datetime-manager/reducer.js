@@ -176,22 +176,24 @@ export const ridershipData = (state = {
           let arrival = 0
           const groupId = action.zoneIdToGroupIdMap[zone]
 
-          const counts = step.counts && step.counts['' + zone]
-          if (counts) { // zone has arrivals/departures
-            departure = counts.departure || 0
-            arrival = counts.arrival || 0
-          }
+          if (groupId) { // Ensure that the received zone data is still part of a group
+            const counts = step.counts && step.counts['' + zone]
+            if (counts) { // zone has arrivals/departures
+              departure = counts.departure || 0
+              arrival = counts.arrival || 0
+            }
 
-          if (!newDepartureStepData.hasOwnProperty(groupId)) {
-            newDepartureStepData[groupId] = { sum: 0 }
+            if (!newDepartureStepData.hasOwnProperty(groupId)) {
+              newDepartureStepData[groupId] = { sum: 0 }
+            }
+            if (!newArrivalStepData.hasOwnProperty(groupId)) {
+              newArrivalStepData[groupId] = { sum: 0 }
+            }
+            newDepartureStepData[groupId][zone] = departure
+            newDepartureStepData[groupId].sum += departure
+            newArrivalStepData[groupId][zone] = arrival
+            newArrivalStepData[groupId].sum += arrival
           }
-          if (!newArrivalStepData.hasOwnProperty(groupId)) {
-            newArrivalStepData[groupId] = { sum: 0 }
-          }
-          newDepartureStepData[groupId][zone] = departure
-          newDepartureStepData[groupId].sum += departure
-          newArrivalStepData[groupId][zone] = arrival
-          newArrivalStepData[groupId].sum += arrival
         })
 
         departureData[startTime] = mergeWith(
