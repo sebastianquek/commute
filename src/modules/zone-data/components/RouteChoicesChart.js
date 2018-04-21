@@ -106,7 +106,7 @@ class RouteChoicesChart extends Component {
       )
       .force('charge',
         d3.forceManyBody()
-          .strength(-8)
+          .strength(-30)
       )
       .force('collision',
         d3.forceCollide()
@@ -199,7 +199,7 @@ class RouteChoicesChart extends Component {
       // Scale for link widths
       linkWidthScale: d3.scaleLinear()
         .domain([d3.min(links, d => d.count), d3.max(links, d => d.count)])
-        .range([6, 24]),
+        .range([nodes.length > 4 ? 7 : 20, 24]),
 
       // Scale for stroke opacity
       linkOpacityScale: d3.scaleLinear()
@@ -214,7 +214,7 @@ class RouteChoicesChart extends Component {
       // Scale for node size
       nodeSizeScale: d3.scaleLinear()
         .domain([d3.min(nodes, d => d.numLinks), d3.max(nodes, d => d.numLinks)])
-        .range([nodes.length > 3 ? 0.8 : 1.5, nodes.length > 3 ? 2.8 : 1.5])
+        .range([nodes.length > 3 ? 0.8 : 2, nodes.length > 3 ? 2.8 : 2])
     }
   }
 
