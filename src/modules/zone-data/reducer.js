@@ -46,16 +46,26 @@ export const routeChoicesFilters = (state = {
         if (totalDuration > dataDurationBounds[1]) dataDurationBounds[1] = totalDuration
       }
 
+      let numCommuters = [
+        Math.max(state.numCommuters[0], dataNumCommutersBounds[0]),
+        Math.min(state.numCommuters[1], dataNumCommutersBounds[1])
+      ]
+
+      // Ensure the domain is valid
+      if (numCommuters[0] > numCommuters[1]) numCommuters = [numCommuters[0], numCommuters[0]]
+
+      let duration = [
+        Math.max(state.duration[0], dataDurationBounds[0]),
+        Math.min(state.duration[1], dataDurationBounds[1])
+      ]
+
+      // Ensure the domain is valid
+      if (duration[0] > duration[1]) duration = [duration[0], duration[0]]
+
       return {
         ...state,
-        numCommuters: [
-          Math.max(state.numCommuters[0], dataNumCommutersBounds[0]),
-          Math.min(state.numCommuters[1], dataNumCommutersBounds[1])
-        ],
-        duration: [
-          Math.max(state.duration[0], dataDurationBounds[0]),
-          Math.min(state.duration[1], dataDurationBounds[1])
-        ],
+        numCommuters,
+        duration,
         dataNumCommutersBounds,
         dataDurationBounds
       }
