@@ -9,10 +9,10 @@ const Wrapper = styled.div`
   display: flex;
 `
 
-const ZoneButtonWithDelete = styled(ZoneButton)`
+export const ZoneButtonWithDelete = styled(ZoneButton)`
 `
 
-const OptionButtons = styled.div`
+export const OptionButtons = styled.div`
   align-items: center;
   background-color: ${({color}) => color};
   border-radius: 0 ${({theme}) => theme.borderRadius} ${({theme}) => theme.borderRadius};
@@ -35,7 +35,7 @@ const OptionButtons = styled.div`
   }
 `
 
-const OptionButton = styled.button`
+export const OptionButton = styled.button`
   align-items: center;
   background: transparent;
   border: none;
@@ -61,7 +61,7 @@ const EditButton = OptionButton.extend`
   }
 `
 
-const DeleteButton = OptionButton.extend`
+export const DeleteButton = OptionButton.extend`
   :hover svg {
     fill: ${({theme}) => theme.colors.iconWarning};
   }

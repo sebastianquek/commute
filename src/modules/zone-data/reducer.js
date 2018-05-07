@@ -1,9 +1,9 @@
 import * as t from './actionTypes'
 
 export const routeChoicesFilters = (state = {
-  dataNumCommutersBounds: [1, 100], // Extent based on current route choices data
+  dataNumCommutersBounds: [50, 200], // Extent based on current route choices data
   dataDurationBounds: [25 * 60, 60 * 60], // Data is updated when selected filter is outside these bounds
-  numCommuters: [1, 100],
+  numCommuters: [50, 200],
   duration: [25 * 60, 60 * 60], // 1hr
   includeMrt: true,
   includeBus: true,
@@ -46,16 +46,26 @@ export const routeChoicesFilters = (state = {
         if (totalDuration > dataDurationBounds[1]) dataDurationBounds[1] = totalDuration
       }
 
+      let numCommuters = [
+        Math.max(state.numCommuters[0], dataNumCommutersBounds[0]),
+        Math.min(state.numCommuters[1], dataNumCommutersBounds[1])
+      ]
+
+      // Ensure the domain is valid
+      if (numCommuters[0] > numCommuters[1]) numCommuters = [numCommuters[0], numCommuters[0]]
+
+      let duration = [
+        Math.max(state.duration[0], dataDurationBounds[0]),
+        Math.min(state.duration[1], dataDurationBounds[1])
+      ]
+
+      // Ensure the domain is valid
+      if (duration[0] > duration[1]) duration = [duration[0], duration[0]]
+
       return {
         ...state,
-        numCommuters: [
-          Math.max(state.numCommuters[0], dataNumCommutersBounds[0]),
-          Math.min(state.numCommuters[1], dataNumCommutersBounds[1])
-        ],
-        duration: [
-          Math.max(state.duration[0], dataDurationBounds[0]),
-          Math.min(state.duration[1], dataDurationBounds[1])
-        ],
+        numCommuters,
+        duration,
         dataNumCommutersBounds,
         dataDurationBounds
       }
@@ -75,7 +85,7 @@ export const zoneCompositionData = (state = {}, action) => {
   switch (action.type) {
     case t.RECEIVE_ZONE_COMPOSITIONS:
       return action.zones.features.reduce((zones, f) => {
-        zones[f.properties.OBJECTID] = f.properties
+        zones[f.properties.objectid] = f.properties
         return zones
       }, {})
     default:
@@ -123,7 +133,8 @@ export const zoneJourneyData = (state = {}, action) => {
 
 export const zoneDataInterfaceFlags = (state = {
   shouldRouteChoicesChartUpdate: false,
-  isFetchingZoneJourneyData: true
+  isFetchingZoneJourneyData: true,
+  hasReceivedZoneCompositions: false
 }, action) => {
   switch (action.type) {
     case t.FORCE_ROUTE_CHOICES_CHART_UPDATE:
@@ -146,6 +157,11 @@ export const zoneDataInterfaceFlags = (state = {
       return {
         ...state,
         isFetchingZoneJourneyData: false
+      }
+    case t.RECEIVE_ZONE_COMPOSITIONS:
+      return {
+        ...state,
+        hasReceivedZoneCompositions: true
       }
     default:
       return state

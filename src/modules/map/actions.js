@@ -51,3 +51,8 @@ export const colorSelectedGroups = groups => ({
   type: t.COLOR_SELECTED_GROUPS,
   groups
 })
+
+export const colorSubgraphGroups = groups => ({
+  type: t.COLOR_SUBGRAPH_GROUPS,
+  groups
+})

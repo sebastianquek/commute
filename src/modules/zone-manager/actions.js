@@ -24,6 +24,10 @@ export const removeZoneFromGroup = (zoneId, groupId) => ({
   groupId
 })
 
+export const swapOriginsAndDestinations = () => ({
+  type: t.SWAP_OD
+})
+
 export const resetSelectionMode = () => ({
   type: t.RESET_SELECTION_MODE
 })
@@ -47,4 +51,40 @@ export const setEditingGroupId = groupId => ({
 
 export const resetEditingGroup = () => ({
   type: t.RESET_EDITING_GROUP
+})
+
+export const addSubgraphGroup = (groupId, color, zoneIds) => ({
+  type: t.ADD_SUBGRAPH_GROUP,
+  groupId,
+  color,
+  zoneIds
+})
+
+export const removeSubgraphGroup = groupId => ({
+  type: t.REMOVE_SUBGRAPH_GROUP,
+  groupId
+})
+
+export const hideSubgraphGroup = groupId => ({
+  type: t.HIDE_SUBGRAPH_GROUP,
+  groupId
+})
+
+export const showSubgraphGroup = groupId => ({
+  type: t.SHOW_SUBGRAPH_GROUP,
+  groupId
+})
+
+export const requestSubgraphs = (constraints) => ({
+  type: t.REQUEST_SUBGRAPHS,
+  constraints
+})
+
+export const fetchingSubgraphs = () => ({
+  type: t.FETCHING_SUBGRAPHS
+})
+
+export const receiveSubgraphs = (data) => ({
+  type: t.RECEIVE_SUBGRAPHS,
+  data
 })

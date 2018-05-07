@@ -16,6 +16,7 @@ export default function * rootSaga () {
     map.sagas.updateJourneys(),
     map.sagas.watchForMouseEvents(),
     zoneManager.sagas.watchForZoneSelectionChanges(),
-    zoneManager.sagas.watchForDeletionOfGroups()
+    zoneManager.sagas.watchForDeletionOfGroups(),
+    zoneManager.sagas.watchForSubgraphRequests()
   ]
 }

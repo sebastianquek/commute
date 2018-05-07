@@ -12,6 +12,11 @@ module.exports = merge(common, {
     proxy: {
       '/api/**': {
         target: 'http://localhost:1337',
+        // target: 'http://ubicomp-web.d2.comp.nus.edu.sg:1337/',
+        secure: false
+      },
+      '/subgraphs/**': {
+        target: 'http://ubicomp-web.d2.comp.nus.edu.sg:5002/',
         secure: false
       }
     }

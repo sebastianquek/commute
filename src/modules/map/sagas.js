@@ -1,10 +1,11 @@
 import { all, call, put, take, select, takeEvery } from 'redux-saga/effects'
 import { goToAnchor } from 'react-scrollable-anchor'
+import orderBy from 'lodash.orderby'
 import zoneData from '../zone-data'
 import { MAP_HAS_LOADED, CLICK_FEATURES, HOVER_OVER_FEATURE } from './actionTypes'
 import {
   addZoneCompositions, addJourneys, removeJourneys, colorSelectedGroups,
-  hoverOverZone, setFilteredRouteIds
+  hoverOverZone, setFilteredRouteIds, colorSubgraphGroups
 } from './actions'
 import linkingCoordinator from '../linking-coordinator'
 import zoneManager from '../zone-manager'
@@ -19,15 +20,18 @@ export function * updateMapOnLoad () {
   yield put(addZoneCompositions(zones))
   const selectedGroups = yield select(zoneManager.selectors.allGroupsSelector)
   yield put(colorSelectedGroups(selectedGroups))
+  const subgraphGroups = yield select(zoneManager.selectors.subgraphGroupDataSelector)
+  yield put(colorSubgraphGroups(subgraphGroups))
 }
 
 export function * updateJourneys () {
   // Handle first load
-  const [{ journeys }, { filteredRouteIds }] = yield all([
+  let [{ journeys }, { filteredRouteIds }] = yield all([
     take(zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS),
     take(zoneData.actionTypes.SET_FILTERED_ROUTE_IDS),
     take(MAP_HAS_LOADED)
   ])
+  journeys.features = orderBy(journeys.features, f => f.properties.totalDuration, ['desc'])
   yield put(addJourneys(journeys))
   yield put(setFilteredRouteIds(filteredRouteIds))
 
@@ -40,6 +44,7 @@ export function * updateJourneys () {
     ])
     switch (action.type) {
       case zoneData.actionTypes.RECEIVE_ZONE_JOURNEYS:
+        action.journeys.features = orderBy(action.journeys.features, f => f.properties.totalDuration, ['desc'])
         yield put(addJourneys(action.journeys))
         break
       case zoneData.actionTypes.SET_FILTERED_ROUTE_IDS:
@@ -56,7 +61,7 @@ function * handleClick ({ features, shiftKey }) {
   const zone = features.find(f => f.layer.source === 'zones')
 
   if (zone) {
-    const zoneId = zone.properties.OBJECTID
+    const zoneId = zone.properties.objectid
     const groups = yield select(zoneManager.selectors.allGroupsSelector)
     const groupOfZone = groups.find(g => g.zoneIds.includes(zoneId)) || -1
     const allGroupIds = yield select(zoneManager.selectors.allGroupIdsSelector)
@@ -122,7 +127,7 @@ function * handleHover ({ feature }) {
       // Disable highlighting zones if hovered feature has been selected
       // const isSelected = yield select(isHoveredZoneSelectedSelector)
       // if (!isSelected) {
-      yield put(hoverOverZone(feature.properties.OBJECTID))
+      yield put(hoverOverZone(feature.properties.objectid))
       // }
     }
   } else if (feature.layer.source === 'journeys') {

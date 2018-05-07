@@ -109,7 +109,7 @@ const Controls = styled.div`
     padding: 2px 5px;
     vertical-align: top;
     line-height: 1;
-    font-size: 12px; }
+    font-size: 1rem; }
 
   .pt-range-slider .pt-slider-handle {
     width: 8px; }

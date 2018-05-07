@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import * as t from './actionTypes'
 import c from '../../utils/randomColor'
 import cloneDeep from 'lodash.clonedeep'
+import omit from 'lodash.omit'
 
 const zoneSelectionMode = (state = null, action) => {
   switch (action.type) {
@@ -33,12 +34,14 @@ const initialZones = {
   origins: [{
     groupId: 1,
     color: c.next().value,
-    zoneIds: [1, 2]
-  }, {
-    groupId: 2,
-    color: c.next().value,
-    zoneIds: [3, 4, 5]
-  }],
+    zoneIds: [6012, 7405]
+  }
+  // {
+  //   groupId: 2,
+  //   color: c.next().value,
+  //   zoneIds: [3, 4, 5]
+  // }
+  ],
   destinations: []
 }
 const categorizedZones = (state = initialZones, action) => {
@@ -98,13 +101,79 @@ const categorizedZones = (state = initialZones, action) => {
       }
       return state
 
+    case t.SWAP_OD:
+      return {
+        origins: cloneDeep(state.destinations),
+        destinations: cloneDeep(state.origins)
+      }
+
     default:
       return state
+  }
+}
+
+const subgraphGroups = (state = {
+  // 1: {
+  //   groupId: 1,
+  //   color: c.next().value,
+  //   zoneIds: [10, 11, 12],
+  //   hidden: false
+  // },
+  // 2: {
+  //   groupId: 2,
+  //   color: c.next().value,
+  //   zoneIds: [13, 14, 15],
+  //   hidden: false
+  // }
+}, action) => {
+  const newState = cloneDeep(state)
+  switch (action.type) {
+    case t.ADD_SUBGRAPH_GROUP:
+      newState[action.groupId] = {
+        groupId: action.groupId,
+        color: action.color,
+        zoneIds: action.zoneIds,
+        hidden: false
+      }
+      return newState
+
+    case t.REMOVE_SUBGRAPH_GROUP:
+      return omit(newState, [action.groupId])
+
+    case t.HIDE_SUBGRAPH_GROUP:
+      newState[action.groupId].hidden = true
+      return newState
+
+    case t.SHOW_SUBGRAPH_GROUP:
+      newState[action.groupId].hidden = false
+      return newState
+
+    default:
+      return state
+  }
+}
+
+const subgraphInterfaceFlags = (state = {
+  isFetchingSubgraphs: false
+}, action) => {
+  switch (action.type) {
+    case t.FETCHING_SUBGRAPHS:
+      return {
+        isFetchingSubgraphs: true
+      }
+
+    case t.RECEIVE_SUBGRAPHS:
+    default:
+      return {
+        isFetchingSubgraphs: false
+      }
   }
 }
 
 export default combineReducers({
   zoneSelectionMode,
   editingGroupId,
-  categorizedZones
+  categorizedZones,
+  subgraphGroups,
+  subgraphInterfaceFlags
 })

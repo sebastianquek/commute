@@ -106,7 +106,11 @@ class RouteChoicesChart extends Component {
       )
       .force('charge',
         d3.forceManyBody()
-          .strength(-60)
+          .strength(-30)
+      )
+      .force('collision',
+        d3.forceCollide()
+          .radius(d => nodeSizeScale(d.numLinks) * 12)
       )
       .force('center',
         d3.forceCenter(w / 2, h / 2)
@@ -163,7 +167,7 @@ class RouteChoicesChart extends Component {
       .attr('class', 'group-number')
       .attr('y', '0.26rem')
       .attr('fill', d => shouldTextBeDark(d.color) ? theme.colors.textPrimary : theme.colors.textSecondaryAlt)
-      .text(d => d.group)
+      .text(d => d.isGroup ? d.group : '')
   }
 
   addGradients (defs, links) {
@@ -195,7 +199,7 @@ class RouteChoicesChart extends Component {
       // Scale for link widths
       linkWidthScale: d3.scaleLinear()
         .domain([d3.min(links, d => d.count), d3.max(links, d => d.count)])
-        .range([6, 24]),
+        .range([nodes.length > 4 ? 7 : 20, 24]),
 
       // Scale for stroke opacity
       linkOpacityScale: d3.scaleLinear()
@@ -205,12 +209,12 @@ class RouteChoicesChart extends Component {
       // Scale for link distance
       linkDistanceScale: d3.scaleLinear()
         .domain([d3.min(links, d => d.totalDuration), d3.max(links, d => d.totalDuration)])
-        .range([nodes.length > 3 ? 80 : 200, 200]),
+        .range([nodes.length > 3 ? 80 : this.w / 3, this.w / 3]),
 
       // Scale for node size
       nodeSizeScale: d3.scaleLinear()
         .domain([d3.min(nodes, d => d.numLinks), d3.max(nodes, d => d.numLinks)])
-        .range([nodes.length > 3 ? 0.8 : 1.5, nodes.length > 3 ? 3 : 1.5])
+        .range([nodes.length > 3 ? 0.8 : 2, nodes.length > 3 ? 2.8 : 2])
     }
   }
 

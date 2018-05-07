@@ -18,7 +18,6 @@ const mapStateToProps = (state, ownProps) => {
       if (colorsMap.hasOwnProperty(id)) return colorsMap[id]
       return '#ddd'
     },
-    zoneIdToName: zoneData.selectors.zoneNamesSelector(state),
     ...ownProps
   }
 }

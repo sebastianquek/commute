@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import get from 'lodash.get'
+import orderBy from 'lodash.orderby'
 import Subheader from '../../core/components/Subheader'
 import ZoneDetails from '../../core/components/ZoneDetails'
 
@@ -12,16 +13,18 @@ const Section = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  grid-gap: 0.2em 1em;
+  grid-gap: 0.4em 1em;
 `
 
 const SelectedZoneDataRowContent = (props) => {
   let temp = []
-  for (let i = 0; i < props.zoneComposition.length; i++) {
-    const mainDetail = get(props.zoneComposition, [i, 'zoneData', 'SUBZONE_N'], '')
-    const subDetail = get(props.zoneComposition, [i, 'zoneData', 'PLN_AREA_N'], '')
+  const composition = orderBy(props.composition, ['zoneData.lu_desc', 'zoneData.objectid'])
+  for (let i = 0; i < composition.length; i++) {
+    const id = get(composition, [i, 'zoneData', 'objectid'], '')
+    const desc = get(composition, [i, 'zoneData', 'lu_desc'], '')
+    const name = get(composition, [i, 'zoneData', 'subzone_n'], '')
     temp.push(
-      <ZoneDetails key={i} mainDetail={mainDetail} subDetail={subDetail} />
+      <ZoneDetails key={i} mainDetail={desc} subDetail={`${name} — ${id}`} />
     )
   }
   return (
@@ -37,7 +40,7 @@ const SelectedZoneDataRowContent = (props) => {
 }
 
 SelectedZoneDataRowContent.propTypes = {
-  zoneComposition: PropTypes.array
+  composition: PropTypes.array
 }
 
 export default SelectedZoneDataRowContent

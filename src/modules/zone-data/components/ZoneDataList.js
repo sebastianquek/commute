@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import RouteChoicesContainer from '../containers/RouteChoicesContainer'
 import OriginsDataRowsContainer from '../containers/OriginsDataRowsContainer'
 import DestinationsDataRowsContainer from '../containers/DestinationsDataRowsContainer'
+import SubgraphSelectionContainer from '../containers/SubgraphSelectionContainer'
 
 const List = styled.div`
   background: white;
@@ -19,11 +20,11 @@ const List = styled.div`
   z-index: 2;
 
   & > *:not(:first-child) {
-    margin-top: 1.8em;
+    margin-top: 5rem;
   }
 
   & > *:last-child {
-    margin-bottom: 2em;
+    margin-bottom: 3rem;
   }
 `
 
@@ -33,6 +34,7 @@ const ZoneDataList = (props) => {
       <RouteChoicesContainer />
       <OriginsDataRowsContainer />
       <DestinationsDataRowsContainer />
+      <SubgraphSelectionContainer />
     </List>
   )
 }

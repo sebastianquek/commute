@@ -18,8 +18,8 @@ const Tooltip = (props) => {
           minWidth='0px'
         >
           <ZoneDetails
-            mainDetail={properties.SUBZONE_N}
-            subDetail={properties.PLN_AREA_N}
+            mainDetail={properties.lu_desc}
+            subDetail={`${properties.subzone_n} — ${properties.objectid}`}
             animate={false}
           />
         </TooltipWrapper>
@@ -28,13 +28,12 @@ const Tooltip = (props) => {
     case 'journeys':
       try {
         properties.trips = JSON.parse(properties.trips)
+        properties.originZoneData = JSON.parse(properties.originZoneData)
+        properties.destinationZoneData = JSON.parse(properties.destinationZoneData)
       } catch (e) {
         // No parsing was needed
       }
-      properties.originZoneName = props.zoneIdToName[properties.originZone]
-      properties.destinationZoneName = props.zoneIdToName[properties.destinationZone]
-      properties.sourceColor = props.zoneIdToGroupColor(properties.originZone)
-      properties.targetColor = props.zoneIdToGroupColor(properties.destinationZone)
+
       return (
         <RouteInfoTooltip
           link={properties}

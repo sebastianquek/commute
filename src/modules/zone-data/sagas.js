@@ -1,16 +1,20 @@
 import moment from 'moment'
 import { delay } from 'redux-saga'
-import { select, call, put, takeLatest } from 'redux-saga/effects'
+import { select, call, put, take, takeLatest } from 'redux-saga/effects'
 import * as topojson from 'topojson-client'
+import get from 'lodash.get'
 import {
-  REQUEST_ZONE_JOURNEYS
+  REQUEST_ZONE_JOURNEYS, RECEIVE_ZONE_COMPOSITIONS
 } from './actionTypes'
 import {
   requestZoneJourneys, receiveZoneJourneys, requestZoneJourneysError, removeAllZoneJourneys,
   requestZoneCompositions, receiveZoneCompositions, requestZoneCompositionsError,
   fetchingZoneJourneys, forceRouteChoicesChartUpdate
 } from './actions'
-import { routeChoicesFiltersSelector } from './selectors'
+import {
+  routeChoicesFiltersSelector, zoneCompositionDataSelector,
+  hasReceivedZoneCompositions
+} from './selectors'
 import zoneManager from '../zone-manager'
 import datetimeManager from '../datetime-manager'
 
@@ -19,7 +23,7 @@ function * getDataAndFetchZoneJourneys () {
   // already be updated in the state.
   // https://redux-saga.js.org/docs/api/index.html#selectselector-args
 
-  yield call(delay, 1000) // Debounce the fetching of API calls
+  yield call(delay, 2000) // Debounce the fetching of API calls
 
   const originZoneIds = yield select(zoneManager.selectors.originZoneIdsSelector)
   const destinationZoneIds = yield select(zoneManager.selectors.destinationZoneIdsSelector)
@@ -47,6 +51,17 @@ function * getDataAndFetchZoneJourneys () {
       fetchZoneJourneys, originZoneIds, destinationZoneIds, startTime, duration,
       minCommuters, minRouteDuration, includeMrt, includeBus
     )
+
+    if (!(yield select(hasReceivedZoneCompositions))) {
+      yield take(RECEIVE_ZONE_COMPOSITIONS)
+    }
+
+    const zoneData = yield select(zoneCompositionDataSelector)
+    journeys.features.forEach(f => {
+      f.properties.originZoneData = get(zoneData, f.properties.originZone, null)
+      f.properties.destinationZoneData = get(zoneData, f.properties.destinationZone, null)
+    })
+
     yield put(receiveZoneJourneys(journeys, originZoneIds, destinationZoneIds))
     yield put(forceRouteChoicesChartUpdate())
   } catch (err) {
@@ -60,6 +75,7 @@ export function * watchAndUpdateZoneJourneys () {
     zoneManager.actionTypes.ADD_ZONE_TO_GROUP,
     zoneManager.actionTypes.REMOVE_ZONE_FROM_GROUP,
     zoneManager.actionTypes.REMOVE_GROUP,
+    zoneManager.actionTypes.SWAP_OD,
     datetimeManager.actionTypes.SET_DATETIME_BRUSH_DOMAIN
   ], getDataAndFetchZoneJourneys)
 }
@@ -87,9 +103,8 @@ async function fetchZoneJourneys (
 
 async function fetchZoneCompositions () {
   const res = await fetch('/api/v3/zones')
-  const resJson = await res.json()
-  const data = topojson.feature(resJson, resJson.objects.zones)
-  return data
+  const topojsonZones = await res.json()
+  return topojson.feature(topojsonZones, topojsonZones.objects.zones)
 }
 
 // Called once on initialisation of the app

@@ -2,28 +2,26 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import * as d3 from 'd3'
-import ZoneButton from './ZoneButton'
 import Tooltip from './Tooltip'
+import ZoneDetails from '../../core/components/ZoneDetails'
+import get from 'lodash.get'
 
 const ZoneInfo = styled.div`
-  display: grid;
-  grid-template-columns: 30px 1fr;
-  grid-column-gap: 10px;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
   margin-bottom: 1rem;
 `
 
-const ZoneName = styled.div`
-  font-size: 1.4rem;
-  font-weight: 700;
+const RouteInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 0.4rem 0;
+  align-items: center;
 `
 
 const Arrow = styled.div`
-  justify-self: center;
-`
-
-const ZoneIcon = styled.div`
-  justify-self: center;
+  margin: 0 1.3rem 0 1rem;
+  font-size: 1.4rem;
 `
 
 const TimelineContainer = styled.div`
@@ -75,8 +73,8 @@ const RouteInfoTooltip = ({ link, durationBarsWidth, x, y, hidden, maxDuration }
 
   link.trips.map(t => ({...t, durationBarWidth: scale(t.duration)}))
     .forEach(t => {
-      const match = t.service.slice(0, 1).match(/[a-zA-Z]/)
-      const color = match ? '#F98C73' : '#62D090'
+      const isTrain = t.service.slice(0, 1).match(/[a-zA-Z]/)
+      const color = isTrain ? '#F98C73' : '#62D090'
       const service = t.service.split('→').map((s, i) => <div key={s}>{i > 0 ? '⤷ ' : ''}{s}</div>)
       serviceLabels.push(<ServiceLabel minWidth={t.durationBarWidth} key={t.service}>{service}</ServiceLabel>)
       durationBars.push(<DurationBar width={t.durationBarWidth} color={color} key={t.service}/>)
@@ -86,12 +84,20 @@ const RouteInfoTooltip = ({ link, durationBarsWidth, x, y, hidden, maxDuration }
   return (
     <Tooltip x={x} y={y} hidden={hidden} className='tooltip'>
       <ZoneInfo>
-        <ZoneIcon><ZoneButton animate={false} hover={false} color={link.sourceColor} circle={link.sourceColor !== '#ddd'}>{link.originZone}</ZoneButton></ZoneIcon>
-        <ZoneName>{link.originZoneName}</ZoneName>
-        <Arrow>↓</Arrow>
-        <div><strong>{link.count}</strong> commuter{link.count > 1 ? 's' : ''} took <strong>{Math.round(link.totalDuration / 60)}</strong> mins{link.count > 1 ? ' on the average' : ''}</div>
-        <ZoneIcon><ZoneButton animate={false} hover={false} color={link.targetColor} circle={link.targetColor !== '#ddd'}>{link.destinationZone}</ZoneButton></ZoneIcon>
-        <ZoneName>{link.destinationZoneName}</ZoneName>
+        <ZoneDetails
+          mainDetail={get(link, ['originZoneData', 'lu_desc'], '')}
+          subDetail={`${get(link, ['originZoneData', 'subzone_n'], '')} — ${get(link, ['originZoneData', 'objectid'], '')}`}
+          animate={false}
+        />
+        <RouteInfo>
+          <Arrow>↓</Arrow>
+          <div><strong>{link.count}</strong> commuter{link.count > 1 ? 's' : ''} took <strong>{Math.round(link.totalDuration / 60)}</strong> mins{link.count > 1 ? ' on the average' : ''}</div>
+        </RouteInfo>
+        <ZoneDetails
+          mainDetail={get(link, ['destinationZoneData', 'lu_desc'], '')}
+          subDetail={`${get(link, ['destinationZoneData', 'subzone_n'], '')} — ${get(link, ['destinationZoneData', 'objectid'], '')}`}
+          animate={false}
+        />
       </ZoneInfo>
       <div>
         <TimelineContainer>{serviceLabels}</TimelineContainer>

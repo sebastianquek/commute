@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import get from 'lodash.get'
 import RouteChoicesChart from './RouteChoicesChart'
 import RouteInfoTooltip from '../../core/components/RouteInfoTooltip'
 import Spinner from '../../core/components/Spinner'
+import { landUseColors } from '../../core/components/ZoneDetails'
 
 const Wrapper = styled.div`
   position: relative;
@@ -22,6 +24,19 @@ const MaxNumLinksFeedback = styled.div`
   text-align: right;
 `
 
+const FeedbackLabel = styled.div`
+  position: absolute;
+  align-items: center;
+  color: ${({theme}) => theme.colors.textPrimary};
+  display: flex;
+  font-size: 1rem;
+  font-style: italic;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+`
+
 // Contains the chart and tooltip
 class RouteChoicesChartManager extends Component {
   constructor (props) {
@@ -31,6 +46,7 @@ class RouteChoicesChartManager extends Component {
     this.numHiddenLinks = 0
     this.setTooltipInfo = this.setTooltipInfo.bind(this)
     this.defaultNodeColor = '#ddd'
+    this.noRoutes = true
   }
 
   componentWillReceiveProps (nextProps) {
@@ -77,11 +93,10 @@ class RouteChoicesChartManager extends Component {
             minDuration <= link.totalDuration && link.totalDuration <= maxDuration &&
             minCommuters <= link.count && link.count <= maxCommuters
           ) {
-            link.sourceColor = nextProps.zoneIdToGroupColor[link.originZone] || this.defaultNodeColor
-            link.targetColor = nextProps.zoneIdToGroupColor[link.destinationZone] || this.defaultNodeColor
-
-            link.originZoneName = nextProps.zoneIdToName[link.originZone]
-            link.destinationZoneName = nextProps.zoneIdToName[link.destinationZone]
+            link.sourceColor = nextProps.zoneIdToGroupColor[link.originZone] || get(landUseColors, get(link.originZoneData, 'lu_desc'), this.defaultNodeColor)
+            link.targetColor = nextProps.zoneIdToGroupColor[link.destinationZone] || get(landUseColors, get(link.destinationZoneData, 'lu_desc'), this.defaultNodeColor)
+            link.sourceIsGroup = nextProps.zoneIdToGroupColor.hasOwnProperty(link.originZone)
+            link.targetIsGroup = nextProps.zoneIdToGroupColor.hasOwnProperty(link.destinationZone)
 
             // Add link
             this.links.push(link)
@@ -119,13 +134,13 @@ class RouteChoicesChartManager extends Component {
         this.nodes[link.source] || (this.nodes[link.source] = {
           group: link.source,
           color: link.sourceColor,
-          isGroup: link.sourceColor !== this.defaultNodeColor,
+          isGroup: link.sourceIsGroup,
           numLinks: 0
         })
         this.nodes[link.target] || (this.nodes[link.target] = {
           group: link.target,
           color: link.targetColor,
-          isGroup: link.targetColor !== this.defaultNodeColor,
+          isGroup: link.targetIsGroup,
           numLinks: 0
         })
 
@@ -153,6 +168,7 @@ class RouteChoicesChartManager extends Component {
 
     // Convert nodes object to array
     this.nodes = Object.values(this.nodes)
+    this.noRoutes = this.nodes.length === 0
   }
 
   setTooltipInfo (link, x, y) {
@@ -172,6 +188,7 @@ class RouteChoicesChartManager extends Component {
       <Wrapper>
         { this.numHiddenLinks > 0 && <MaxNumLinksFeedback>Showing {this.maxNumLinks} links ({this.numHiddenLinks} links are hidden)</MaxNumLinksFeedback> }
         { this.props.isFetchingZoneJourneyData && <BottomLeftSpinner /> }
+        { !this.props.isFetchingZoneJourneyData && this.noRoutes && <FeedbackLabel>No routes match your criteria</FeedbackLabel> }
         <RouteChoicesChart
           links={this.links}
           nodes={this.nodes}

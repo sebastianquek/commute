@@ -5,7 +5,7 @@ import zoneManager from '../zone-manager'
 import { fromJS } from 'immutable'
 import {
   defaultMapStyle, zonesHoverLayer, zonesSelectionLayer, selectedGroupLayer,
-  journeysLayer, journeysHoverLayer, flowArrowsLayer
+  journeysLayer, journeysHoverLayer, flowArrowsLayer, subgraphGroupLayer
 } from './map-style'
 
 // Add a selection layer (layer that outlines selectable zones) or
@@ -75,13 +75,13 @@ function mapStyle (state = defaultMapStyle, action) {
       }
 
     case zoneManager.actionTypes.SET_ORIGIN_SELECTION_MODE:
-      return addOrEditSelectionLayer(state, 'blue')
+      return addOrEditSelectionLayer(state, '#2196f3')
 
     case zoneManager.actionTypes.SET_DESTINATION_SELECTION_MODE:
-      return addOrEditSelectionLayer(state, 'orange')
+      return addOrEditSelectionLayer(state, '#ffab40')
 
     case zoneManager.actionTypes.SET_EDIT_SELECTION_MODE:
-      return addOrEditSelectionLayer(state, 'black')
+      return addOrEditSelectionLayer(state, '#455a64')
 
     case zoneManager.actionTypes.RESET_SELECTION_MODE:
       newState = state.update('layers', layers =>
@@ -99,6 +99,13 @@ function mapStyle (state = defaultMapStyle, action) {
       return action.groups.reduce((newState, g) => {
         return newState.update('layers', layers =>
           layers.push(selectedGroupLayer(g.groupId, g.color, g.zoneIds))
+        )
+      }, state)
+
+    case t.COLOR_SUBGRAPH_GROUPS:
+      return action.groups.reduce((newState, g) => {
+        return newState.update('layers', layers =>
+          layers.push(subgraphGroupLayer(g.groupId, g.color, g.zoneIds))
         )
       }, state)
 
@@ -134,6 +141,36 @@ function mapStyle (state = defaultMapStyle, action) {
       }
       return state
 
+    case zoneManager.actionTypes.ADD_SUBGRAPH_GROUP:
+      if (state.get('layers').findIndex(layer => layer.get('id') === 'subgraph-' + action.groupId) === -1) {
+        idx = state.get('layers').findIndex(i => i.get('id') === journeysLayer.get('id'))
+        return state.update('layers', layers =>
+          layers.insert(idx - 1, subgraphGroupLayer(action.groupId, action.color, action.zoneIds))
+        )
+      }
+      return state
+
+    case zoneManager.actionTypes.REMOVE_SUBGRAPH_GROUP:
+      return state.update('layers', layers =>
+        layers.filterNot(l =>
+          l.get('id') === 'subgraph-' + action.groupId
+        )
+      )
+
+    case zoneManager.actionTypes.HIDE_SUBGRAPH_GROUP:
+      idx = state.get('layers').findIndex(layer => layer.get('id') === 'subgraph-' + action.groupId)
+      if (idx !== -1) {
+        return state.setIn(['layers', idx, 'paint', 'line-opacity'], 0)
+      }
+      return state
+
+    case zoneManager.actionTypes.SHOW_SUBGRAPH_GROUP:
+      idx = state.get('layers').findIndex(layer => layer.get('id') === 'subgraph-' + action.groupId)
+      if (idx !== -1) {
+        return state.setIn(['layers', idx, 'paint', 'line-opacity'], 0.8)
+      }
+      return state
+
     case linkingCoordinator.actionTypes.SET_HOVERED_ROUTE_ID:
       let hoverLayerIdx = state.get('layers').findIndex(item =>
         item.get('id') === journeysHoverLayer.get('id')
@@ -151,7 +188,7 @@ function mapStyle (state = defaultMapStyle, action) {
           newState = state.updateIn(['layers', hoverLayerIdx, 'filter'], f => f.set(2, action.routeId))
         }
         // Make flows thinner
-        newState = newState.setIn(['layers', journeysLayerIdx, 'paint', 'line-width', 'base'], 6)
+        newState = newState.setIn(['layers', journeysLayerIdx, 'paint', 'line-width', 'base'], 2)
         return newState
       }
       return state

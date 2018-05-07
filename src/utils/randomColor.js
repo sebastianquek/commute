@@ -12,7 +12,7 @@ export function shouldTextBeDark (color) {
 }
 
 function * colorGenerator () {
-  const colors = ['#8dd3c7', '#bc80bd', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5']
+  const colors = ['#8dd3c7', '#fb8072', '#fdb462', '#80b1d3', '#bc80bd', '#b3de69', '#bebada', '#fccde5']
   let currentColors = [...colors]
 
   let i = 0
@@ -26,7 +26,8 @@ function * colorGenerator () {
       }
     }
 
-    let idx = Math.floor(Math.random() * currentColors.length)
+    // let idx = Math.floor(Math.random() * currentColors.length)
+    let idx = 0
     let hue = currentColors[idx]
     currentColors.splice(idx, 1)
 

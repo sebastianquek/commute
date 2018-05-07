@@ -1,19 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import SelectedGroupButtonContainer from '../containers/SelectedGroupButtonContainer'
-import AddZoneButton from './AddZoneButton'
 import { fadeSlideUp } from '../../../utils/animations'
+import SubgraphGroupButtonContainer from '../containers/SubgraphGroupButtonContainer'
 
 const Container = styled.div`
   animation: ${fadeSlideUp} 0.7s ease;
   display: flex;
-  margin-bottom: 2em;
   position: relative;
-  
-  :last-of-type {
-    margin-bottom: 0;
-  }
+  margin-bottom: 2em;
 `
 
 const Label = styled.span`
@@ -33,42 +28,39 @@ const Children = styled.div`
   flex-direction: column;
 `
 
-class GroupCategory extends React.Component {
+class Subgraphs extends React.Component {
   componentDidUpdate () {
     this.props.updateScrollbarVisbility()
   }
 
   render () {
     const groupComponents = this.props.groups.map((group, idx) =>
-      <SelectedGroupButtonContainer
+      <SubgraphGroupButtonContainer
         key={group.groupId}
         groupId={group.groupId}
-        color={group.color}>
-        {group.groupId}
-      </SelectedGroupButtonContainer>
+        color={group.color}
+        hidden={group.hidden}>
+        {String.fromCharCode('A'.charCodeAt() + idx)}
+      </SubgraphGroupButtonContainer>
     )
+    if (groupComponents.length === 0) return null
     return (
       <Container>
-        <Label>{this.props.category}</Label>
+        <Label>Subgraphs</Label>
         <Children>
           {groupComponents}
-          <AddZoneButton onClick={this.props.onClickAdd} />
         </Children>
       </Container>
     )
   }
 }
 
-GroupCategory.propTypes = {
-  groups: PropTypes.arrayOf(PropTypes.object).isRequired,
-  category: PropTypes.string.isRequired,
-  initialIdx: PropTypes.number,
-  onClickAdd: PropTypes.func.isRequired,
+Subgraphs.propTypes = {
+  groups: PropTypes.array,
   updateScrollbarVisbility: PropTypes.func
 }
 
-GroupCategory.defaultProps = {
-  initialIdx: 0
+Subgraphs.defaultProps = {
 }
 
-export default GroupCategory
+export default Subgraphs

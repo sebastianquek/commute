@@ -12,16 +12,18 @@ const SelectedZonesDataRows = (props) => {
       const group = props.zoneCompositions[key]
       let zoneName = ''
       if (group.groupData[0] && group.groupData[0].zoneData) {
-        zoneName = group.groupData[0].zoneData['SUBZONE_N']
+        zoneName = group.groupData[0].zoneData['subzone_n']
       }
       return (
         <ScrollableAnchor key={key} id={'' + key}>
           <ZoneDataRow
             zoneName={zoneName}
-            zoneNum={props.initialIdx + idx + 1}
-            zoneColor={group.color}>
+            zoneNum={key}
+            zoneColor={group.color}
+            circle
+          >
             <SelectedZoneDataRowContent
-              zoneComposition={group.groupData}
+              composition={group.groupData}
             />
           </ZoneDataRow>
         </ScrollableAnchor>
@@ -29,7 +31,7 @@ const SelectedZonesDataRows = (props) => {
     })
   } else {
     return <ZoneFeedback
-      zoneDataContainer={<ZoneDataRow />}
+      zoneDataContainer={<ZoneDataRow circle />}
       feedback={`Select a ${props.category} zone to see more details`} />
   }
 }
