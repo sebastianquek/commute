@@ -17,6 +17,7 @@ export class Map extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      preventStyleDiffing: true, // Ensures that MapGL does not try to compare between a string and an object
       viewport: {
         latitude: 1.286052,
         longitude: 103.916023,
@@ -46,8 +47,15 @@ export class Map extends Component {
   }
 
   onLoad () {
-    this.props.mapHasLoaded()
     const map = this.mapRef.getMap()
+
+    // Store the map style object in the state so that the
+    // style can be manipulated (e.g. add layers, change layer colours, etc.)
+    const mapStyle = map.getStyle()
+    this.props.initMapStyle(mapStyle)
+    this.setState({ preventStyleDiffing: false }) // Re-enable style diffing
+
+    this.props.mapHasLoaded()
     map.loadImage(arrowImage, (err, image) => {
       if (err) {
         console.log(err)
@@ -99,6 +107,7 @@ export class Map extends Component {
           ref={map => (this.mapRef = map)}
           {...this.state.viewport}
           mapStyle={this.props.mapStyle}
+          preventStyleDiffing={this.state.preventStyleDiffing}
           onViewportChange={this.onViewportChange}
           onLoad={this.onLoad}
           onHover={this.handleHover}
@@ -117,8 +126,12 @@ export class Map extends Component {
 }
 
 Map.propTypes = {
-  mapStyle: PropTypes.object.isRequired,
+  mapStyle: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object
+  ]).isRequired,
   mapHasLoaded: PropTypes.func.isRequired,
+  initMapStyle: PropTypes.func.isRequired,
   hoverOverFeature: PropTypes.func.isRequired,
   clickFeatures: PropTypes.func.isRequired
 }

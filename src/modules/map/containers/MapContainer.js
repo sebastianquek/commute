@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Map from '../components/Map'
 import { mapStyleSelector } from '../selectors'
-import { mapHasLoaded, hoverOverFeature, clickFeatures } from '../actions'
+import { mapHasLoaded, initMapStyle, hoverOverFeature, clickFeatures } from '../actions'
 import zoneManager from '../../zone-manager'
 import SelectionModeFeedback from '../components/SelectionModeFeedback'
 
@@ -12,6 +12,7 @@ const MapContainer = (props) => {
       <Map
         mapStyle={props.mapStyle}
         mapHasLoaded={props.mapHasLoaded}
+        initMapStyle={props.initMapStyle}
         hoverOverFeature={props.hoverOverFeature}
         clickFeatures={props.clickFeatures}
       >
@@ -41,6 +42,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   mapHasLoaded,
+  initMapStyle,
   hoverOverFeature,
   clickFeatures,
   resetSelectionMode: zoneManager.actions.resetSelectionMode

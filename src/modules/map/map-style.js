@@ -1,7 +1,4 @@
-import {fromJS} from 'immutable'
-import MAP_STYLE from './style4.json'
-
-export const defaultMapStyle = fromJS(MAP_STYLE)
+import { fromJS } from 'immutable'
 
 export const zonesHoverLayer = fromJS({
   id: 'zonesHover',
