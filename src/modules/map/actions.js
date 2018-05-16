@@ -4,7 +4,12 @@ export const mapHasLoaded = () => ({
   type: t.MAP_HAS_LOADED
 })
 
-export const addZoneCompositions = (geojson) => ({
+export const initMapStyle = mapStyle => ({
+  type: t.INIT_MAP_STYLE,
+  mapStyle
+})
+
+export const addZoneCompositions = geojson => ({
   type: t.ADD_ZONE_COMPOSITION,
   zones: geojson
 })

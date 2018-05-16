@@ -1,4 +1,5 @@
 export const MAP_HAS_LOADED = 'map/HAS_LOADED'
+export const INIT_MAP_STYLE = 'map/INIT_MAP_STYLE'
 export const ADD_ZONE_COMPOSITION = 'map/ADD_ZONE_COMPOSITION'
 export const ADD_JOURNEYS = 'map/ADD_JOURNEYS'
 export const SET_FILTERED_ROUTE_IDS = 'map/SET_FILTERED_ROUTE_IDS'

@@ -4,7 +4,7 @@ import linkingCoordinator from '../linking-coordinator'
 import zoneManager from '../zone-manager'
 import { fromJS } from 'immutable'
 import {
-  defaultMapStyle, zonesHoverLayer, zonesSelectionLayer, selectedGroupLayer,
+  zonesHoverLayer, zonesSelectionLayer, selectedGroupLayer,
   journeysLayer, journeysHoverLayer, flowArrowsLayer, subgraphGroupLayer
 } from './map-style'
 
@@ -32,10 +32,13 @@ function insertBeforeHoverLayerIfExists (state, layer) {
   return state.update('layers', layers => layers.push(layer))
 }
 
-function mapStyle (state = defaultMapStyle, action) {
+function mapStyle (state = process.env.MAPBOX_STYLE, action) {
   switch (action.type) {
     case t.ADD_ZONE_COMPOSITION:
       return state.setIn(['sources', 'zones'], fromJS({type: 'geojson', data: action.zones}))
+
+    case t.INIT_MAP_STYLE:
+      return fromJS(action.mapStyle)
 
     case t.ADD_JOURNEYS:
       let newState = state.setIn(['sources', 'journeys'], fromJS({type: 'geojson', data: action.journeys}))
